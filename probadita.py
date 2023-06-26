@@ -19,7 +19,7 @@ class Window(QMainWindow):
         # set the title
         self.setWindowTitle("Python")
   
-        width = 200
+        width = 300
         height = 200
   
         # setting the minimum size
