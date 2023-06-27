@@ -40,6 +40,7 @@ DEBUG = True
 DEBUG1 = True
 
 PX_SIZE = 29.0 #px size of camera in nm #antes 80.0 para Andor
+PX_Z = 25 # px size for z in nm //Thorcam px size 25nm // IDS px size 50nm 
 
 class Frontend(QtGui.QFrame):
     
@@ -686,14 +687,33 @@ class Backend(QtCore.QObject):
         self.update_view()
 
         if self.tracking_value:
-                
-            self.track()
+            
+            t0 = time.time()
+            self.track('xy')
+            t1 = time.time()
+        
+            print('track xy took', (t1-t0)*1000, 'ms')
+            
+            t0 = time.time()
+            self.track('z')
+            t1 = time.time()
+            
+            print('track z took', (t1-t0)*1000, 'ms')
+            
+            t0 = time.time()
             self.update_graph_data()
+            t1 = time.time()
+            
+            print('update graph data took', (t1-t0)*1000, 'ms')
             
             if self.feedback_active:
                     
+                t0 = time.time()    
                 self.correct()
-        
+                t1 = time.time()
+                
+                print('correct took', (t1-t0)*1000, 'ms')
+                
         if self.pattern:
             val = (self.counter - self.initcounter)
             reprate = 50 #Antes era 10 para andor
@@ -944,7 +964,7 @@ class Backend(QtCore.QObject):
 #            print(datetime.now(), '[xy_tracking] else')
         
             
-    def track(self): #no toco este trackeo
+    def track(self, track_type): #Añado parámetro para trabajar en xy y z
         
         """ 
         Function to track fiducial markers (Au NPs) from the selected ROI.
@@ -954,40 +974,78 @@ class Backend(QtCore.QObject):
         
         """
         
-        try:
-            self.gaussian_fit()
-            
-        except(RuntimeError, ValueError):
-            
-            print(datetime.now(), '[xy_tracking] Gaussian fit did not work')
-            self.toggle_feedback(False)
-               
-        if self.initial is True:
-            
-            self.initialx = self.currentx
-            self.initialy = self.currenty
-            
-            self.initial = False
-            
-        self.x = self.currentx - self.initialx
-        self.y = self.currenty - self.initialy
+        # Calculate average intensity in the image to check laser fluctuations
         
-        self.currentTime = time.time() - self.startTime
+        self.avgInt = np.mean(self.image)
         
-        if self.save_data_state:
+        print('Average intensity', self.avgInt)
+        
+        # xy track routine of N=size fiducial AuNP
+
+        if track_type == 'xy':
             
-            self.time_array[self.j] = self.currentTime
-            self.x_array[self.j] = self.x + self.displacement[0]
-            self.y_array[self.j] = self.y + self.displacement[1]
+            for i, roi in enumerate(self.roi_coordinates_list):
+                
+                # try:
+                #     roi = self.roi_coordinates_list[i]
+                #     self.currentx[i], self.currenty[i] = self.gaussian_fit(roi)
+                    
+                # except(RuntimeError, ValueError):
+                    
+                #     print(datetime.now(), '[xy_tracking] Gaussian fit did not work')
+                #     self.toggle_feedback(False)
+                
+                roi = self.roi_coordinates_list[i]
+                self.currentx[i], self.currenty[i] = self.gaussian_fit(roi)
+           
+            if self.initial is True:
+                
+                for i, roi in enumerate(self.roi_coordinates_list):
+                       
+                    self.initialx[i] = self.currentx[i]
+                    self.initialy[i] = self.currenty[i]
+                    
+                self.initial = False
             
-            self.j += 1
-                        
-            if self.j >= (self.buffersize - 5):    # TO DO: -5, arbitrary bad fix
+            for i, roi in enumerate(self.roi_coordinates_list):
+                    
+                self.x[i] = self.currentx[i] - self.initialx[i]  # self.x is relative to initial pos
+                self.y[i] = self.currenty[i] - self.initialy[i]
                 
-                self.export_data()
-                self.reset_data_arrays()
+                self.currentTime = time.time() - self.startTime
                 
-                print(datetime.now(), '[xy_tracking] Data array, longer than buffer size, data_array reset')
+            # print('x, y', self.x, self.y)
+            # print('currentx, currenty', self.currentx, self.currenty)
+                
+            if self.save_data_state:
+                
+                self.time_array[self.j] = self.currentTime
+                self.x_array[self.j, :] = self.x + self.displacement[0]
+                self.y_array[self.j, :] = self.y + self.displacement[1]
+                
+                self.j += 1
+                            
+                if self.j >= (self.buffersize - 5):    # TODO: -5, arbitrary bad fix
+                    
+                    self.export_data()
+                    self.reset_data_arrays()
+                    
+            #         print(datetime.now(), '[xy_tracking] Data array, longer than buffer size, data_array reset')
+            
+        # z track of the reflected IR beam   
+        ####################### Revisar esto del trackeo en z, no puedo correlacionar con focus.py
+            
+        if track_type == 'z':
+            
+            self.center_of_mass()
+            
+            if self.initial_focus is True:
+                
+                self.initialz = self.currentz
+                
+                self.initial_focus = False
+            
+            self.z = (self.currentz - self.initialz) * PX_Z
                 
     def correct(self, mode='continous'):
 
@@ -1054,7 +1112,7 @@ class Backend(QtCore.QObject):
                 self.target_y = targetYposition
             
     @pyqtSlot(bool, bool)
-    def single_xy_correction(self, feedback_val, initial): 
+    def single_xy_correction(self, feedback_val, initial): #¿Es necesaria esta función? o está incluida en update()
         
         """
         From: [psf] xySignal
@@ -1084,7 +1142,7 @@ class Backend(QtCore.QObject):
         self.camera.stop_live_video()
         self.camON = False
         
-        self.track()
+        self.track('xy')
         self.update_graph_data()
         self.correct(mode='discrete')
                 
