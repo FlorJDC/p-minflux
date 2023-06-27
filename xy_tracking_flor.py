@@ -1220,6 +1220,7 @@ class Backend(QtCore.QObject):
         # TO DO: generalize to N ROIs
         
         self.ROIcoordinates = coordinates_array.astype(int)
+        #la línea anterior: convierte la matriz coordinates_array en un nuevo array NumPy de tipo entero y lo asigna a la variable self.ROIcoordinates.
         
         if DEBUG:
             print(datetime.now(), '[xy_tracking] got ROI coordinates')

@@ -72,37 +72,7 @@ class Frontend(QtGui.QFrame):
         self.roi = None
         
         self.setup_gui()
-
-# =============================================================================
-##lAS LINEAS COMENTADAS EN ESTE BLOQUE SON LAS ORIGINALES DE XY_TRACKING_FLOR
-        
-#     def craete_roi(self): #Se crea un ROI xy
-#         
-#         ROIpen = pg.mkPen(color='r')
-#         
-#         if DEBUG1:
-#             print("Estoy en craete_roi")
-# 
-#         ROIpos = (512 - 64, 512 - 64) #Cambié como en xyz tracking 29-5 FC
-#         self.roi = viewbox_tools.ROI2(50, self.vb, ROIpos,
-#                                      handlePos=(1, 0),
-#                                      handleCenter=(0, 1),
-#                                      scaleSnap=True,
-#                                      translateSnap=True,
-#                                      pen=ROIpen, number=self.ROInumber)
-#         
-#         self.ROInumber += 1
-#         print("ROInumber: ",self.ROInumber)
-#         self.roilist.append(self.roi)
-#         print("Veo quien es roilist: ", self.roilist)
-#         self.ROIButton.setChecked(False)
-# 
-# =============================================================================
-#        else:
-#
-#            self.vb.removeItem(self.roi)
-#            self.roi.hide()
-    
+   
     ############################añado create_roi para xy y z NO SON LINEAS ORIGINALES
     def craete_roi(self, roi_type):
         if DEBUG1:
@@ -139,7 +109,7 @@ class Frontend(QtGui.QFrame):
     def emit_roi_info(self, roi_type):
         
         if DEBUG1:
-             print("Estoy en craete_roi")
+             print("Estoy en emit_roi_info")
         
         if roi_type == 'xy':
         
@@ -487,6 +457,7 @@ class Frontend(QtGui.QFrame):
         
         self.trackingBeadsBox = QtGui.QCheckBox('Track xy fiducials')
         self.trackingBeadsBox.stateChanged.connect(self.emit_roi_info)
+        ################################################me parece que aquí falta una linea (cf xyz_tracking_flor)
         
         # turn ON/OFF feedback loop
         
@@ -799,8 +770,7 @@ class Backend(QtCore.QObject):
             
             # initialize relevant xy-tracking arrays 
         
-            #size = len(self.roi_coordinates_list)#origianl
-            size=len(self.ROIcoordinates)
+            size = len(self.roi_coordinates_list)
             
             self.currentx = np.zeros(size)
             self.currenty = np.zeros(size)
@@ -858,12 +828,14 @@ class Backend(QtCore.QObject):
 #                                          self.feedback_active, 
 #                                          self.save_data_state)
             
-    def gaussian_fit(self):
+    def gaussian_fit(self,roi_coordinates): #Le estoy agregando un parámetro (roi_coordinates) para que sea como en xyz_tracking
         
         # set main reference frame
         
-        xmin, xmax, ymin, ymax = self.ROIcoordinates
-        xmin_nm, xmax_nm, ymin_nm, ymax_nm = self.ROIcoordinates * PX_SIZE
+        roi_coordinates = np.array(roi_coordinates, dtype=np.int)
+        
+        xmin, xmax, ymin, ymax = roi_coordinates
+        xmin_nm, xmax_nm, ymin_nm, ymax_nm = roi_coordinates * PX_SIZE
         
         # select the data of the image corresponding to the ROI
 
@@ -930,6 +902,10 @@ class Backend(QtCore.QObject):
         poptG, pcovG = opt.curve_fit(PSF.gaussian2D, (Mx_sub, My_sub), 
                                      array_sub.ravel(), p0=initial_guess_G)
         
+        perr = np.sqrt(np.diag(pcovG))
+        
+        print('perr', perr)
+        
         # retrieve results
 
         poptG = np.around(poptG, 2)
@@ -939,8 +915,8 @@ class Backend(QtCore.QObject):
         x = x0 + Mx_nm[xmin_id, ymin_id]
         y = y0 + My_nm[xmin_id, ymin_id]
         
-#        self.currentx = x
-#        self.currenty = y
+        currentx = x
+        currenty = y
         
         # if to avoid (probably) false localizations #notar que esta parte no se usa en xyz_tracking
         
@@ -963,8 +939,7 @@ class Backend(QtCore.QObject):
         
         else:
             
-            self.currentx = x
-            self.currenty = y
+             return currentx, currenty
             
 #            print(datetime.now(), '[xy_tracking] else')
         
@@ -1258,21 +1233,25 @@ class Backend(QtCore.QObject):
         if DEBUG:
             print(datetime.now(), '[xy_tracking] save_data_state = {}'.format(val))
     
-    @pyqtSlot(int, np.ndarray)
-    def get_roi_info(self, N, coordinates_array): #Toma la informacion del ROI que viene de emit_roi_info en el frontend
+    @pyqtSlot(str, int, list) #antes se usaba roi_coordinates_array que se convertía a int en ROIcoordinates
+    def get_roi_info(self, roi_type, N, coordinates_list): #Toma la informacion del ROI que viene de emit_roi_info en el frontend
         
         '''
         Connection: [frontend] roiInfoSignal
         Description: gets coordinates of the ROI in the GUI
         
         '''
+        if roi_type == 'xy':
+                            
+            self.roi_coordinates_list = coordinates_list
         
-        # TO DO: generalize to N ROIs
-        
-        self.ROIcoordinates = coordinates_array.astype(int)
-        
-        if DEBUG:
-            print(datetime.now(), '[xy_tracking] got ROI coordinates')
+            if DEBUG:
+                print(datetime.now(), '[xy_tracking] got ROI coordinates list')
+                
+        if roi_type == 'z':
+            
+            self.zROIcoordinates = coordinates_list[0].astype(int)
+            
      
     @pyqtSlot()    
     def get_lock_signal(self):
