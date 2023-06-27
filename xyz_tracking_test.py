@@ -682,7 +682,7 @@ class Backend(QtCore.QObject):
     def update(self):
         """ General update method """
         
-     #   print(datetime.now(), '[xy_tracking] entered update')
+        print(datetime.now(), 'Estoy en update')
         
         self.update_view()
 
@@ -728,42 +728,49 @@ class Backend(QtCore.QObject):
         """ Image update while in Liveview mode """
         
         # acquire image
-        #print("Estoy dentro del update_view")
+
         raw_image = self.camera.latest_frame()
-        #print("Lìnea 613")
+        
         #self.image = np.sum(raw_image, axis=2)   # sum the R, G, B images
-        self.image = raw_image[:, :, 0]
-        #print("Lìnea 616")
+        self.image = raw_image[:, :, 0] # take only R channel
+
         # WARNING: fix to match camera orientation with piezo orientation
         self.image = np.rot90(self.image, k=3) #Comment by FC
-        #print("Lìnea 619")
 
         # send image to gui
         self.changedImage.emit(self.image)
-        #print("Lìnea 623")
         
         
-    def update_graph_data(self):
+    def update_graph_data(self): #Incorporo cambios con vistas a añadir data actualizada de z
         """ Update the data displayed in the graphs """
         
         if self.ptr < self.npoints:
-            self.xData[self.ptr] = self.x + self.displacement[0]
-            self.yData[self.ptr] = self.y + self.displacement[1]
+            self.xData[self.ptr, :] = self.x + self.displacement[0]
+            self.yData[self.ptr, :] = self.y + self.displacement[1]
+            self.zData[self.ptr] = self.z
+            self.avgIntData[self.ptr] = self.avgInt
             self.time[self.ptr] = self.currentTime
             
             self.changedData.emit(self.time[0:self.ptr + 1],
                                   self.xData[0:self.ptr + 1],
-                                  self.yData[0:self.ptr + 1])
-
+                                  self.yData[0:self.ptr + 1],
+                                  self.zData[0:self.ptr + 1],
+                                  self.avgIntData[0:self.ptr + 1])
+            
         else:
             self.xData[:-1] = self.xData[1:]
-            self.xData[-1] = self.x + self.displacement[0]
+            self.xData[-1, :] = self.x + self.displacement[0]
             self.yData[:-1] = self.yData[1:]
-            self.yData[-1] = self.y + self.displacement[1]
+            self.yData[-1, :] = self.y + self.displacement[1]
+            self.zData[:-1] = self.zData[1:]
+            self.zData[-1] = self.z
+            self.avgIntData[:-1] = self.avgIntData[1:]
+            self.avgIntData[-1] = self.avgInt
             self.time[:-1] = self.time[1:]
             self.time[-1] = self.currentTime
             
-            self.changedData.emit(self.time, self.xData, self.yData)
+            self.changedData.emit(self.time, self.xData, self.yData, 
+                                  self.zData, self.avgIntData)
 
         self.ptr += 1
     
