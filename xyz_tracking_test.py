@@ -205,34 +205,65 @@ class Frontend(QtGui.QFrame):
         self.yaxis.setScale(scale=PX_SIZE/1000) #scale to µm
         
         
-    @pyqtSlot(np.ndarray, np.ndarray, np.ndarray)
-    def get_data(self, time, xData, yData):
+    @pyqtSlot(np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray) #Cambió la señal changed_data 
+    def get_data(self, tData, xData, yData, zData, avgIntData): #cambiaron los parámetros del slot get_data
         
         print("xData: ",xData)
         print("yData: ",yData)
-        print("time: ",time)
-        self.xCurve.setData(time, xData)
-        self.yCurve.setData(time, yData)
+        print("zData: ",zData)
+
+        # x data
         
-        self.xyDataItem.setData(yData, xData) #Cambié el orden de los parámetros para que el grafico quede bien 5-6 FC
+        N_NP = np.shape(xData)[1]
+        print("N_NP: ",N_NP)
         
+        for i in range(N_NP):
+        
+            self.xCurve[i].setData(tData, xData[:, i])
+            
+        self.xmeanCurve.setData(tData, np.mean(xData, axis=1))
+        
+        # y data
+            
+        for i in range(N_NP):
+        
+            self.yCurve[i].setData(tData, yData[:, i])
+            
+        self.ymeanCurve.setData(tData, np.mean(yData, axis=1))
+        
+        # z data
+        
+        self.zCurve.setData(tData, zData)
+        
+        # avg intensity data
+        
+        self.avgIntCurve.setData(avgIntData)
+        
+        # set xy 2D data
+        
+        self.xyDataItem.setData(np.mean(xData, axis=1), np.mean(yData, axis=1))
+        #los cambios aquí tienen que verse reflejados en la gui, histogramas
         if len(xData) > 2:
             
             self.plot_ellipse(xData, yData)
-            #####################################
-            #Agrego estas lineas de prueba std FC
             
-            meanX = np.mean(xData,axis=None)
-            print("mean x" ,np.mean(xData,axis=None))
-            xstd = np.std(xData)
-            print("stdx", xstd)
+            hist, bin_edges = np.histogram(zData, bins=60)
+            self.zHist.setOpts(x=bin_edges[:-1], height=hist)
+             
+            xstd = np.std(np.mean(xData, axis=1))
+            print("mean x", np.mean(xData, axis=1))
+            print("size xData", np.size(xData))
             self.xstd_value.setText(str(np.around(xstd, 2)))
-            print("std_value x",self.xstd_value)
             
-            ystd = np.std(yData)
-            print("stdy",ystd)
+            ystd = np.std(np.mean(yData, axis=1))
+            print("mean y", np.mean(yData, axis=1))
+            print("size yData", np.size(yData))
             self.ystd_value.setText(str(np.around(ystd, 2)))
-            #########################################
+            
+            zstd = np.std(zData)
+            print("size zData", np.size(zData))
+            print("std values x y z",xstd," ",ystd," ",zstd)
+            self.zstd_value.setText(str(np.around(zstd, 2)))
         
     def plot_ellipse(self, x_array, y_array):
         
@@ -534,7 +565,7 @@ class Frontend(QtGui.QFrame):
 class Backend(QtCore.QObject):
     
     changedImage = pyqtSignal(np.ndarray)
-    changedData = pyqtSignal(np.ndarray, np.ndarray, np.ndarray)
+    changedData = pyqtSignal(np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray)
     updateGUIcheckboxSignal = pyqtSignal(bool, bool, bool) #no se usa en xyz_tracking
 
     xyIsDone = pyqtSignal(bool, float, float)  # signal to emit new piezo position after drift correction
