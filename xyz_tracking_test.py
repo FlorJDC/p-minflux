@@ -1218,20 +1218,39 @@ class Backend(QtCore.QObject):
     def reset(self):
         
         self.initial = True
-        self.xData = np.zeros(self.npoints)
-        self.yData = np.zeros(self.npoints)
+        self.initial_focus = True
+        
+        try:
+            self.xData = np.zeros((self.npoints, len(self.roi_coordinates_list)))
+            self.yData = np.zeros((self.npoints, len(self.roi_coordinates_list)))
+            
+        except:
+            
+            self.xData = np.zeros(self.npoints)
+            self.yData = np.zeros(self.npoints)
+        
+        self.zData = np.zeros(self.npoints)
+        self.avgIntData = np.zeros(self.npoints)
         self.time = np.zeros(self.npoints)
         self.ptr = 0
         self.startTime = time.time()
-        self.j = 0  # iterator on the data array
         
-        self.changedData.emit(self.time, self.xData, self.yData)
+        self.changedData.emit(self.time, self.xData, self.yData, self.zData, 
+                              self.avgIntData)
         
     def reset_data_arrays(self):
         
         self.time_array = np.zeros(self.buffersize, dtype=np.float16)
-        self.x_array = np.zeros(self.buffersize, dtype=np.float16)
-        self.y_array = np.zeros(self.buffersize, dtype=np.float16)
+        
+        self.x_array = np.zeros((self.buffersize, 
+                                 len(self.roi_coordinates_list)), 
+                                 dtype=np.float16)
+        
+        self.y_array = np.zeros((self.buffersize, 
+                                 len(self.roi_coordinates_list)), 
+                                 dtype=np.float16)
+        
+        self.j = 0  # iterator on the data array
         
         
     def export_data(self):
