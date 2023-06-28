@@ -1200,26 +1200,33 @@ class Backend(QtCore.QObject):
                 
     def correct(self, mode='continous'):
 
+        xmean = np.mean(self.x)
+        ymean = np.mean(self.y)        
+
         dx = 0
         dy = 0
+        dz = 0
+        
         threshold = 3 #antes era 5
+        z_threshold = 3
         far_threshold = 12
         correct_factor = 0.6
+        
         security_thr = 0.35 # in µm
         
-        if np.abs(self.x) > threshold:
+        if np.abs(xmean) > threshold:
             
-            dx = - (self.x)/1000 # conversion to µm
+            dx = - (xmean)/1000 # conversion to µm
             
-            if dx < far_threshold:
+            if dx < far_threshold: #TODO: double check this conditions (do they work?)
                 
-                dx = correct_factor * dx
+                dx = correct_factor * dx #TODO: double check this conditions (do they work?)
             
             #  print('dx', dx)
             
-        if np.abs(self.y) > threshold:
+        if np.abs(ymean) > threshold:
             
-            dy = - (self.y)/1000 # conversion to µm
+            dy = - (ymean)/1000 # conversion to µm
             
             if dy < far_threshold:
                 
@@ -1227,7 +1234,17 @@ class Backend(QtCore.QObject):
             
 #                print('dy', dy)
     
-        if dx > security_thr or dy > security_thr:
+        if np.abs(self.z) > z_threshold:
+                            
+            dz = - (self.z)/1000 # conversion to µm
+                
+            if dz < far_threshold:
+                    
+                dz = correct_factor * dz
+                
+#                print('dz', dz)
+
+        if dx > security_thr or dy > security_thr or dz > 2 * security_thr:
             
             print(datetime.now(), '[xy_tracking] Correction movement larger than 200 nm, active correction turned OFF')
             self.toggle_feedback(False)
@@ -1240,20 +1257,25 @@ class Backend(QtCore.QObject):
             c, s = np.cos(theta), np.sin(theta)
             R = np.array(((c,-s), (s, c)))
             
-            dy, dx = np.dot(R, np.asarray([dx, dy]))
+            dy, dx = np.dot(R, np.asarray([dx, dy])) #ver si se puede arreglar esto añadiendo dz
             
             # add correction to piezo position
             
             currentXposition = tools.convert(self.adw.Get_FPar(70), 'UtoX')
             currentYposition = tools.convert(self.adw.Get_FPar(71), 'UtoX')
+            #####aqui va una linea algo así
+            #currentZposition = tools.convert(self.adw.Get_FPar(72), 'UtoX')
+            
 
             targetXposition = currentXposition + dx  
-            targetYposition = currentYposition + dy  
+            targetYposition = currentYposition + dy
+            #aqui va algo así
+            #targetZposition = currentZposition + dz  # in µm
             
             if mode == 'continous':
             
-                self.actuator_xy(targetXposition, targetYposition)
-                
+                self.actuator_xy(targetXposition, targetYposition) #aquí debería agregar targetZposition
+                #hacer un actuador xyz
             if mode == 'discrete':
                 
 #                self.moveTo(targetXposition, targetYposition, 
@@ -1261,6 +1283,8 @@ class Backend(QtCore.QObject):
                 
                 self.target_x = targetXposition
                 self.target_y = targetYposition
+                ####aqui debería ir algo así
+                #self.target_z = targetZposition
             
     @pyqtSlot(bool, bool)
     def single_xy_correction(self, feedback_val, initial): #¿Es necesaria esta función? o está incluida en update()
