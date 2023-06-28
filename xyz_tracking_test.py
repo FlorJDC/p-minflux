@@ -148,18 +148,22 @@ class Frontend(QtGui.QFrame):
         if DEBUG1:
                 print("roiInfoSignal.emit executed, signal from Frontend (function:emit_roi_info, to Backend:get_roi info FC")
 
-    def delete_roi_z(self): #elimina todas las ROI de la lista, antes era delete_roi
-        if DEBUG1:
-            print("EStoy en delete_roi_z")
-        
-        for i in range(len(self.roi_z)):
-            
-            self.vb.removeItem(self.roi_z)
-            self.roi_z.hide()
-            
-        self.roi_z = []
-        self.delete_roiButton.setChecked(False)
-        self.ROInumber = 0
+# =============================================================================
+#     def delete_roi_z(self): #elimina todas las ROI de la lista, antes era delete_roi
+#     ############################################################
+#     ########################################chequear esto para que funcione eliminando el roi de z
+#         if DEBUG1:
+#             print("EStoy en delete_roi_z")
+#         
+#         for i in range(len(self.roi_z)):
+#             
+#             self.vb.removeItem(self.roi_z)
+#             self.roi_z.hide()
+#             
+#         self.roi_z = []
+#         self.delete_roi_zButton.setChecked(False)
+#         self.ROInumber = 0
+# =============================================================================
     
     def delete_roi(self): #elimina solo la última ROI
                 
@@ -347,33 +351,31 @@ class Frontend(QtGui.QFrame):
         
         # parameters widget
         
-        self.paramWidget = QGroupBox('XY-Tracking parameter')   
-        self.paramWidget.setFixedHeight(260)
-        self.paramWidget.setFixedWidth(250)
-        
-        grid.addWidget(self.paramWidget, 0, 1)
+        self.paramWidget = QGroupBox('XYZ-Tracking parameter')   
+        self.paramWidget.setFixedHeight(350)
+        self.paramWidget.setFixedWidth(270)
         
         #################################
         # stats widget
         
         self.statWidget = QGroupBox('Live statistics')   
-        self.statWidget.setFixedHeight(200)
+        self.statWidget.setFixedHeight(300)
         # self.statWidget.setFixedWidth(240)
-        self.statWidget.setFixedWidth(250)
+        self.statWidget.setFixedWidth(350)
 
         self.xstd_label = QtGui.QLabel('X std (nm)')
         self.ystd_label = QtGui.QLabel('Y std (nm)')
-        #self.zstd_label = QtGui.QLabel('Z std (nm)')
+        self.zstd_label = QtGui.QLabel('Z std (nm)')
         
         self.xstd_value = QtGui.QLabel('0')
         self.ystd_value = QtGui.QLabel('0')
-        #self.zstd_value = QtGui.QLabel('0')
+        self.zstd_value = QtGui.QLabel('0')
         #################################
         # image widget layout
         
         imageWidget = pg.GraphicsLayoutWidget()
-        imageWidget.setMinimumHeight(400)
-        imageWidget.setMinimumWidth(400)
+        imageWidget.setMinimumHeight(350)
+        imageWidget.setMinimumWidth(350)
         
         # setup axis, for scaling see get_image()
         self.xaxis = pg.AxisItem(orientation='bottom', maxTickLength=5)
@@ -393,8 +395,7 @@ class Frontend(QtGui.QFrame):
         self.vb.addItem(self.img)
         self.vb.setAspectLocked(True)
         imageWidget.setAspectLocked(True)
-        grid.addWidget(imageWidget, 0, 0)
-        
+
         # set up histogram for the liveview image
 
         self.hist = pg.HistogramLUTItem(image=self.img)
@@ -406,43 +407,56 @@ class Frontend(QtGui.QFrame):
 
         ## TO DO: fix histogram range
 
-
         for tick in self.hist.gradient.ticks:
             tick.hide()
         imageWidget.addItem(self.hist, row=0, col=1)
         
         # xy drift graph (graph without a fixed range)
         
-        self.xyGraph = pg.GraphicsWindow()
+        self.xyzGraph = pg.GraphicsWindow()
     
-#        self.xyGraph.resize(200, 300)
-        self.xyGraph.setAntialiasing(True)
+#        self.xyzGraph.resize(200, 300)
+        self.xyzGraph.setAntialiasing(True)
         
-        self.xyGraph.statistics = pg.LabelItem(justify='right')
-        self.xyGraph.addItem(self.xyGraph.statistics)
-        self.xyGraph.statistics.setText('---')
+        self.xyzGraph.statistics = pg.LabelItem(justify='right')
+        self.xyzGraph.addItem(self.xyzGraph.statistics)
+        self.xyzGraph.statistics.setText('---')
         
-        self.xyGraph.xPlot = self.xyGraph.addPlot(row=1, col=0)
-        self.xyGraph.xPlot.setLabels(bottom=('Time', 's'),
+        self.xyzGraph.xPlot = self.xyzGraph.addPlot(row=0, col=0) #no sé si esta linea va con row=0, parece que yo la modifiqué en xyz_tracking_flor y le puse 1
+        self.xyzGraph.xPlot.setLabels(bottom=('Time', 's'),
                             left=('Y position', 'nm'))   # TO DO: clean-up the x-y mess (they're interchanged)
-        self.xyGraph.xPlot.showGrid(x=True, y=True)
-        self.xCurve = self.xyGraph.xPlot.plot(pen='b')
+        self.xyzGraph.xPlot.showGrid(x=True, y=True)
+        self.xmeanCurve = self.xyzGraph.xPlot.plot(pen='b', width=40)
         
-
         
-        self.xyGraph.yPlot = self.xyGraph.addPlot(row=0, col=0)
-        self.xyGraph.yPlot.setLabels(bottom=('Time', 's'),
+        self.xyzGraph.yPlot = self.xyzGraph.addPlot(row=1, col=0)
+        self.xyzGraph.yPlot.setLabels(bottom=('Time', 's'),
                                      left=('X position', 'nm'))
-        self.xyGraph.yPlot.showGrid(x=True, y=True)
-        self.yCurve = self.xyGraph.yPlot.plot(pen='r')
+        self.xyzGraph.yPlot.showGrid(x=True, y=True)
+        self.ymeanCurve = self.xyzGraph.yPlot.plot(pen='r', width=40)
+        
+        #####################añado plots de zCurve y avgIntCurve
+        ########################################################
+        self.xyzGraph.zPlot = self.xyzGraph.addPlot(row=2, col=0)
+        self.xyzGraph.zPlot.setLabels(bottom=('Time', 's'),
+                                     left=('Z position', 'nm'))
+        self.xyzGraph.zPlot.showGrid(x=True, y=True)
+        self.zCurve = self.xyzGraph.zPlot.plot(pen='y')
+        
+        self.xyzGraph.avgIntPlot = self.xyzGraph.addPlot(row=3, col=0)
+        self.xyzGraph.avgIntPlot.setLabels(bottom=('Time', 's'),
+                                           left=('Av. intensity', 'Counts'))
+        self.xyzGraph.avgIntPlot.showGrid(x=True, y=True)
+        self.avgIntCurve = self.xyzGraph.avgIntPlot.plot(pen='g')
         
         # xy drift graph (2D point plot)
         
         self.xyPoint = pg.GraphicsWindow()
         self.xyPoint.resize(400, 400)
         self.xyPoint.setAntialiasing(False)
+        # self.xyPoint.setAspectLocked(True)
         
-#        self.xyPoint.xyPointPlot = self.xyGraph.addPlot(col=1)
+#        self.xyPoint.xyPointPlot = self.xyzGraph.addPlot(col=1)
 #        self.xyPoint.xyPointPlot.showGrid(x=True, y=True)
         
         self.xyplotItem = self.xyPoint.addPlot()
@@ -459,37 +473,69 @@ class Frontend(QtGui.QFrame):
         
         self.xyDataEllipse = self.xyplotItem.plot(pen=(117, 184, 200))
 
+        # z drift graph (1D histogram)
+        x = np.arange(-30, 30)
+        y = np.zeros(len(x))
+        
+        self.zHist = pg.BarGraphItem(x=x, height=y, width=0.6, brush='#3BC14A')
+
+        self.zWin = self.xyPoint.addPlot()
+        self.zWin.addItem(self.zHist)
         
         # LiveView Button
 
         self.liveviewButton = QtGui.QPushButton('Camera LIVEVIEW')
         self.liveviewButton.setCheckable(True)
         
-        # create ROI button
+        # create xy ROI button
     
-        self.ROIButton = QtGui.QPushButton('ROI')
-        self.ROIButton.setCheckable(True)
-        self.ROIButton.clicked.connect(self.craete_roi)
+        self.xyROIButton = QtGui.QPushButton('xy ROI')
+        self.xyROIButton.setCheckable(True)
+        self.xyROIButton.clicked.connect(lambda: self.craete_roi(roi_type='xy'))
         
-        # select ROI
+        # create z ROI button
+    
+        self.zROIButton = QtGui.QPushButton('z ROI')
+        self.zROIButton.setCheckable(True)
+        self.zROIButton.clicked.connect(lambda: self.craete_roi(roi_type='z'))
         
-        self.selectROIbutton = QtGui.QPushButton('Select ROI')
-        self.selectROIbutton.clicked.connect(self.emit_roi_info)
+        # select xy ROI
+        
+        self.selectxyROIbutton = QtGui.QPushButton('Select xy ROI')
+        self.selectxyROIbutton.clicked.connect(lambda: self.emit_roi_info(roi_type='xy'))
+        
+        # select z ROI
+        
+        self.selectzROIbutton = QtGui.QPushButton('Select z ROI')
+        self.selectzROIbutton.clicked.connect(lambda: self.emit_roi_info(roi_type='z'))
         
         # delete ROI button
         
         self.delete_roiButton = QtGui.QPushButton('delete ROIs')
         self.delete_roiButton.clicked.connect(self.delete_roi)
         
+        ##########Aquí se debería agregar delete_roi_zButton
+        #self.delete_roi_zButton = QtGui.QPushButton('delete ROI z')
+        #self.delete_roi_zButton.clicked.connect(self.delete_roi_z)
+        
         # position tracking checkbox
         
-        self.exportDataButton = QtGui.QPushButton('export current data')
+        self.exportDataButton = QtGui.QPushButton('Export current data')
 
         # position tracking checkbox
         
         self.trackingBeadsBox = QtGui.QCheckBox('Track xy fiducials')
         self.trackingBeadsBox.stateChanged.connect(self.emit_roi_info)
         ################################################me parece que aquí falta una linea (cf xyz_tracking_flor)
+        #ALERTA--------------------------------------------------------------
+        #parece que es esta
+        #self.trackingBeadsBox.stateChanged.connect(self.setup_data_curves)
+        #En xyz_tracking está la función def setup_data_curves en frontend aquí no, está relacionada con piezo? o es necesaria aquí?
+        
+        # position tracking checkbox
+        
+        # self.trackZbeamBox = QtGui.QCheckBox('Track z beam')
+        # self.trackZbeamBox.stateChanged.connect(self.emit_roi_info)
         
         # turn ON/OFF feedback loop
         
@@ -506,57 +552,66 @@ class Frontend(QtGui.QFrame):
         self.clearDataButton = QtGui.QPushButton('Clear data')
         
         #shutter button and label
+        #puedo usar esta idea para el confocal
+        ##################################
         self.shutterLabel = QtGui.QLabel('Shutter open?')
         self.shutterCheckbox = QtGui.QCheckBox('473 nm laser')
 
         # LiveView Button
 
-        self.xyPatternButton = QtGui.QPushButton('Move')
+        self.xyPatternButton = QtGui.QPushButton('Move') #es start pattern en linea 500 en xyz_tracking
         
         # buttons and param layout
         
-        ####################### FC
         grid.addWidget(self.paramWidget, 0, 1)
         grid.addWidget(imageWidget, 0, 0)
         grid.addWidget(self.statWidget, 0, 2)
-        #########################
         
         subgrid = QtGui.QGridLayout()
         self.paramWidget.setLayout(subgrid)
 
         subgrid.addWidget(self.liveviewButton, 0, 0)
-        subgrid.addWidget(self.ROIButton, 1, 0)
-        subgrid.addWidget(self.selectROIbutton, 2, 0)
-        subgrid.addWidget(self.delete_roiButton, 3, 0)
-        subgrid.addWidget(self.exportDataButton, 4, 0)
-        subgrid.addWidget(self.clearDataButton, 5, 0)
+        subgrid.addWidget(self.xyROIButton, 1, 0)
+        subgrid.addWidget(self.zROIButton, 2, 0)
+        subgrid.addWidget(self.selectxyROIbutton, 3, 0)
+        subgrid.addWidget(self.selectzROIbutton, 4, 0)
+        subgrid.addWidget(self.delete_roiButton, 5, 0)
+        #también añadir algo así 
+        #subgrid.addWidget(self.delete_roi_zButton, 6, 0)
+        subgrid.addWidget(self.exportDataButton, 6, 0)
+        subgrid.addWidget(self.clearDataButton, 7, 0)
+        subgrid.addWidget(self.xyPatternButton, 8, 0)
         subgrid.addWidget(self.trackingBeadsBox, 1, 1)
         subgrid.addWidget(self.feedbackLoopBox, 2, 1)
         subgrid.addWidget(self.saveDataBox, 3, 1)
-        subgrid.addWidget(self.shutterLabel, 7, 0)
-        subgrid.addWidget(self.shutterCheckbox, 7, 1)
-        subgrid.addWidget(self.xyPatternButton, 9, 0)
+        subgrid.addWidget(self.shutterLabel, 9, 0)
+        subgrid.addWidget(self.shutterCheckbox, 9, 1)
         
         ####################################################
-        #Agrego FC
+        #Agrego FC grilla para estadística
         stat_subgrid = QtGui.QGridLayout()
         self.statWidget.setLayout(stat_subgrid)
         
         stat_subgrid.addWidget(self.xstd_label, 0, 0)
         stat_subgrid.addWidget(self.ystd_label, 1, 0)
-        #stat_subgrid.addWidget(self.zstd_label, 2, 0)
+        stat_subgrid.addWidget(self.zstd_label, 2, 0)
         stat_subgrid.addWidget(self.xstd_value, 0, 1)
         stat_subgrid.addWidget(self.ystd_value, 1, 1)
-        #stat_subgrid.addWidget(self.zstd_value, 2, 1)
+        stat_subgrid.addWidget(self.zstd_value, 2, 1)
         ########################################################
         
-        grid.addWidget(self.xyGraph, 1, 0)
-        grid.addWidget(self.xyPoint, 1, 1,1,2) #######agrego 1,2 al final
+        grid.addWidget(self.xyzGraph, 1, 0)
+        grid.addWidget(self.xyPoint, 1, 1, 1, 2) #######agrego 1,2 al final
         
         self.liveviewButton.clicked.connect(lambda: self.toggle_liveview(self.liveviewButton.isChecked()))
         print("liveviewButton connected to toggle liveview - line 431")
         
+    #aquí debería ir esta función de ser necesario   
+    #def setup_data_curves(self):
+        
     def closeEvent(self, *args, **kwargs):
+        
+        print('close in frontend')
         
         self.closeSignal.emit()
         super().closeEvent(*args, **kwargs)
