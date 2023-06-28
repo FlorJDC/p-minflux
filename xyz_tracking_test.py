@@ -9,6 +9,7 @@ Based on xyz_tracking by Luciano Masullo
 
 import numpy as np
 import time
+import scipy.ndimage as ndi
 import ctypes as ct
 import matplotlib.pyplot as plt
 from datetime import date, datetime
@@ -32,7 +33,7 @@ from pyqtgraph.dockarea import Dock, DockArea
 import pyqtgraph.ptime as ptime
 import qdarkstyle
 
-from instrumental.drivers.cameras import uc480 #Thorcam FC
+from instrumental.drivers.cameras import uc480 #Thorcam 
 from instrumental import Q_
 import drivers.ADwin as ADwin
 
@@ -45,6 +46,7 @@ PX_Z = 25 # px size for z in nm //Thorcam px size 25nm // IDS px size 50nm
 class Frontend(QtGui.QFrame):
     
     roiInfoSignal = pyqtSignal(int, np.ndarray)
+    z_roiInfoSignal = pyqtSignal(str, int, list) #señal, contrastar con focus.py
     closeSignal = pyqtSignal()
     saveDataSignal = pyqtSignal(bool)
     
@@ -52,6 +54,9 @@ class Frontend(QtGui.QFrame):
     Signals
              
     - roiInfoSignal:
+         To: [backend] get_roi_info
+         
+    - z_roiInfoSignal:
          To: [backend] get_roi_info
         
     - closeSignal:
@@ -71,13 +76,15 @@ class Frontend(QtGui.QFrame):
         self.ROInumber = 0
         self.roilist = [] #Una lista en la que se guardarán las coordenadas del ROI
         self.roi = None
+        self.xCurve = None
         
         self.setup_gui()
-   
-    ############################añado create_roi para xy y z NO SON LINEAS ORIGINALES
+      
     def craete_roi(self, roi_type):
+        
         if DEBUG1:
              print("Estoy en craete_roi")
+             
         if roi_type == 'xy':
         
             ROIpen = pg.mkPen(color='r')
@@ -106,7 +113,7 @@ class Frontend(QtGui.QFrame):
                                             pen=ROIpen, number=self.ROInumber)
             
             self.zROIButton.setChecked(False)
-    ######################################################################añado emit_roi_info para xy y z NO SON LINEAS ORIGINALES
+
     def emit_roi_info(self, roi_type):
         
         if DEBUG1:
@@ -169,6 +176,7 @@ class Frontend(QtGui.QFrame):
                 
         if DEBUG1:
             print("EStoy en delete_roi")
+            
         self.vb.removeItem(self.roilist[-1])
         self.roilist[-1].hide()
         self.roilist = self.roilist[:-1]
@@ -188,7 +196,7 @@ class Frontend(QtGui.QFrame):
             self.img.setImage(np.zeros((512, 512)), autoLevels=False)
             print(datetime.now(), '[xy_tracking] Live view stopped')
         
-    @pyqtSlot()  
+    @pyqtSlot()  #Esta función no existe en xyz, chequear
     def get_roi_request(self):
         if DEBUG1:
             print("Estoy en get_roi_request")
@@ -216,10 +224,10 @@ class Frontend(QtGui.QFrame):
         print("yData: ",yData)
         print("zData: ",zData)
 
-        # x data
-        
         N_NP = np.shape(xData)[1]
         print("N_NP: ",N_NP)
+        
+        # x data
         
         for i in range(N_NP):
         
@@ -316,7 +324,7 @@ class Frontend(QtGui.QFrame):
             self.shutterCheckbox.setChecked(on)
                     
     @pyqtSlot(bool, bool, bool)
-    def get_backend_states(self, tracking, feedback, savedata):
+    def get_backend_states(self, tracking, feedback, savedata): #Chequear si necesito esto, cf xyz
 
         self.trackingBeadsBox.setChecked(tracking)
         self.feedbackLoopBox.setChecked(feedback)
@@ -327,7 +335,7 @@ class Frontend(QtGui.QFrame):
         if self.saveDataBox.isChecked():
             
             self.saveDataSignal.emit(True)
-            self.emit_roi_info()
+            self.emit_roi_info() 
             
         else:
             
@@ -557,7 +565,7 @@ class Frontend(QtGui.QFrame):
         self.shutterLabel = QtGui.QLabel('Shutter open?')
         self.shutterCheckbox = QtGui.QCheckBox('473 nm laser')
 
-        # LiveView Button
+        # Button to make custom pattern
 
         self.xyPatternButton = QtGui.QPushButton('Move') #es start pattern en linea 500 en xyz_tracking
         
@@ -1526,6 +1534,7 @@ class Backend(QtCore.QObject):
             print("Connecting backend to frontend")
             
         frontend.roiInfoSignal.connect(self.get_roi_info)
+        frontend.z_roiInfoSignal.connect(self.get_roi_info)
         frontend.closeSignal.connect(self.stop)
         frontend.saveDataSignal.connect(self.get_save_data_state)
         frontend.exportDataButton.clicked.connect(self.export_data)
@@ -1534,9 +1543,8 @@ class Backend(QtCore.QObject):
         frontend.trackingBeadsBox.stateChanged.connect(lambda: self.toggle_tracking(frontend.trackingBeadsBox.isChecked()))
         frontend.shutterCheckbox.stateChanged.connect(lambda: self.toggle_tracking_shutter(8, frontend.shutterCheckbox.isChecked()))
         frontend.liveviewButton.clicked.connect(self.liveview)
-        print("liveviewButton connected liveview - line 1263")
-        frontend.xyPatternButton.clicked.connect(lambda: self.make_tracking_pattern(1))
         frontend.feedbackLoopBox.stateChanged.connect(lambda: self.toggle_feedback(frontend.feedbackLoopBox.isChecked()))
+        frontend.xyPatternButton.clicked.connect(lambda: self.make_tracking_pattern(1)) #duda con esto, comparar con línea análoga en xyz_tracking
         
         # TO DO: clean-up checkbox create continous and discrete feedback loop
         
