@@ -1349,18 +1349,21 @@ class Backend(QtCore.QObject):
             
         self.adw.Set_Par(40, 1)
         
-    def actuator_xy(self, x_f, y_f):
+    def actuator_xyz(self, x_f, y_f, z_f):
         
 #        print(datetime.now(), '[xy_tracking] actuator x, y =', x_f, y_f)
         
         x_f = tools.convert(x_f, 'XtoU')
         y_f = tools.convert(y_f, 'XtoU')
+        z_f = tools.convert(z_f, 'XtoU')
         
         self.adw.Set_FPar(40, x_f)
         self.adw.Set_FPar(41, y_f)
+        self.adw.Set_FPar(32, z_f)
         
-        self.adw.Set_Par(40, 1)    
-        
+        self.adw.Set_Par(40, 1)   
+        self.adw.Set_Par(30, 1)
+            
     def set_moveTo_param(self, x_f, y_f, z_f, n_pixels_x=128, n_pixels_y=128,
                          n_pixels_z=128, pixeltime=2000):
 
