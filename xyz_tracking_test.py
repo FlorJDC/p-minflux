@@ -348,7 +348,7 @@ class Frontend(QtGui.QFrame):
         backend.updateGUIcheckboxSignal.connect(self.get_backend_states)
         backend.shuttermodeSignal.connect(self.update_shutter)
         backend.liveviewSignal.connect(self.toggle_liveview)
-        print("liveviewSignal connected to toggle liveview - line 249")
+        print("liveviewSignal connected to toggle liveview - line 351")
         
     def setup_gui(self):
         
