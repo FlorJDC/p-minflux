@@ -1209,7 +1209,7 @@ class Backend(QtCore.QObject):
         
         threshold = 3 #antes era 5
         z_threshold = 3
-        far_threshold = 12
+        far_threshold = 12 #ojo con estos parametros chequear focus
         correct_factor = 0.6
         
         security_thr = 0.35 # in µm
@@ -1264,18 +1264,19 @@ class Backend(QtCore.QObject):
             currentXposition = tools.convert(self.adw.Get_FPar(70), 'UtoX')
             currentYposition = tools.convert(self.adw.Get_FPar(71), 'UtoX')
             #####aqui va una linea algo así
-            #currentZposition = tools.convert(self.adw.Get_FPar(72), 'UtoX')
+            currentZposition = tools.convert(self.adw.Get_FPar(72), 'UtoX')
             
 
             targetXposition = currentXposition + dx  
             targetYposition = currentYposition + dy
+            #----------------------------------------------
             #aqui va algo así
-            #targetZposition = currentZposition + dz  # in µm
+            targetZposition = currentZposition + dz  # in µm
             
             if mode == 'continous':
             
-                self.actuator_xy(targetXposition, targetYposition) #aquí debería agregar targetZposition
-                #hacer un actuador xyz
+                self.actuator_xyz(targetXposition, targetYposition, targetZposition) #aquí debería agregar targetZposition
+                
             if mode == 'discrete':
                 
 #                self.moveTo(targetXposition, targetYposition, 
@@ -1283,8 +1284,9 @@ class Backend(QtCore.QObject):
                 
                 self.target_x = targetXposition
                 self.target_y = targetYposition
+                #-----------------------------------------------
                 ####aqui debería ir algo así
-                #self.target_z = targetZposition
+                self.target_z = targetZposition
             
     @pyqtSlot(bool, bool)
     def single_xy_correction(self, feedback_val, initial): #¿Es necesaria esta función? o está incluida en update()
@@ -1541,9 +1543,9 @@ class Backend(QtCore.QObject):
                                           self.feedback_active, 
                                           self.save_data_state)
         
-        x_f, y_f = r
+        x_f, y_f, z_f = r
 
-        self.actuator_xy(x_f, y_f)
+        self.actuator_xyz(x_f, y_f, z_f)
          
         if DEBUG:
             print(datetime.now(), '[xy_tracking] Moved to', r)
