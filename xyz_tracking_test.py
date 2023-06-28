@@ -614,8 +614,35 @@ class Frontend(QtGui.QFrame):
         self.liveviewButton.clicked.connect(lambda: self.toggle_liveview(self.liveviewButton.isChecked()))
         print("liveviewButton connected to toggle liveview - line 431")
         
-    #aquí debería ir esta función de ser necesario   
-    #def setup_data_curves(self):
+# =============================================================================
+#     #aquí debería ir esta función de ser necesario, probar descomentando para saber si debe ir o no
+#     def setup_data_curves(self):
+#                     
+#         if self.trackingBeadsBox.isChecked():
+#             
+#             if self.xCurve is not None:
+#         
+#                 for i in range(len(self.roilist)): # remove previous curves
+#                 
+#                     self.xyzGraph.xPlot.removeItem(self.xCurve[i]) 
+#                     self.xyzGraph.yPlot.removeItem(self.yCurve[i]) 
+#                 
+#             self.xCurve = [0] * len(self.roilist)
+#             
+#             for i in range(len(self.roilist)):
+#                 self.xCurve[i] = self.xyzGraph.xPlot.plot(pen='b', alpha=0.3)
+#                 self.xCurve[i].setAlpha(0.3, auto=False)
+#                 
+#             self.yCurve = [0] * len(self.roilist)
+#             
+#             for i in range(len(self.roilist)):
+#                 self.yCurve[i] = self.xyzGraph.yPlot.plot(pen='r', alpha=0.3)
+#                 self.yCurve[i].setAlpha(0.3, auto=False) 
+#                     
+#         else:
+#             
+#             pass
+# =============================================================================
         
     def closeEvent(self, *args, **kwargs):
         
@@ -656,11 +683,7 @@ class Backend(QtCore.QObject):
 
     def __init__(self, thorcam, adw, *args, **kwargs): #cambié andor por thorcam
         super().__init__(*args, **kwargs)
-        
-        #self.andor = andor #andor debe ser inicializada
-        #self.initialize_camera()
-        #self.setup_camera()
-        
+              
         self.camera = thorcam # no need to setup or initialize camera
         self.camera.master_gain = 4 #a estas líneas las saqué de xyz_tacking
         self.camera.auto_blacklevel = True
@@ -679,7 +702,7 @@ class Backend(QtCore.QObject):
         
         self.viewtimer = QtCore.QTimer() #Ojo: aquí coloqué viewtimer porque es el que se usa a lo largo del código, pero en xyz_tracking se usa view_timer
         #self.viewtimer.timeout.connect(self.update) #Línea original
-        self.xy_time = 200 # 200 ms per acquisition + fit + correction
+        self.xyz_time = 200 # 200 ms per acquisition + fit + correction
         
         self.tracking_value = False
         self.save_data_state = False
@@ -689,7 +712,7 @@ class Backend(QtCore.QObject):
         self.npoints = 1200
         self.buffersize = 30000
         
-        self.currentx = 0
+        self.currentx = 0 #Chequear estos dos atributos
         self.currenty = 0
         
         #self.reset() #comwnté FC
@@ -735,28 +758,28 @@ class Backend(QtCore.QObject):
         else:
             print("estoy en el else")
             self.liveview_stop()
-            print("pasò el liveview_stop")
+            print("pasó el liveview_stop")
             self.camON = False #esta línea es necesaria? porque 
 
 
     def liveview_start(self): #Esto es como en xyz_tracking - focus
 
         if self.camON:
-            print("linea 551")
+            print("linea 741")
             self.camera.stop_live_video()
-            print("linea 553")
+            print("linea 743")
             self.camON = False
         
-        print("línea 556")
+        print("línea 746")
         self.camON = True
-        print("linea 557")
+        print("linea 748")
         self.camera.start_live_video()
         self.camera._set_exposure(Q_('50 ms')) # ms # 50 ms Thorcam, 5ms IDS cam
         ET = self.camera._get_exposure() #añadidas por FLOR E
         print('ET='+str(ET)) #añadidas por FLOR E
         #self.camera.start_live_video(framerate='20 Hz') #lìnea original de -flor C
         #print("linea 559")
-        self.viewtimer.start(self.xy_time)
+        self.viewtimer.start(self.xyz_time)
     
     def liveview_stop(self):
                 
@@ -771,7 +794,7 @@ class Backend(QtCore.QObject):
             
         val = np.array([x0, y0, x1, y1])
         #self.get_new_roi(val) #¿debo comentar esta línea como se hizo en xyz_tracking.py?
-        #SI, Aquì no existe la funciòn get_new_roi como en focus.py
+        #SI, Aquì no existe la función get_new_roi como en focus.py
                     
     def update(self):
         """ General update method """
