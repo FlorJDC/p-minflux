@@ -931,7 +931,8 @@ class Backend(QtCore.QObject):
             self.tracking_value = False
             
     @pyqtSlot(bool)
-    def toggle_feedback(self, val, mode='continous'): #Esta función es adecuada porque tiene en cuenta los procesos de de ADwin
+    def toggle_feedback(self, val, mode='continous'): #Esta función es adecuada porque tiene en cuenta los procesos de de ADwin para drift xy 
+    #falta agregar para proceso 3 de toggle_feedback de focus.py
         ''' 
         Connection: [frontend] feedbackLoopBox.stateChanged
         Description: toggles ON/OFF feedback for either continous (TCSPC) 
@@ -1084,8 +1085,8 @@ class Backend(QtCore.QObject):
         x = x0 + Mx_nm[xmin_id, ymin_id]
         y = y0 + My_nm[xmin_id, ymin_id]
         
-        currentx = x
-        currenty = y
+        #currentx = x
+        #currenty = y
         
         # if to avoid (probably) false localizations #notar que esta parte no se usa en xyz_tracking
         
@@ -1108,7 +1109,8 @@ class Backend(QtCore.QObject):
         
         else:
             
-             return currentx, currenty
+            self.currentx = x
+            self.currenty = y
             
 #            print(datetime.now(), '[xy_tracking] else')
         
