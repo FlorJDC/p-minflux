@@ -931,7 +931,7 @@ class Backend(QtCore.QObject):
             self.tracking_value = False
             
     @pyqtSlot(bool)
-    def toggle_feedback(self, val, mode='continous'):
+    def toggle_feedback(self, val, mode='continous'): #Esta función es adecuada porque tiene en cuenta los procesos de de ADwin
         ''' 
         Connection: [frontend] feedbackLoopBox.stateChanged
         Description: toggles ON/OFF feedback for either continous (TCSPC) 
@@ -1568,6 +1568,8 @@ class Backend(QtCore.QObject):
         frontend.liveviewButton.clicked.connect(self.liveview)
         frontend.feedbackLoopBox.stateChanged.connect(lambda: self.toggle_feedback(frontend.feedbackLoopBox.isChecked()))
         frontend.xyPatternButton.clicked.connect(lambda: self.make_tracking_pattern(1)) #duda con esto, comparar con línea análoga en xyz_tracking
+        
+        #La función toggle_feedback se utiliza como un slot de PyQt y se conecta al evento stateChanged de un cuadro de verificación llamado feedbackLoopBox. Su propósito es activar o desactivar el feedback (retroalimentación) para la corrección continua en el modo especificado.
         
         # TO DO: clean-up checkbox create continous and discrete feedback loop
         
