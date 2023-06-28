@@ -1261,7 +1261,7 @@ class Backend(QtCore.QObject):
             
             # add correction to piezo position
             
-            currentXposition = tools.convert(self.adw.Get_FPar(70), 'UtoX')
+            currentXposition = tools.convert(self.adw.Get_FPar(70), 'UtoX') #Get_FPar(self, Index): Retorna el valor de una variable global de tipo float.
             currentYposition = tools.convert(self.adw.Get_FPar(71), 'UtoX')
             #####aqui va una linea algo así
             currentZposition = tools.convert(self.adw.Get_FPar(72), 'UtoX')
@@ -1334,22 +1334,29 @@ class Backend(QtCore.QObject):
         if DEBUG:
             print(datetime.now(), '[xy_tracking] single xy correction ended') 
             
-    def set_actuator_param(self, pixeltime=1000):
+    def set_actuator_param(self, pixeltime=1000): #configura los parámetros del actuador
 
-        self.adw.Set_FPar(46, tools.timeToADwin(pixeltime)) #qué es el 36 de focus.py
-        
+        self.adw.Set_FPar(46, tools.timeToADwin(pixeltime)) 
+        self.adw.Set_FPar(36, tools.timeToADwin(pixeltime)) #Añado para z, focus.py
         # set-up actuator initial param
         
         currentXposition = tools.convert(self.adw.Get_FPar(70), 'UtoX')
         currentYposition = tools.convert(self.adw.Get_FPar(71), 'UtoX')
+        #por qué no debo colocar una linea similar para current z_position
     
         x_f = tools.convert(currentXposition, 'XtoU')
         y_f = tools.convert(currentYposition, 'XtoU')
         
+        # set-up actuator initial param
+    
+        z_f = tools.convert(10, 'XtoU') #no estoy segura de esta linea
+        
         self.adw.Set_FPar(40, x_f)
         self.adw.Set_FPar(41, y_f)
+        self.adw.Set_FPar(32, z_f)
             
-        self.adw.Set_Par(40, 1)
+        self.adw.Set_Par(40, 1) #Set_Par(self, Index, Value): Establece una variable global de tipo long con el valor especificado.
+        self.adw.Set_Par(30, 1)
         
     def actuator_xyz(self, x_f, y_f, z_f):
         
