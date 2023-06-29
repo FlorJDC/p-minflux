@@ -932,7 +932,7 @@ class Backend(QtCore.QObject):
             
     @pyqtSlot(bool)
     def toggle_feedback(self, val, mode='continous'): #Esta función es adecuada porque tiene en cuenta los procesos de de ADwin para drift xy 
-    #falta agregar para proceso 3 de toggle_feedback de focus.py
+
         ''' 
         Connection: [frontend] feedbackLoopBox.stateChanged
         Description: toggles ON/OFF feedback for either continous (TCSPC) 
@@ -948,12 +948,16 @@ class Backend(QtCore.QObject):
             if mode == 'continous':
             
                 self.set_actuator_param()
-                self.adw.Start_Process(4)
+                self.adw.Start_Process(4) #proceso para xy
+                self.adw.Start_Process(3) #proceso para z
                 print('process 4 status', self.adw.Process_Status(4))
                 print(datetime.now(), '[focus] Process 4 started')
+                print('process 3 status', self.adw.Process_Status(3))
+                print(datetime.now(), '[focus] Process 3 started')
             
             if DEBUG:
                 print(datetime.now(), '[xy_tracking] Feedback loop ON')
+                print(datetime.now(), ' [focus] Feedback loop ON')
             
         if val is False:
             
@@ -962,12 +966,15 @@ class Backend(QtCore.QObject):
             if mode == 'continous':
 
                 self.adw.Stop_Process(4)
+                self.adw.Stop_Process(3)
                 print(datetime.now(), '[xy_tracking] Process 4 stopped')
-                self.displacement = np.array([0.0, 0.0])
+                print(datetime.now(), '[focus] Process 3 stopped')
+               
 
             
             if DEBUG:
                 print(datetime.now(), '[xy_tracking] Feedback loop OFF')
+                print(datetime.now(), ' [focus] Feedback loop OFF')
 #            
 #        self.updateGUIcheckboxSignal.emit(self.tracking_value, 
 #                                          self.feedback_active, 
@@ -1205,9 +1212,9 @@ class Backend(QtCore.QObject):
 
         dx = 0
         dy = 0
-        dz = 0
+        dz = 0 #comparar con setup_feedback
         
-        threshold = 3 #antes era 5
+        threshold = 3 #antes era 5 con Andor
         z_threshold = 3
         far_threshold = 12 #ojo con estos parametros chequear focus
         correct_factor = 0.6
@@ -1264,7 +1271,7 @@ class Backend(QtCore.QObject):
             currentXposition = tools.convert(self.adw.Get_FPar(70), 'UtoX') #Get_FPar(self, Index): Retorna el valor de una variable global de tipo float.
             currentYposition = tools.convert(self.adw.Get_FPar(71), 'UtoX')
             #####aqui va una linea algo así
-            currentZposition = tools.convert(self.adw.Get_FPar(72), 'UtoX')
+            currentZposition = tools.convert(self.adw.Get_FPar(72), 'UtoX') #¿Está bien que sea key='UtoX'? FPar keeps track of z position of the piezo
             
 
             targetXposition = currentXposition + dx  
@@ -1349,14 +1356,14 @@ class Backend(QtCore.QObject):
         
         # set-up actuator initial param
     
-        z_f = tools.convert(10, 'XtoU') #no estoy segura de esta linea
+        z_f = tools.convert(10, 'XtoU') #no estoy segura de esta linea #Añado para z, focus.py
         
         self.adw.Set_FPar(40, x_f)
         self.adw.Set_FPar(41, y_f)
-        self.adw.Set_FPar(32, z_f)
+        self.adw.Set_FPar(32, z_f) #Añado para z, focus.py
             
         self.adw.Set_Par(40, 1) #Set_Par(self, Index, Value): Establece una variable global de tipo long con el valor especificado.
-        self.adw.Set_Par(30, 1)
+        self.adw.Set_Par(30, 1) #Añado para z, focus.py
         
     def actuator_xyz(self, x_f, y_f, z_f):
         
@@ -1364,14 +1371,14 @@ class Backend(QtCore.QObject):
         
         x_f = tools.convert(x_f, 'XtoU')
         y_f = tools.convert(y_f, 'XtoU')
-        z_f = tools.convert(z_f, 'XtoU')
+        z_f = tools.convert(z_f, 'XtoU') #Añado para z, focus.py
         
         self.adw.Set_FPar(40, x_f)
         self.adw.Set_FPar(41, y_f)
-        self.adw.Set_FPar(32, z_f)
+        self.adw.Set_FPar(32, z_f) #Añado para z, focus.py
         
         self.adw.Set_Par(40, 1)   
-        self.adw.Set_Par(30, 1)
+        self.adw.Set_Par(30, 1) #Añado para z, focus.py
             
     def set_moveTo_param(self, x_f, y_f, z_f, n_pixels_x=128, n_pixels_y=128,
                          n_pixels_z=128, pixeltime=2000):
