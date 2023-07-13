@@ -661,6 +661,8 @@ class Backend(QtCore.QObject):
     xyIsDone = pyqtSignal(bool, float, float)  # signal to emit new piezo position after drift correction
     shuttermodeSignal = pyqtSignal(int, bool)
     liveviewSignal = pyqtSignal(bool)
+    zIsDone = pyqtSignal(bool, float) #se emite para psf.py script
+    focuslockpositionSignal = pyqtSignal(float) #se emite para scan.py
     """
     Signals
     
@@ -676,8 +678,14 @@ class Backend(QtCore.QObject):
     - xyIsDone:
         To: [psf] get_xy_is_done
         
+    - zIsDone:
+        To: [psf] get_z_is_done
+        
     - shuttermodeSignal:
         To: [frontend] update_shutter
+        
+    - focuslockpositionSignal:
+        To: [scan] get current focus lock position
 
     """
 
@@ -1334,7 +1342,48 @@ class Backend(QtCore.QObject):
         
         if DEBUG:
             print(datetime.now(), '[xy_tracking] single xy correction ended') 
+     
+    @pyqtSlot(bool, bool)
+    def single_z_correction(self, feedback_val, initial): #revisar los parámetros de esta funcion, la saqué de focus.py para que emita señal a psf
+        
+        if initial:
+                    
+            if not self.camON:
+                self.camON = True
+                self.camera.start_live_video(framerate='20 Hz')
+                time.sleep(0.200)
+                    
+            y0 = int(640-150)
+            x0 = int(512-150)
+            y1 = int(640+150)
+            x1 = int(512+150)
+            value = np.array([y0, x0, y1, x1])
+            #self.camera._set_AOI(*value)
             
+            self.reset()
+            self.reset_data_arrays()
+            
+            time.sleep(0.200)
+            
+        
+        self.acquire_data()
+        self.update_graph_data()
+                
+        if initial:
+            
+            self.setup_feedback()
+            
+        else:
+        
+            self.update_feedback(mode='discrete')
+        
+        if self.save_data_state:
+            
+            self.time_array.append(self.currentTime)
+            self.z_array.append(self.focusSignal)
+                    
+        self.zIsDone.emit(True, self.target_z)        
+    
     def set_actuator_param(self, pixeltime=1000): #configura los parámetros del actuador
 
         self.adw.Set_FPar(46, tools.timeToADwin(pixeltime)) 
@@ -1623,6 +1672,16 @@ class Backend(QtCore.QObject):
         self.reset()
         self.reset_data_arrays()
             
+    @pyqtSlot(float)
+    def get_focuslockposition(self, position):
+        
+        if position == -9999:
+            position = self.setPoint
+        else:
+            position = self.focusSignal
+            
+        self.focuslockpositionSignal.emit(position)
+        
     def make_connection(self, frontend):
         if DEBUG:
             print("Connecting backend to frontend")
