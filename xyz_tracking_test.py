@@ -43,8 +43,21 @@ DEBUG1 = True
 PX_SIZE = 29.0 #px size of camera in nm #antes 80.0 para Andor
 PX_Z = 25 # px size for z in nm //Thorcam px size 25nm // IDS px size 50nm 
 
-class Frontend(QtGui.QFrame):
+def actuatorParameters(adwin, z_f, n_pixels_z=50, pixeltime=1000): #funciones necesarias para calibrate
+
+    z_f = tools.convert(z_f, 'XtoU')
+
+    adwin.Set_Par(33, n_pixels_z)
+    adwin.Set_FPar(35, z_f)
+    adwin.Set_FPar(36, tools.timeToADwin(pixeltime))
+
+def zMoveTo(adwin, z_f): #funciones necesarias para calibrate
+
+    actuatorParameters(adwin, z_f)
+    adwin.Start_Process(3)
     
+class Frontend(QtGui.QFrame):
+    #Chequear las señales aquí, hace falta changedROI (creo que es analogo a z_roiInfoSignal, cf), paramSignal???
     roiInfoSignal = pyqtSignal(int, np.ndarray)
     z_roiInfoSignal = pyqtSignal(str, int, list) #señal, contrastar con focus.py
     closeSignal = pyqtSignal()
@@ -657,7 +670,7 @@ class Backend(QtCore.QObject):
     changedImage = pyqtSignal(np.ndarray)
     changedData = pyqtSignal(np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray)
     updateGUIcheckboxSignal = pyqtSignal(bool, bool, bool) #no se usa en xyz_tracking
-
+    #changedSetPoint = pyqtSignal(float) #Debería añadir esta señal??? de focus.py
     xyIsDone = pyqtSignal(bool, float, float)  # signal to emit new piezo position after drift correction
     shuttermodeSignal = pyqtSignal(int, bool)
     liveviewSignal = pyqtSignal(bool)
@@ -1380,9 +1393,40 @@ class Backend(QtCore.QObject):
         if self.save_data_state:
             
             self.time_array.append(self.currentTime)
-            self.z_array.append(self.focusSignal)
+            self.z_array.append(self.focusSignal) #Aquí falta ver quien es focus signal en este caso, ver focus.py
                     
-        self.zIsDone.emit(True, self.target_z)        
+        self.zIsDone.emit(True, self.target_z)  
+        
+    def calibrate(self):
+        
+        # TO DO: fix calibration function
+        
+        self.viewtimer.stop()
+        time.sleep(0.100)
+        
+        nsteps = 40
+        xmin = 9.5  # in µm
+        xmax = 10.5   # in µm
+        xrange = xmax - xmin  
+        
+        calibData = np.zeros(40)
+        xData = np.arange(xmin, xmax, xrange/nsteps) #aquí xData es una variable muda, se usa solo dos veces
+        
+        zMoveTo(self.actuator, xmin) #no entiendo de dónde sale este actuator
+        
+        time.sleep(0.100)
+        
+        for i in range(nsteps):
+            
+            zMoveTo(self.actuator, xmin + (i * 1/nsteps) * xrange)
+            self.update()
+            calibData[i] = self.focusSignal #quien es focus signal?
+            
+        plt.plot(xData, calibData, 'o')
+            
+        time.sleep(0.200)
+        
+        self.viewtimer.start(self.xyz_time)
     
     def set_actuator_param(self, pixeltime=1000): #configura los parámetros del actuador
 
@@ -1671,6 +1715,7 @@ class Backend(QtCore.QObject):
         
         self.reset()
         self.reset_data_arrays()
+        #comparar con la funcion de focus: algo que ver con focusTimer
             
     @pyqtSlot(float)
     def get_focuslockposition(self, position):
@@ -1678,7 +1723,7 @@ class Backend(QtCore.QObject):
         if position == -9999:
             position = self.setPoint
         else:
-            position = self.focusSignal
+            position = self.focusSignal #Quien es focus signal
             
         self.focuslockpositionSignal.emit(position)
         
