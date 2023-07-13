@@ -980,30 +980,28 @@ class Backend(QtCore.QObject):
 #                                          self.feedback_active, 
 #                                          self.save_data_state)
     
-# =============================================================================
-#   Función para calcular centro de masa del beam reflejado
-#         def center_of_mass(self):
-#         
-#         # set main reference frame
-#         
-#         xmin, xmax, ymin, ymax = self.zROIcoordinates
-#         
-#         # select the data of the image corresponding to the ROI
-# 
-#         zimage = self.image[xmin:xmax, ymin:ymax]
-#         
-#         # WARNING: extra rotation added to match the sensitive direction (hardware)
-#         
-#         zimage = np.rot90(zimage, k=3)
-#         
-#         # calculate center of mass
-#         
-#         self.m_center = np.array(ndi.measurements.center_of_mass(zimage))
-#         
-#         # calculate z estimator
-#         
-#         self.currentz = np.sqrt(self.m_center[0]**2 + self.m_center[1]**2)   
-# =============================================================================
+
+    def center_of_mass(self):
+        
+        # set main reference frame
+        
+        xmin, xmax, ymin, ymax = self.zROIcoordinates
+        
+        # select the data of the image corresponding to the ROI
+
+        zimage = self.image[xmin:xmax, ymin:ymax]
+        
+        # WARNING: extra rotation added to match the sensitive direction (hardware)
+        
+        zimage = np.rot90(zimage, k=3)
+        
+        # calculate center of mass
+        
+        self.m_center = np.array(ndi.measurements.center_of_mass(zimage))
+        
+        # calculate z estimator
+        
+        self.currentz = np.sqrt(self.m_center[0]**2 + self.m_center[1]**2)
         
     def gaussian_fit(self,roi_coordinates): #Le estoy agregando un parámetro (roi_coordinates) para que sea como en xyz_tracking
         
