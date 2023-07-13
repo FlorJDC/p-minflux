@@ -708,6 +708,7 @@ class Backend(QtCore.QObject):
         self.save_data_state = False
         self.feedback_active = False
         self.camON = False
+        self.roi_area = np.zeros(4)
 
         self.npoints = 1200
         self.buffersize = 30000
@@ -1210,7 +1211,7 @@ class Backend(QtCore.QObject):
 
         dx = 0
         dy = 0
-        dz = 0 #comparar con setup_feedback
+        dz = 0 #comparar con update_feedback
         
         threshold = 3 #antes era 5 con Andor
         z_threshold = 3
@@ -1251,7 +1252,7 @@ class Backend(QtCore.QObject):
 
         if dx > security_thr or dy > security_thr or dz > 2 * security_thr:
             
-            print(datetime.now(), '[xy_tracking] Correction movement larger than 200 nm, active correction turned OFF')
+            print(datetime.now(), '[xyz_tracking] Correction movement larger than 200 nm, active correction turned OFF')
             self.toggle_feedback(False)
             
         else:
@@ -1268,18 +1269,15 @@ class Backend(QtCore.QObject):
             
             currentXposition = tools.convert(self.adw.Get_FPar(70), 'UtoX') #Get_FPar(self, Index): Retorna el valor de una variable global de tipo float.
             currentYposition = tools.convert(self.adw.Get_FPar(71), 'UtoX')
-            #####aqui va una linea algo así
             currentZposition = tools.convert(self.adw.Get_FPar(72), 'UtoX') #¿Está bien que sea key='UtoX'? FPar keeps track of z position of the piezo
             
 
             targetXposition = currentXposition + dx  
             targetYposition = currentYposition + dy
-            #----------------------------------------------
-            #aqui va algo así
             targetZposition = currentZposition + dz  # in µm
             
             if mode == 'continous':
-            
+                #Le mando al actuador las posiciones x,y,z
                 self.actuator_xyz(targetXposition, targetYposition, targetZposition) #aquí debería agregar targetZposition
                 
             if mode == 'discrete':
@@ -1289,12 +1287,10 @@ class Backend(QtCore.QObject):
                 
                 self.target_x = targetXposition
                 self.target_y = targetYposition
-                #-----------------------------------------------
-                ####aqui debería ir algo así
                 self.target_z = targetZposition
             
     @pyqtSlot(bool, bool)
-    def single_xy_correction(self, feedback_val, initial): #¿Es necesaria esta función? o está incluida en update()
+    def single_xy_correction(self, feedback_val, initial): 
         
         """
         From: [psf] xySignal
@@ -1380,6 +1376,7 @@ class Backend(QtCore.QObject):
             
     def set_moveTo_param(self, x_f, y_f, z_f, n_pixels_x=128, n_pixels_y=128,
                          n_pixels_z=128, pixeltime=2000):
+        #Esta funcion se repite en xy_tracking y focus
 
         x_f = tools.convert(x_f, 'XtoU')
         y_f = tools.convert(y_f, 'XtoU')
@@ -1395,7 +1392,8 @@ class Backend(QtCore.QObject):
 
         self.adw.Set_FPar(26, tools.timeToADwin(pixeltime))
 
-    def moveTo(self, x_f, y_f, z_f): 
+    def moveTo(self, x_f, y_f, z_f):
+        #Esta funcion se repite en xy_tracking y focus
 
         self.set_moveTo_param(x_f, y_f, z_f)
         self.adw.Start_Process(2)
@@ -1419,7 +1417,12 @@ class Backend(QtCore.QObject):
         self.time = np.zeros(self.npoints)
         self.ptr = 0
         self.startTime = time.time()
-        
+        #self.j = 0  # iterator on the data array
+        #-----------
+        self.max_dev = 0 # Sale de focus.py se usa en update_stats
+        self.std = 0
+        self.n = 1
+        #-----------
         self.changedData.emit(self.time, self.xData, self.yData, self.zData, 
                               self.avgIntData)
         
@@ -1438,7 +1441,7 @@ class Backend(QtCore.QObject):
         self.j = 0  # iterator on the data array
         
         
-    def export_data(self):
+    def export_data(self): #Todavía tengo que modificar esta función para guardar data, la dejo tal cual esta por ahora
         
         """
         Exports the x, y and t data into a .txt file
@@ -1468,7 +1471,7 @@ class Backend(QtCore.QObject):
         print(datetime.now(), '[xy_tracking] xy data exported to', filename)
 
     @pyqtSlot(bool)    
-    def get_stop_signal(self, stoplive):
+    def get_stop_signal(self, stoplive): #Está en xy y en focus. Creo que no está conectado a nada
         
         """
         Connection: [psf] xyStopSignal
@@ -1488,12 +1491,12 @@ class Backend(QtCore.QObject):
             self.liveviewSignal.emit(False)
             
     @pyqtSlot(bool)
-    def get_save_data_state(self, val):
+    def get_save_data_state(self, val): #Dejo esta funcion como está, se repite en xy y en focus.py
         
         '''
         Connection: [frontend] saveDataSignal
         Description: gets value of the save_data_state variable, True -> save,
-        Fals -> don't save
+        False -> don't save
         
         '''
         
@@ -1523,7 +1526,7 @@ class Backend(QtCore.QObject):
             
      
     @pyqtSlot()    
-    def get_lock_signal(self):
+    def get_lock_signal(self): #Dejo esta funcion como está
         
         '''
         Connection: [minflux] xyzStartSignal
@@ -1537,7 +1540,7 @@ class Backend(QtCore.QObject):
         self.toggle_tracking(True)
         self.toggle_feedback(True)
         self.save_data_state = True
-        
+        #Esto está comentado en focus pero no en xy
         self.updateGUIcheckboxSignal.emit(self.tracking_value, 
                                           self.feedback_active, 
                                           self.save_data_state)
@@ -1646,7 +1649,7 @@ class Backend(QtCore.QObject):
         # (checked <-> active, not checked <-> inactive)
         
     @pyqtSlot()    
-    def stop(self): #nuevo modificación, sigo focus.py
+    def stop(self): #se repite en xy y focus
         self.toggle_tracking_shutter(8, False)
         time.sleep(1)
         
@@ -1664,7 +1667,7 @@ class Backend(QtCore.QObject):
         self.moveTo(x_0, y_0, z_0)
         
         self.camera.close()
-        print(datetime.now(), '[xy_tracking] Thorlabs camera shut down')
+        print(datetime.now(), '[xyz_tracking] Thorlabs camera shut down')
         
 
 if __name__ == '__main__':
