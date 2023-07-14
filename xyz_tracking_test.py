@@ -58,7 +58,7 @@ def zMoveTo(adwin, z_f): #funciones necesarias para calibrate
     
 class Frontend(QtGui.QFrame):
     #Chequear las señales aquí, hace falta changedROI (creo que es analogo a z_roiInfoSignal, cf), paramSignal???
-    roiInfoSignal = pyqtSignal(int, np.ndarray)
+    roiInfoSignal = pyqtSignal(str, int, list) #antes era int,ndarray cf xy_tracking
     z_roiInfoSignal = pyqtSignal(str, int, list) #señal, contrastar con focus.py
     closeSignal = pyqtSignal()
     saveDataSignal = pyqtSignal(bool)
