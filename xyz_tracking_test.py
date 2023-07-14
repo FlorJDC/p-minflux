@@ -676,6 +676,7 @@ class Backend(QtCore.QObject):
     liveviewSignal = pyqtSignal(bool)
     zIsDone = pyqtSignal(bool, float) #se emite para psf.py script
     focuslockpositionSignal = pyqtSignal(float) #se emite para scan.py
+    
     """
     Signals
     
@@ -746,6 +747,7 @@ class Backend(QtCore.QObject):
         
         self.displacement = np.array([0.0, 0.0])
         self.pattern = False
+        self.focusSignal = 0
        
     @pyqtSlot(int, bool)
     def toggle_tracking_shutter(self, num, val):
@@ -886,7 +888,7 @@ class Backend(QtCore.QObject):
         if self.ptr < self.npoints:
             self.xData[self.ptr, :] = self.x + self.displacement[0]
             self.yData[self.ptr, :] = self.y + self.displacement[1]
-            self.zData[self.ptr] = self.z
+            self.zData[self.ptr] = self.z #Aparentemente es focusSignal
             self.avgIntData[self.ptr] = self.avgInt
             self.time[self.ptr] = self.currentTime
             
@@ -962,7 +964,9 @@ class Backend(QtCore.QObject):
         '''
         
         if val is True:
-            
+            #self.reset() #Qué efecto tendría colocar esta función aquí? Esto es según focus.py
+            self.setup_feedback() #Añado esto por focus
+            #self.update() ##Qué efecto tendría colocar esta función aquí? Esto es según focus.py
             self.feedback_active = True
 
             # set up and start actuator process
@@ -1379,7 +1383,7 @@ class Backend(QtCore.QObject):
             time.sleep(0.200)
             
         
-        self.acquire_data()
+        self.acquire_data() #No está definida aquí
         self.update_graph_data()
                 
         if initial:
@@ -1393,7 +1397,7 @@ class Backend(QtCore.QObject):
         if self.save_data_state:
             
             self.time_array.append(self.currentTime)
-            self.z_array.append(self.focusSignal) #Aquí falta ver quien es focus signal en este caso, ver focus.py
+            self.z_array.append(self.focusSignal) #z_rrray lo agregué a reset_data_arrays. Aquí falta ver quien es focus signal en este caso, ver focus.py
                     
         self.zIsDone.emit(True, self.target_z)  
         
@@ -1530,6 +1534,7 @@ class Backend(QtCore.QObject):
         self.y_array = np.zeros((self.buffersize, 
                                  len(self.roi_coordinates_list)), 
                                  dtype=np.float16)
+        self.z_array = []
         
         self.j = 0  # iterator on the data array
         
