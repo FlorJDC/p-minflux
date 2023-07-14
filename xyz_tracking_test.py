@@ -55,7 +55,7 @@ def zMoveTo(adwin, z_f): #funciones necesarias para calibrate
 
     actuatorParameters(adwin, z_f)
     adwin.Start_Process(3)
-    
+#Commit de prueba desde el laboratorio    
 class Frontend(QtGui.QFrame):
     #Chequear las señales aquí, hace falta changedROI (creo que es analogo a z_roiInfoSignal, cf), paramSignal???
     roiInfoSignal = pyqtSignal(str, int, list) #antes era (int, np.ndarray) cf xy_tracking Ver cómo afecta esto al procesamiento, porque parece estar bien al ser como en xyz_tracking
