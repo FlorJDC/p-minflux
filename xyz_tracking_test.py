@@ -155,6 +155,8 @@ class Frontend(QtGui.QFrame):
                     coordinates_list.append(coordinates)
                                                             
                 self.roiInfoSignal.emit('xy', roinumber, coordinates_list)
+            if DEBUG1:
+                print("Coordenadas xy: ", coordinates_list)
                     
         if roi_type == 'z':
             
@@ -165,6 +167,8 @@ class Frontend(QtGui.QFrame):
             coordinates_list = [coordinates]
             
             self.z_roiInfoSignal.emit('z', 0, coordinates_list)
+        if DEBUG1:
+            print("Coordenadas z: ", coordinates_list)
             
         if DEBUG1:
                 print("roiInfoSignal.emit executed, signal from Frontend (function:emit_roi_info, to Backend:get_roi info FC")
@@ -525,11 +529,15 @@ class Frontend(QtGui.QFrame):
         
         self.selectxyROIbutton = QtGui.QPushButton('Select xy ROI')
         self.selectxyROIbutton.clicked.connect(lambda: self.emit_roi_info(roi_type='xy'))
+        if DEBUG1:
+            print("Conexiòn de xy con emit_roi_info existosa")
         
         # select z ROI
         
         self.selectzROIbutton = QtGui.QPushButton('Select z ROI')
         self.selectzROIbutton.clicked.connect(lambda: self.emit_roi_info(roi_type='z'))
+        if DEBUG1:
+            print("Conexiòn de z con emit_roi_info existosa")
         
         # delete ROI button
         
@@ -1614,14 +1622,14 @@ class Backend(QtCore.QObject):
         '''
         if roi_type == 'xy':
                             
-            self.roi_coordinates_list = coordinates_list
+            self.roi_coordinates_list = coordinates_list #LISTA
         
             if DEBUG:
                 print(datetime.now(), '[xy_tracking] got ROI coordinates list')
                 
         if roi_type == 'z':
             
-            self.zROIcoordinates = coordinates_list[0].astype(int)
+            self.zROIcoordinates = coordinates_list[0].astype(int) #ENTERO. coordinates_list en el caso de z se convierte a int poeque sólo tiene un valor
             
      
     @pyqtSlot()    
