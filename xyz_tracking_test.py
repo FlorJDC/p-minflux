@@ -155,8 +155,8 @@ class Frontend(QtGui.QFrame):
                     coordinates_list.append(coordinates)
                                                             
                 self.roiInfoSignal.emit('xy', roinumber, coordinates_list)
-            if DEBUG1:
-                print("Coordenadas xy: ", coordinates_list)
+                if DEBUG1:
+                    print("Coordenadas xy: ", coordinates_list)
                     
         if roi_type == 'z':
             
@@ -167,8 +167,8 @@ class Frontend(QtGui.QFrame):
             coordinates_list = [coordinates]
             
             self.z_roiInfoSignal.emit('z', 0, coordinates_list)
-        if DEBUG1:
-            print("Coordenadas z: ", coordinates_list)
+            if DEBUG1:
+                print("Coordenadas z: ", coordinates_list)
             
         if DEBUG1:
                 print("roiInfoSignal.emit executed, signal from Frontend (function:emit_roi_info, to Backend:get_roi info FC")
@@ -210,7 +210,7 @@ class Frontend(QtGui.QFrame):
             print(datetime.now(), '[xy_tracking] Live view started')
         else:
             self.liveviewButton.setChecked(False)
-            self.emit_roi_info()
+            self.emit_roi_info('xy')
             self.img.setImage(np.zeros((512, 512)), autoLevels=False)
             print(datetime.now(), '[xy_tracking] Live view stopped')
         
@@ -221,7 +221,7 @@ class Frontend(QtGui.QFrame):
         
         print(datetime.now(), '[xy_tracking] got ROI request')
         
-        self.emit_roi_info()
+        self.emit_roi_info('xy')
         
     @pyqtSlot(np.ndarray)
     def get_image(self, img):
@@ -555,11 +555,9 @@ class Frontend(QtGui.QFrame):
         # position tracking checkbox
         
         self.trackingBeadsBox = QtGui.QCheckBox('Track xy fiducials')
+        self.trackingBeadsBox.stateChanged.connect(self.setup_data_curves) #agrego esta lìnea porque el tracking no funciona
         self.trackingBeadsBox.stateChanged.connect(self.emit_roi_info)
-        ################################################me parece que aquí falta una linea (cf xyz_tracking_flor)
-        #ALERTA--------------------------------------------------------------
-        #parece que es esta
-        #self.trackingBeadsBox.stateChanged.connect(self.setup_data_curves)
+        
         #En xyz_tracking está la función def setup_data_curves en frontend aquí no, está relacionada con piezo? o es necesaria aquí?
         
         # position tracking checkbox
@@ -636,35 +634,35 @@ class Frontend(QtGui.QFrame):
         self.liveviewButton.clicked.connect(lambda: self.toggle_liveview(self.liveviewButton.isChecked()))
         print("liveviewButton connected to toggle liveview - line 431")
         
-# =============================================================================
-#     #aquí debería ir esta función de ser necesario, probar descomentando para saber si debe ir o no
-#     def setup_data_curves(self):
-#                     
-#         if self.trackingBeadsBox.isChecked():
-#             
-#             if self.xCurve is not None:
-#         
-#                 for i in range(len(self.roilist)): # remove previous curves
-#                 
-#                     self.xyzGraph.xPlot.removeItem(self.xCurve[i]) 
-#                     self.xyzGraph.yPlot.removeItem(self.yCurve[i]) 
-#                 
-#             self.xCurve = [0] * len(self.roilist)
-#             
-#             for i in range(len(self.roilist)):
-#                 self.xCurve[i] = self.xyzGraph.xPlot.plot(pen='b', alpha=0.3)
-#                 self.xCurve[i].setAlpha(0.3, auto=False)
-#                 
-#             self.yCurve = [0] * len(self.roilist)
-#             
-#             for i in range(len(self.roilist)):
-#                 self.yCurve[i] = self.xyzGraph.yPlot.plot(pen='r', alpha=0.3)
-#                 self.yCurve[i].setAlpha(0.3, auto=False) 
-#                     
-#         else:
-#             
-#             pass
-# =============================================================================
+
+#aquí debería ir esta función de ser necesario, pruebo descomentando para saber si debe ir o no
+    def setup_data_curves(self):
+                     
+         if self.trackingBeadsBox.isChecked():
+             
+             if self.xCurve is not None:
+         
+                 for i in range(len(self.roilist)): # remove previous curves
+                 
+                     self.xyzGraph.xPlot.removeItem(self.xCurve[i]) 
+                     self.xyzGraph.yPlot.removeItem(self.yCurve[i]) 
+                 
+             self.xCurve = [0] * len(self.roilist)
+             
+             for i in range(len(self.roilist)):
+                 self.xCurve[i] = self.xyzGraph.xPlot.plot(pen='b', alpha=0.3)
+                 self.xCurve[i].setAlpha(0.3, auto=False)
+                 
+             self.yCurve = [0] * len(self.roilist)
+             
+             for i in range(len(self.roilist)):
+                 self.yCurve[i] = self.xyzGraph.yPlot.plot(pen='r', alpha=0.3)
+                 self.yCurve[i].setAlpha(0.3, auto=False) 
+                     
+         else:
+             
+             pass
+
         
     def closeEvent(self, *args, **kwargs):
         
@@ -831,8 +829,6 @@ class Backend(QtCore.QObject):
                     
     def update(self):
         """ General update method """
-        
-        print(datetime.now(), 'Estoy en update')
         
         self.update_view()
 
@@ -1125,35 +1121,39 @@ class Backend(QtCore.QObject):
         x = x0 + Mx_nm[xmin_id, ymin_id]
         y = y0 + My_nm[xmin_id, ymin_id]
         
-        #currentx = x
-        #currenty = y
+        currentx = x
+        currenty = y
+#ALERTA comento esta parte porque creo que hay incompatibilidad entre los nombres self.currentx y currentx y lo mismo para y
+#Ver si en un futuro puedo implementar esto para que tenga en cuenta este caso
+#        # if to avoid (probably) false localizations #notar que esta parte no se usa en xyz_tracking
+#        
+#        maxdist = 200 # in nm
+#        
+#        if self.initial is False:
+#        
+#            if np.abs(x - self.currentx) < maxdist and np.abs(y - self.currenty) < maxdist:
+#        
+#                self.currentx = x
+#                self.currenty = y
+#                
+##                print(datetime.now(), '[xy_tracking] normal')
+#                
+#            else:
+#                
+#                pass
+#                
+#                print(datetime.now(), '[xy_tracking] max dist exceeded')
+#        
+#        else:
+#            
+#            self.currentx = x
+#            self.currenty = y
+#            
+##            print(datetime.now(), '[xy_tracking] else')
         
-        # if to avoid (probably) false localizations #notar que esta parte no se usa en xyz_tracking
+        return currentx, currenty
         
-        maxdist = 200 # in nm
-        
-        if self.initial is False:
-        
-            if np.abs(x - self.currentx) < maxdist and np.abs(y - self.currenty) < maxdist:
-        
-                self.currentx = x
-                self.currenty = y
-                
-#                print(datetime.now(), '[xy_tracking] normal')
-                
-            else:
-                
-                pass
-                
-                print(datetime.now(), '[xy_tracking] max dist exceeded')
-        
-        else:
-            
-            self.currentx = x
-            self.currenty = y
-            
-#            print(datetime.now(), '[xy_tracking] else')
-        
+        print('currentx: ', currentx, ' currenty: ',currenty)
             
     def track(self, track_type): #Añado parámetro para trabajar en xy y z
         
@@ -1187,7 +1187,9 @@ class Backend(QtCore.QObject):
                 #     self.toggle_feedback(False)
                 
                 roi = self.roi_coordinates_list[i]
+                print("roi:",roi, "type roi", type(roi))
                 self.currentx[i], self.currenty[i] = self.gaussian_fit(roi)
+                print("ejecutado con exito")
            
             if self.initial is True:
                 
@@ -1616,13 +1618,18 @@ class Backend(QtCore.QObject):
     def get_roi_info(self, roi_type, N, coordinates_list): #Toma la informacion del ROI que viene de emit_roi_info en el frontend
         
         '''
-        Connection: [frontend] roiInfoSignal
+        Connection: [frontend] roiInfoSignal , z_roiInfoSignal
         Description: gets coordinates of the ROI in the GUI
         
         '''
+        if DEBUG1:
+                print(datetime.now(), 'Estoy en get_roi_info')
+                
         if roi_type == 'xy':
                             
             self.roi_coordinates_list = coordinates_list #LISTA
+            if DEBUG1:
+                print(datetime.now(), 'roi_coordinates_list: ',self.roi_coordinates_list)
         
             if DEBUG:
                 print(datetime.now(), '[xy_tracking] got ROI coordinates list')
@@ -1630,7 +1637,8 @@ class Backend(QtCore.QObject):
         if roi_type == 'z':
             
             self.zROIcoordinates = coordinates_list[0].astype(int) #ENTERO. coordinates_list en el caso de z se convierte a int poeque sólo tiene un valor
-            
+            if DEBUG1:
+                print(datetime.now(), 'zROIcoordinates: ',self.zROIcoordinates)
      
     @pyqtSlot()    
     def get_lock_signal(self): #Dejo esta funcion como está
