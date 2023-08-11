@@ -767,6 +767,7 @@ class Frontend(QtGui.QFrame):
         
         self.crosshairCheckbox = QtGui.QCheckBox('Crosshair')
         self.crosshairCheckbox.stateChanged.connect(self.ch.toggle)
+        print("stateChanged.connect with", self.ch.toggle, type(self.ch.toggle))
         
         
         # move to center button
@@ -2190,4 +2191,4 @@ if __name__ == '__main__':
     gui.setWindowTitle('scan')
     gui.show()
 
-    #app.exec_()
+    app.exec_()

@@ -33,7 +33,7 @@ def main():
         print("Serial number 1: ", serial_no_device1)
         
         #Adding a new device
-        serial_no_device2 = "74000002"
+        serial_no_device2 = "97102267"
         print("Serial number 2: ", serial_no_device2)
         
         device1 = KCubeInertialMotor.CreateKCubeInertialMotor(serial_no_device1)
@@ -86,14 +86,14 @@ def main():
         
         #Mirror2
         #Channel 3
-        chan3 = InertialMotorStatus.MotorChannels.Channel3  # enum chan ident
-        device_settings1.Drive.Channel(chan3).StepRate = 500
-        device_settings1.Drive.Channel(chan3).StepAcceleration = 100000
+        #chan3 = InertialMotorStatus.MotorChannels.Channel3  # enum chan ident
+        #device_settings1.Drive.Channel(chan3).StepRate = 500
+        #device_settings1.Drive.Channel(chan3).StepAcceleration = 100000
         
         #Channel 4
-        chan4 = InertialMotorStatus.MotorChannels.Channel3  # enum chan ident
-        device_settings1.Drive.Channel(chan4).StepRate = 500
-        device_settings1.Drive.Channel(chan4).StepAcceleration = 100000
+        #chan4 = InertialMotorStatus.MotorChannels.Channel3  # enum chan ident
+        #device_settings1.Drive.Channel(chan4).StepRate = 500
+        #device_settings1.Drive.Channel(chan4).StepAcceleration = 100000
 
         #Send settings to the device
         device1.SetSettings(device_settings1, True, True)
@@ -103,8 +103,8 @@ def main():
         print("Zeroing device, chan1 done")
         device1.SetPositionAs(chan2, 0)
         print("Success in zeroing device, chan2 done")
-        device1.SetPositionAs(chan3, 0)
-        device1.SetPositionAs(chan4, 0)
+        #device1.SetPositionAs(chan3, 0)
+        #device1.SetPositionAs(chan4, 0)
 
         # Move the device to a new position
         '''
@@ -120,16 +120,16 @@ def main():
         '''
         #new_pos = Decimal(5.0)
         # uncomment the following for open-loop operation:
-        new_pos = int(400)
+        new_pos = int(500)
         new_pos2=int(300)
-        new_pos3=int(300)
-        new_pos4=int(300)
+        #new_pos3=int(300)
+        #new_pos4=int(300)
         print(f'Moving to position {new_pos}')
         # Pythonnet will infer which method to use:
         device1.MoveTo(chan1, new_pos, 60000)
         device1.MoveTo(chan2, new_pos2, 60000)  # 60 second timeout
-        device1.MoveTo(chan3, new_pos3, 60000)
-        device1.MoveTo(chan4, new_pos4, 60000)
+        #device1.MoveTo(chan3, new_pos3, 60000)
+        #device1.MoveTo(chan4, new_pos4, 60000)
         print("Move Complete device 1")
 
         #Mirror 3
@@ -145,14 +145,14 @@ def main():
         
         #Mirror4
         #Channel 3
-        chan3 = InertialMotorStatus.MotorChannels.Channel3  # enum chan ident
-        device_settings2.Drive.Channel(chan3).StepRate = 500
-        device_settings2.Drive.Channel(chan3).StepAcceleration = 100000
+        #chan3 = InertialMotorStatus.MotorChannels.Channel3  # enum chan ident
+        #device_settings2.Drive.Channel(chan3).StepRate = 500
+        #device_settings2.Drive.Channel(chan3).StepAcceleration = 100000
         
         #Channel 4
-        chan4 = InertialMotorStatus.MotorChannels.Channel3  # enum chan ident
-        device_settings2.Drive.Channel(chan4).StepRate = 500
-        device_settings2.Drive.Channel(chan4).StepAcceleration = 100000
+        #chan4 = InertialMotorStatus.MotorChannels.Channel3  # enum chan ident
+        #device_settings2.Drive.Channel(chan4).StepRate = 500
+        #device_settings2.Drive.Channel(chan4).StepAcceleration = 100000
 
         # Send settings to the device
         device2.SetSettings(device_settings1, True, True)
@@ -162,13 +162,13 @@ def main():
         print("Zeroing device, chan1 done")
         device2.SetPositionAs(chan2, 0)
         print("Success in zeroing device, chan2 done")
-        device2.SetPositionAs(chan3, 0)
-        device2.SetPositionAs(chan4, 0)
+        #device2.SetPositionAs(chan3, 0)
+        #device2.SetPositionAs(chan4, 0)
 
         # Move the device to a new position
       
         #Open-loop operation:
-        new_pos5 = int(400)
+        new_pos5 = int(100)
         new_pos6=int(200)
         new_pos7=int(200)
         new_pos8=int(100)
@@ -176,8 +176,8 @@ def main():
         # Pythonnet will infer which method to use:
         device2.MoveTo(chan1, new_pos5, 60000)
         device2.MoveTo(chan2, new_pos6, 60000)  # 60 second timeout
-        device2.MoveTo(chan3, new_pos7, 60000)
-        device2.MoveTo(chan4, new_pos8, 60000)
+        #device2.MoveTo(chan3, new_pos7, 60000)
+        #device2.MoveTo(chan4, new_pos8, 60000)
         print("Move Complete device 2")
 
         # Stop Polling and Disconnect

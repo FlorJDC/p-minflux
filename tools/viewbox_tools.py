@@ -185,17 +185,26 @@ class TwoColorGrid():
 
 class Crosshair():
 
-    def __init__(self, viewBox):
+    def __init__(self, viewBox,pen=None): #pen=None prueba que hago FC
 
         self.showed = False 
         self.vb = viewBox
+        print("creado objeto viewbox")
+        
+
+        self.pen = pen if pen is not None else pg.mkPen('y') #FC
+        self.vLine = None  # Mantener una referencia a vLine #FC
+        self.hLine = None  # Mantener una referencia a hLine #FC
         
         proxy = pg.SignalProxy(self.vb.scene().sigMouseMoved, rateLimit=60, slot=self.mouseMoved)
         self.vb.scene().sigMouseClicked.connect(self.mouseClicked) 
 
     def draw_crosshair(self):
         self.vLine = pg.InfiniteLine(pos=0, angle=90, movable=False)
+        print("estoy en draw_crosshair")
         self.hLine = pg.InfiniteLine(pos=0, angle=0,  movable=False)
+        self.vb.addItem(self.vLine, ignoreBounds=True) #FC
+        self.vb.addItem(self.hLine, ignoreBounds=True) #FC
 
     def mouseMoved(self, evt):        
         if self.vb.sceneBoundingRect().contains(evt):
