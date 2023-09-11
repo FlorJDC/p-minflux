@@ -722,7 +722,7 @@ class Backend(QtCore.QObject):
             if self.feedback_active:
                     
                 t0 = time.time()    
-                self.correct()
+                self.correct() #otra opción sería hacer que correct sea solo de xy y que update_feedback de focus exista aquí tambien
                 t1 = time.time()
                 
                 print('correct took', (t1-t0)*1000, 'ms')

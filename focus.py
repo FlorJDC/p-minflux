@@ -523,6 +523,7 @@ class Backend(QtCore.QObject):
         self.camON = False
         self.roi_area = np.zeros(4)
         
+        #folder
         today = str(date.today()).replace('-', '') # TO DO: change to get folder from microscope
         root = r'C:\\Data\\'
         folder = root + today
@@ -798,7 +799,7 @@ class Backend(QtCore.QObject):
         if self.feedback_active:
             
 #            self.updateStats()
-            self.update_feedback()
+            self.update_feedback() #parece analogo a correct de xy_tracking_flor y xyz_tracking_test()
             
         if self.save_data_state:
                         

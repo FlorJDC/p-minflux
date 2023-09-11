@@ -39,6 +39,7 @@ import drivers.ADwin as ADwin
 
 DEBUG = True
 DEBUG1 = True
+VIDEO = False
 #to commit
 PX_SIZE = 29.0 #px size of camera in nm #antes 80.0 para Andor
 PX_Z = 25 # px size for z in nm //Thorcam px size 25nm // IDS px size 50nm 
@@ -718,7 +719,11 @@ class Backend(QtCore.QObject):
         self.camera.auto_blacklevel = True
         self.camera.gain_boost = True
         
+        if VIDEO:
+            self.video = []
+        
         self.adw = adw
+        
         # folder
         
         today = str(date.today()).replace('-', '')  # TO DO: change to get folder from microscope
@@ -737,7 +742,7 @@ class Backend(QtCore.QObject):
         self.save_data_state = False
         self.feedback_active = False
         self.camON = False
-        self.roi_area = np.zeros(4)
+        self.roi_area = np.zeros(4) #Esta línea para qué?
 
         self.npoints = 1200
         self.buffersize = 30000
@@ -754,6 +759,9 @@ class Backend(QtCore.QObject):
         
         self.displacement = np.array([0.0, 0.0])
         self.pattern = False
+        
+        self.previous_image = None
+        
         self.focusSignal = 0
        
     @pyqtSlot(int, bool)
@@ -882,6 +890,15 @@ class Backend(QtCore.QObject):
 
         # WARNING: fix to match camera orientation with piezo orientation
         self.image = np.rot90(self.image, k=3) #Comment by FC
+        
+        if np.all(self.previous_image == self.image):
+            
+            print('WARNING: latest_frame equal to previous frame')
+    
+        self.previous_image = self.image
+        
+        if (VIDEO and self.save_data_state):
+            self.video.append(self.image)
 
         # send image to gui
         self.changedImage.emit(self.image)
@@ -1599,6 +1616,41 @@ class Backend(QtCore.QObject):
         if not stoplive:
             self.liveviewSignal.emit(False)
             
+    def export_data(self):
+        
+        """
+        Exports the x, y and t data into a .txt file
+        """
+        
+        fname = self.folder + '/xy_data'
+        
+        #case distinction to prevent wrong filenaming when starting minflux or psf measurement
+        if fname[0] == '!':
+            filename = fname[1:]
+        else:
+            filename = tools.getUniqueName(fname)
+        filename = filename + '.txt'
+        
+        size = self.j
+        N_NP = len(self.roi_coordinates_list)
+        
+        savedData = np.zeros((size, 2*N_NP+1))
+
+        savedData[:, 0] = self.time_array[0:self.j]
+        savedData[:, 1:N_NP+1] = self.x_array[0:self.j, :]
+        savedData[:, N_NP+1:2*N_NP+1] = self.y_array[0:self.j, :]
+        
+        np.savetxt(filename, savedData,  header='t (s), x (nm), y(nm)') # transpose for easier loading
+        
+        print(datetime.now(), '[xy_tracking] xy data exported to', filename)
+        print('Exported data shape', np.shape(savedData))
+        
+        self.export_image()
+        
+        if VIDEO:
+            
+            tifffile.imwrite(fname + 'video' + '.tif', np.array(self.video))
+
     @pyqtSlot(bool)
     def get_save_data_state(self, val): #Dejo esta funcion como está, se repite en xy y en focus.py
         

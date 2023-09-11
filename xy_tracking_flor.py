@@ -3,7 +3,7 @@
 Created on Tue Jan 15 11:59:13 2019
 
 @author: Luciano A. Masullo
-Modified by Flor to work with new stabilization and ADwin
+Modified by Flor to work with new stabilization and ADwin, this code works with Thorcam instead of Andor (the older version)
 """
 
 import numpy as np
