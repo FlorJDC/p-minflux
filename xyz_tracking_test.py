@@ -39,7 +39,7 @@ import drivers.ADwin as ADwin
 
 DEBUG = True
 DEBUG1 = True
-
+#to commit
 PX_SIZE = 29.0 #px size of camera in nm #antes 80.0 para Andor
 PX_Z = 25 # px size for z in nm //Thorcam px size 25nm // IDS px size 50nm 
 
