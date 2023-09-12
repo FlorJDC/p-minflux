@@ -806,7 +806,7 @@ class Backend(QtCore.QObject):
             self.time_array.append(self.currentTime)
             self.z_array.append(self.focusSignal)
             
-    def acquire_data(self):
+    def acquire_data(self): #Analogo a update_view
                 
         # acquire image
     
@@ -817,6 +817,8 @@ class Backend(QtCore.QObject):
         # send image to gui
         self.changedImage.emit(image)
                 
+        
+        #This operation is related to selecting a specific region of interest in the acquired image.
         extent = 150
         correction = 512 - extent
 
@@ -827,9 +829,9 @@ class Backend(QtCore.QObject):
             image = image[:, 0:300]
         
         # get mass center
-        self.massCenter = np.array(ndi.measurements.center_of_mass(image))
-        self.focusSignal = self.massCenter[0] + correction
-        self.currentTime = ptime.time() - self.startTime
+        self.massCenter = np.array(ndi.measurements.center_of_mass(image)) #This line calculates the center of mass of the image using a function from SciPy's ndimage module. The result is stored in self.massCenter as a NumPy array.
+        self.focusSignal = self.massCenter[0] + correction #Here, the center of mass value is adjusted by adding the correction value. The result is stored in self.focusSignal.
+        self.currentTime = ptime.time() - self.startTime 
         
         
     @pyqtSlot(bool, bool)
