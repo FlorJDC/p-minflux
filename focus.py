@@ -705,9 +705,9 @@ class Backend(QtCore.QObject):
         
         ''' set up on/off feedback loop'''
         
-        self.setPoint = self.focusSignal * self.pxSize # define setpoint
-        initial_z = tools.convert(self.adw.Get_FPar(72), 'UtoX') # current z position of the piezo
-        self.target_z = initial_z # set initial_z as target_z
+        self.setPoint = self.focusSignal * self.pxSize # define setpoint #print this, I believe it is translated (focus signal it is in nm)
+        initial_z = tools.convert(self.adw.Get_FPar(72), 'UtoX') # current z position of the piezo #Creo que initial_z está en nm
+        self.target_z = initial_z # set initial_z as target_z #creo que está en nm
         
         self.changedSetPoint.emit(self.focusSignal)
         
