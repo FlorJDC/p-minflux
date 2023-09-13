@@ -1081,7 +1081,7 @@ class Backend(QtCore.QObject):
             
             if self.initial_focus is True:
                 
-                self.initialz = self.currentz
+                self.initialz = self.currentz #self.currentz sale de aplicar center_of_mass a la roi z
                 
                 self.initial_focus = False
             
