@@ -121,7 +121,7 @@ class Frontend(QtGui.QFrame):
                                          scaleSnap=True,
                                          translateSnap=True,
                                          pen=ROIpen)
-
+            print("self.roi", self.roi)
         else:
 
             self.vb.removeItem(self.roi)
@@ -139,7 +139,7 @@ class Frontend(QtGui.QFrame):
         
     def select_roi(self): 
         
-        self.cropped = True
+        #self.cropped = True
         self.getStats = True
         
         extent = 150
@@ -147,9 +147,12 @@ class Frontend(QtGui.QFrame):
         x0 = int(512-extent)
         y1 = int(640+extent)
         x1 = int(512+extent)
+        xmin, ymin = self.roi.pos()
+        xmax, ymax = self.roi.pos() + self.roi.size()
             
-        value = np.array([y0, x0, y1, x1])
-            
+        #value = np.array([y0, x0, y1, x1])
+        value = np.array([ymin,xmin,ymax,xmax])
+        print("coordinates_value", value)
         self.changedROI.emit(value)
     
         self.vb.removeItem(self.roi)
@@ -704,18 +707,21 @@ class Backend(QtCore.QObject):
     def setup_feedback(self):
         
         ''' set up on/off feedback loop'''
-        
         self.setPoint = self.focusSignal * self.pxSize # define setpoint #print this, I believe it is translated (focus signal it is in nm)
+        print("setPoint: " ,self.setPoint, "focusSignal:",self.focusSignal)
         initial_z = tools.convert(self.adw.Get_FPar(72), 'UtoX') # current z position of the piezo #Creo que initial_z está en nm
+        print("initial_z: ",initial_z)
         self.target_z = initial_z # set initial_z as target_z #creo que está en nm
+        print("target_z: ", self.target_z)
+        self.changedSetPoint.emit(self.focusSignal)#Se emite la señal focus signal y es captada por get_setpoint y se establece el valor self.setPoint
         
-        self.changedSetPoint.emit(self.focusSignal)
         
         # TO DO: implement calibrated version of this
     
     def update_feedback(self, mode='continous'):
          
         dz = self.focusSignal * self.pxSize - self.setPoint
+        print("focusSignal en update_feedback: ",self.focusSignal,"self.pxSize: ", self.pxSize, "selfsetpoint: ", self.setPoint, "dz: ",dz)
         
         threshold = 7 # in nm
         far_threshold = 20 # in nm
