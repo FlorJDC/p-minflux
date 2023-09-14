@@ -908,7 +908,7 @@ class Backend(QtCore.QObject):
         
         # calculate z estimator
         
-        self.currentz = np.sqrt(self.m_center[0]**2 + self.m_center[1]**2)
+        self.currentz = np.sqrt(self.m_center[0]**2 + self.m_center[1]**2) #OJO aquí Flor E signo menos
           
     def gaussian_fit(self, roi_coordinates):
         
