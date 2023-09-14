@@ -422,7 +422,7 @@ def get_MiniLasEvoPort():
         j+= 1
        
     print(savei, savej)
-    if savei<=savej:  #I add the sign = , because I was getting the wrong port. Flor
+    if savei<savej:  #I add the sign = , because I was getting the wrong port. Flor
         port = 'COM5'
     else:
         port = 'COM3'
