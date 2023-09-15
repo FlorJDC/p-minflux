@@ -3,6 +3,7 @@
 Created on Wed Oct  1 13:41:48 2018
 
 @authors: Luciano Masullo
+debugging Flor C
 """
 
 import numpy as np
@@ -79,16 +80,17 @@ class Frontend(QtGui.QFrame):
         
         self.roi = None
         self.cropped = False
+        self.NofPixels = 200
 
         self.setup_gui()
         
-        x0 = 0
-        y0 = 0
-        x1 = 1280 
-        y1 = 1024 
+        # x0 = 0
+        # y0 = 0
+        # x1 = 1280 
+        # y1 = 1024 
             
-        value = np.array([x0, y0, x1, y1])
-        self.changedROI.emit(value)
+        # value = np.array([x0, y0, x1, y1])
+        # self.changedROI.emit(value)
         
     def emit_param(self):
         
@@ -96,6 +98,21 @@ class Frontend(QtGui.QFrame):
         params['pxSize'] = float(self.pxSizeEdit.text())
         
         self.paramSignal.emit(params)
+    
+    def craete_roi(self):
+        
+        ROIpen = pg.mkPen(color='r')
+
+        ROIpos = (0.5 * self.NofPixels - 64, 0.5 * self.NofPixels - 64)
+        self.roi = viewbox_tools.ROI2(self.NofPixels/2, self.vb, ROIpos,
+                                     handlePos=(1, 0),
+                                     handleCenter=(0, 1),
+                                     scaleSnap=True,
+                                     translateSnap=True,
+                                     pen=ROIpen)
+        
+        
+        self.ROIButton.setChecked(False)
 
     def roi_method(self):
         
@@ -113,27 +130,26 @@ class Frontend(QtGui.QFrame):
         ROIpen = pg.mkPen(color='y')
 
         if self.roi is None:
-
             ROIpos = (512 -64, 512 -64) #cambio FC
-            self.roi = viewbox_tools.ROI(140, self.vb, ROIpos,
+            self.roi = viewbox_tools.ROI(30, self.vb, ROIpos,
                                          handlePos=(1, 0),
                                          handleCenter=(0, 1),
                                          scaleSnap=True,
                                          translateSnap=True,
                                          pen=ROIpen)
+            #self.ROIButton.setChecked(False)
             print("self.roi", self.roi)
         else:
-
             self.vb.removeItem(self.roi)
             self.roi.hide()
 
             ROIpos = (512 -64, 512 -64) #cambio FC
             self.roi = viewbox_tools.ROI(140, self.vb, ROIpos,
-                                         handlePos=(1, 0),
-                                         handleCenter=(0, 1),
-                                         scaleSnap=True,
-                                         translateSnap=True,
-                                         pen=ROIpen)
+                                          handlePos=(1, 0),
+                                          handleCenter=(0, 1),
+                                          scaleSnap=True,
+                                          translateSnap=True,
+                                          pen=ROIpen)
         
         self.selectROIbutton.setEnabled(True)
         
@@ -198,10 +214,9 @@ class Frontend(QtGui.QFrame):
             print(datetime.now(), '[focus] adentro de toggle liveview: focus live view started line 194')
         else:
             self.liveviewButton.setChecked(False)
+            self.emit_roi_info()
             self.img.setImage(np.zeros((512,512)), autoLevels=False)
-            self.cropped = False
-            self.roi.hide()
-            self.roi = None
+
 
             print(datetime.now(), '[focus] focus live view stopped - line 202')
             
@@ -349,6 +364,12 @@ class Frontend(QtGui.QFrame):
 
         self.liveviewButton = QtGui.QPushButton('Camera LIVEVIEW')
         self.liveviewButton.setCheckable(True)
+        
+        # create ROI button
+    
+        self.ROIButton = QtGui.QPushButton('ROI')
+        self.ROIButton.setCheckable(True)
+        self.ROIButton.clicked.connect(self.craete_roi)
 
         # turn ON/OFF feedback loop
         
@@ -386,7 +407,7 @@ class Frontend(QtGui.QFrame):
         self.clearDataButton.clicked.connect(self.clear_graph)
         self.pxSizeEdit.textChanged.connect(self.emit_param)
 #        self.deleteROIbutton.clicked.connect(self.delete_roi)
-#        self.ROIbutton.clicked.connect(self.roi_method)
+        self.ROIbutton.clicked.connect(self.roi_method)
 
         # focus camera display
         

@@ -115,7 +115,8 @@ class Frontend(QtGui.QFrame):
                 xmin, ymin = self.roilist[i].pos()
                 xmax, ymax = self.roilist[i].pos() + self.roilist[i].size()
         
-                coordinates = np.array([xmin, xmax, ymin, ymax])  
+                coordinates = np.array([xmin, xmax, ymin, ymax])
+                print("coordinates roi: ", coordinates)
 #            roicoordinates[i] = coordinates
                 
 #            self.roiInfoSignal.emit(roinumber, roicoordinates)
@@ -1145,7 +1146,8 @@ class Backend(QtCore.QObject):
         # TO DO: generalize to N ROIs
         
         self.ROIcoordinates = coordinates_array.astype(int)
-        
+        print("self.ROIcoordinates", self.ROIcoordinates)
+        print("TYPE self.ROIcoordinates", type(self.ROIcoordinates))
         if DEBUG:
             print(datetime.now(), '[xy_tracking] got ROI coordinates')
      

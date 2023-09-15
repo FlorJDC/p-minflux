@@ -218,4 +218,4 @@ if __name__ == '__main__':
 
     
     gui.showMaximized()
-    #app.exec_()
+    app.exec_()

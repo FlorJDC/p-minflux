@@ -142,13 +142,14 @@ class Frontend(QtGui.QFrame):
         self.cropped = True
         self.getStats = True
         
-        extent = 150
+        extent = 50
         y0 = int(640-extent)
         x0 = int(512-extent)
         y1 = int(640+extent)
         x1 = int(512+extent)
             
         value = np.array([y0, x0, y1, x1])
+        print("value: ", value)
             
         self.changedROI.emit(value)
     
