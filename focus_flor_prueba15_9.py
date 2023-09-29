@@ -85,7 +85,6 @@ class Frontend(QtGui.QFrame):
 
         super().__init__(*args, **kwargs)
         
-        self.roi = None
         self.cropped = False
 
         self.setup_gui()
@@ -112,36 +111,18 @@ class Frontend(QtGui.QFrame):
         if DEBUG:
             print("Inside roi_method")
 
-        if self.roi is None:
-
-            ROIpos = (512 -64, 512 -64) #cambio FC
-            self.roi = viewbox_tools.ROI(140, self.vb, ROIpos,
+        ROIpen = pg.mkPen(color='y')
+        ROIpos = (512 -64, 512 -64) #cambio FC
+        self.roi = viewbox_tools.ROI(140, self.vb, ROIpos,
                                          handlePos=(1, 0),
                                          handleCenter=(0, 1),
                                          scaleSnap=True,
                                          translateSnap=True,
                                          pen=ROIpen)
-            if DEBUG:
-                print("Inside self.roi is None")
-
-        else:
-
-            self.vb.removeItem(self.roi)
-            self.roi.hide()
-
-            ROIpos = (512 -64, 512 -64) #cambio FC
-            self.roi = viewbox_tools.ROI(140, self.vb, ROIpos,
-                                         handlePos=(1, 0),
-                                         handleCenter=(0, 1),
-                                         scaleSnap=True,
-                                         translateSnap=True,
-                                         pen=ROIpen)
-            if DEBUG:
-                print("Inside else in roi_method")
+        self.ROIButton.setChecked(False)
+        self.selectROIbutton.setEnabled(True) #duda: debe ir esto?
         
-        self.selectROIbutton.setEnabled(True)
-        
-    def select_roi(self): 
+    def select_roi(self): #Analogo a emit_roi_info
         
         if DEBUG:
             print("Inside select_roi")
@@ -233,44 +214,8 @@ class Frontend(QtGui.QFrame):
     def get_image(self, img):
         if DEBUG:
             print("Inside get_image")
-        
-        #  The croppingis done because otherwise the displayed image will be
-        #  300 x 1024. It doesn't affect the performance of the system
-        
-        if self.cropped is False: 
-            
-            if DEBUG:
-                print("Inside get_image in self.cropped is False")
-            self.img.setImage(img, autoLevels=False)
-            
-            if self.roi == None:
-                if DEBUG:
-                    print("Inside self.roi == None")
-                
-                extent = 150
-                y0 = int(640-extent)
-                x0 = int(512-extent)
-                y1 = int(640+extent)
-                x1 = int(512+extent)
-                
-                value = np.array([x0, y0, x1, y1])
-                print("entró aquí porque roi es none", "valor de value",value)
-                
-                self.roi = viewbox_tools.ROI(300, self.vb, value,
-                                                 handlePos=(1, 0),
-                                                 handleCenter=(0, 1),
-                                                 scaleSnap=True,
-                                                 translateSnap=True,
-                                                 pen=pg.mkPen(color='y'), movable = False)
-                self.roi.label.hide()
-                self.roi.removeHandle(0)
-        
-        else:
-            if DEBUG:
-                print("Inside get_image in self.cropped is not False (else in line 269")
-            croppedimg = img[0:300, 0:300]
-            self.img.setImage(croppedimg)
-         
+      
+        self.img.setImage(img, autoLevels=False)
             
     @pyqtSlot(np.ndarray, np.ndarray)
     def get_data(self, time, position):
@@ -476,9 +421,9 @@ class Frontend(QtGui.QFrame):
         subgrid.addWidget(self.saveDataBox, 10, 0)
         
         subgrid.addWidget(self.liveviewButton, 1, 0, 1, 2)
-#        subgrid.addWidget(self.ROIbutton, 2, 0, 1, 2)
+        subgrid.addWidget(self.ROIbutton, 2, 0, 1, 2)
         subgrid.addWidget(self.selectROIbutton, 3, 0, 1, 2)
-#        subgrid.addWidget(self.deleteROIbutton, 4, 0, 1, 2)
+        subgrid.addWidget(self.deleteROIbutton, 4, 0, 1, 2)
         
         subgrid.addWidget(self.shutterLabel, 11, 0)
         subgrid.addWidget(self.shutterCheckbox, 12, 0)
@@ -872,21 +817,23 @@ class Backend(QtCore.QObject):
         #image = np.sum(raw_image, axis=2)  #comment FC 28-9 # sum the R, G, B images
         self.image = raw_image[:, :, 0] # take only R channel
         # send image to gui
-        self.changedImage.emit(image)
-                
-        extent = 150
-        correction = 512 - extent
-
-
-        if image.shape[0] > (2*extent):
-            image = image[512-extent:512+extent, 640-extent:640+extent]
-            #362:662,490:790
-        else:
-            image = image[:, 0:300]
+        self.changedImage.emit(self.image)
         
-        # get mass center
-        self.massCenter = np.array(ndi.measurements.center_of_mass(image))
-        self.focusSignal = self.massCenter[0] + correction
+    def center_of_mass(self):
+        xmin, xmax, ymin, ymax = self.ROIcoordinates
+        zimage = self.image[xmin:xmax, ymin:ymax]
+        
+        # WARNING: extra rotation added to match the sensitive direction (hardware)
+        
+        zimage = np.rot90(zimage, k=3)
+        
+        # calculate center of mass
+        
+        self.masscenter = np.array(ndi.measurements.center_of_mass(zimage))
+        
+        # calculate z estimator
+        
+        self.focusSignal = np.sqrt(self.m_center[0]**2 + self.m_center[1]**2) #OJO aquí Flor E signo menos
         self.currentTime = ptime.time() - self.startTime
         
         
@@ -1053,7 +1000,7 @@ class Backend(QtCore.QObject):
         print(datetime.now(), '[focus] System focus locked')
             
     @pyqtSlot(np.ndarray)
-    def get_new_roi(self, val):
+    def get_new_roi(self, val): #This is get_roi_info in other codes
         if DEBUG:
                 print("Inside get_new_roi")
         '''
