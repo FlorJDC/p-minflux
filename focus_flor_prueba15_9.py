@@ -119,7 +119,7 @@ class Frontend(QtGui.QFrame):
                                          scaleSnap=True,
                                          translateSnap=True,
                                          pen=ROIpen)
-        self.ROIButton.setChecked(False)
+        self.ROIbutton.setChecked(False)
         self.selectROIbutton.setEnabled(True) #duda: debe ir esto?
         
     def select_roi(self): #Analogo a emit_roi_info
@@ -763,6 +763,7 @@ class Backend(QtCore.QObject):
 
         if self.ptr < self.npoints:
             self.data[self.ptr] = self.focusSignal
+            print("focusSignal: ", self.focusSignal)
             self.time[self.ptr] = self.currentTime
             
             self.changedData.emit(self.time[0:self.ptr + 1],
@@ -834,8 +835,10 @@ class Backend(QtCore.QObject):
         self.image = raw_image[:, :, 0] # take only R channel
         # send image to gui
         self.changedImage.emit(self.image)
+        self.currentTime = ptime.time() - self.startTime
         
     def center_of_mass(self):
+        
         xmin, xmax, ymin, ymax = self.ROIcoordinates
         zimage = self.image[xmin:xmax, ymin:ymax]
         
@@ -849,9 +852,8 @@ class Backend(QtCore.QObject):
         
         # calculate z estimator
         
-        self.focusSignal = np.sqrt(self.m_center[0]**2 + self.m_center[1]**2) #OJO aquí Flor E signo menos
-        self.currentTime = ptime.time() - self.startTime
-        
+        self.focusSignal = np.sqrt(self.masscenter[0]**2 + self.masscenter[1]**2) #OJO aquí Flor E signo menos
+                
         
     @pyqtSlot(bool, bool)
     def single_z_correction(self, feedback_val, initial):
