@@ -33,10 +33,12 @@ from instrumental import Q_
 import scan
 import drivers.ADwin as ADwin
 
-DEBUG = False
+DEBUG = True
 
 def actuatorParameters(adwin, z_f, n_pixels_z=50, pixeltime=1000):
 
+    if DEBUG:
+        print("Inside actuatorParameters")
     z_f = tools.convert(z_f, 'XtoU')
 
     adwin.Set_Par(33, n_pixels_z)
@@ -44,12 +46,16 @@ def actuatorParameters(adwin, z_f, n_pixels_z=50, pixeltime=1000):
     adwin.Set_FPar(36, tools.timeToADwin(pixeltime))
 
 def zMoveTo(adwin, z_f):
+    if DEBUG:
+        print("Inside zMoveto")
 
     actuatorParameters(adwin, z_f)
     adwin.Start_Process(3)
 
 class Frontend(QtGui.QFrame):
     
+    if DEBUG:
+        print("Inside Frontend")
     changedROI = pyqtSignal(np.ndarray)  # sends new roi size
     closeSignal = pyqtSignal()
     saveDataSignal = pyqtSignal(bool)
@@ -74,6 +80,8 @@ class Frontend(QtGui.QFrame):
     """
     
     def __init__(self, *args, **kwargs):
+        if DEBUG:
+            print("Inside init")
 
         super().__init__(*args, **kwargs)
         
@@ -92,12 +100,17 @@ class Frontend(QtGui.QFrame):
         
     def emit_param(self):
         
+        if DEBUG:
+            print("Inside emit_param")
         params = dict() #Se crea diccionario vacío FC
         params['pxSize'] = float(self.pxSizeEdit.text())
+        print("params:", params, "type param:", type(params))
         
         self.paramSignal.emit(params)
 
     def roi_method(self):
+        if DEBUG:
+            print("Inside roi_method")
 
         if self.roi is None:
 
@@ -108,6 +121,8 @@ class Frontend(QtGui.QFrame):
                                          scaleSnap=True,
                                          translateSnap=True,
                                          pen=ROIpen)
+            if DEBUG:
+                print("Inside self.roi is None")
 
         else:
 
@@ -121,11 +136,15 @@ class Frontend(QtGui.QFrame):
                                          scaleSnap=True,
                                          translateSnap=True,
                                          pen=ROIpen)
+            if DEBUG:
+                print("Inside else in roi_method")
         
         self.selectROIbutton.setEnabled(True)
         
     def select_roi(self): 
         
+        if DEBUG:
+            print("Inside select_roi")
         #self.cropped = True
         self.getStats = True
         xmin, ymin = self.roi.pos()
@@ -176,6 +195,8 @@ class Frontend(QtGui.QFrame):
             
     @pyqtSlot(bool)        
     def toggle_liveview(self, on):
+        if DEBUG:
+            print("Inside toggle_liveview")
         if on:
             self.liveviewButton.setChecked(True)
             print(datetime.now(), '[focus] adentro de toggle liveview: focus live view started line 194')
@@ -186,6 +207,8 @@ class Frontend(QtGui.QFrame):
             print(datetime.now(), '[focus] focus live view stopped - line 202')
             
     def emit_save_data_state(self):
+        if DEBUG:
+            print("Inside emit_save_data_state")
         
         if self.saveDataBox.isChecked():
             
@@ -208,15 +231,21 @@ class Frontend(QtGui.QFrame):
         
     @pyqtSlot(np.ndarray)
     def get_image(self, img):
+        if DEBUG:
+            print("Inside get_image")
         
         #  The croppingis done because otherwise the displayed image will be
         #  300 x 1024. It doesn't affect the performance of the system
         
         if self.cropped is False: 
             
+            if DEBUG:
+                print("Inside get_image in self.cropped is False")
             self.img.setImage(img, autoLevels=False)
             
             if self.roi == None:
+                if DEBUG:
+                    print("Inside self.roi == None")
                 
                 extent = 150
                 y0 = int(640-extent)
@@ -237,22 +266,25 @@ class Frontend(QtGui.QFrame):
                 self.roi.removeHandle(0)
         
         else:
-
+            if DEBUG:
+                print("Inside get_image in self.cropped is not False (else in line 269")
             croppedimg = img[0:300, 0:300]
             self.img.setImage(croppedimg)
-            print("estoy en else de get_image")
-
-            
-
+         
             
     @pyqtSlot(np.ndarray, np.ndarray)
     def get_data(self, time, position):
+        if DEBUG:
+            print("Inside get_data")
         
         self.focusCurve.setData(time, position)
              
         if self.feedbackLoopBox.isChecked():
             
+            if DEBUG:
+                print("self.feedbackLoopBox.isChecked()")
             if len(position) > 2:
+                print("len(position) is higher than 2")
         
                 zMean = np.mean(position)
                 zStDev = np.std(position)
@@ -265,7 +297,8 @@ class Frontend(QtGui.QFrame):
       
     @pyqtSlot(float)          
     def get_setpoint(self, value):
-        
+        if DEBUG:
+            print("Inside get_setpoint")
         self.setPoint = value
         
         print(datetime.now(), '[focus] set point', value)
@@ -283,6 +316,8 @@ class Frontend(QtGui.QFrame):
 #                                                         pen='c')
         
     def clear_graph(self):
+        if DEBUG:
+            print("Inside clear_graph")
         
         # TO DO: fix setpoint line
         
@@ -304,21 +339,25 @@ class Frontend(QtGui.QFrame):
             8 - set all shutters according to on-variable
         for handling of shutters 1-5 see [scan] and [focus]
         '''
-        
+        if DEBUG:
+            print("Inside update_shutter")
         if (num == 5)  or (num == 8):
             self.shutterCheckbox.setChecked(on)
             
     def make_connection(self, backend):
-            
+        if DEBUG:
+            print("Inside make_connetion")
         backend.changedImage.connect(self.get_image)
         backend.changedData.connect(self.get_data)
         backend.changedSetPoint.connect(self.get_setpoint)
         backend.shuttermodeSignal.connect(self.update_shutter)
         backend.liveviewSignal.connect(self.toggle_liveview)
-        print("liveviewSignal connected to toggle liveview - line 333")
+        print("liveviewSignal connected to toggle liveview - line 318")
 
 
     def setup_gui(self):
+        if DEBUG:
+            print("Inside setup_gui")
         
          # Focus lock widget
          
@@ -450,9 +489,11 @@ class Frontend(QtGui.QFrame):
         
         #didnt want to work when being put at earlier point in this function
         self.liveviewButton.clicked.connect(lambda: self.toggle_liveview(self.liveviewButton.isChecked()))
-        print("liveviewbutton & toogle liveview connected - line 467")
+        print("liveviewbutton & toogle liveview connected - line 453")
 
     def closeEvent(self, *args, **kwargs):
+        if DEBUG:
+            print("Inside closeEvent")
         
         self.closeSignal.emit()
         time.sleep(1)
@@ -463,6 +504,8 @@ class Frontend(QtGui.QFrame):
         
         
 class Backend(QtCore.QObject):
+    if DEBUG:
+        print("Inside Backend")
     
     changedImage = pyqtSignal(np.ndarray)
     changedData = pyqtSignal(np.ndarray, np.ndarray)
@@ -497,6 +540,8 @@ class Backend(QtCore.QObject):
     """
 
     def __init__(self, camera, adw, *args, **kwargs):
+        if DEBUG:
+            print("Inside init in backend")
         super().__init__(*args, **kwargs)
 
         self.camera = camera
@@ -540,12 +585,16 @@ class Backend(QtCore.QObject):
         
     @pyqtSlot(dict)
     def get_frontend_param(self, params):
+        if DEBUG:
+            print("Inside get_frotend_param")
         
         self.pxSize = params['pxSize']
         
         print(datetime.now(), ' [focus] got px size', self.pxSize, ' nm')
         
     def set_actuator_param(self, pixeltime=1000):
+        if DEBUG:
+            print("Inside set_actuator_param")
 
         self.adw.Set_FPar(36, tools.timeToADwin(pixeltime))
         
@@ -557,6 +606,8 @@ class Backend(QtCore.QObject):
         self.adw.Set_Par(30, 1)
         
     def actuator_z(self, z_f):
+        if DEBUG:
+            print("Inside actuator_z")
         
         z_f = tools.convert(z_f, 'XtoU')
           
@@ -568,7 +619,7 @@ class Backend(QtCore.QObject):
 
         if value:
             self.camON = True
-            print("Liveview - line 585")
+            print("Liveview - line 621")
             self.liveview_start()
 
         else:
@@ -579,10 +630,10 @@ class Backend(QtCore.QObject):
     def liveview_start(self):
         
         if self.camON:
-            print("Liveview-start - line 596")
+            print("Liveview-start - line 632")
             self.camera.stop_live_video()
             self.camON = False
-        print("Liveview-start - line 599")
+        print("Liveview-start - line 635")
         self.camON = True
         
         self.camera.start_live_video()
@@ -593,7 +644,8 @@ class Backend(QtCore.QObject):
         print("focus timer started")
         
     def liveview_stop(self):
-        print("Liveview-stop")
+        if DEBUG:
+            print("Inside Liveview-stop")
         self.focusTimer.stop()
         print("focusTimer: stopped")
         self.camON = False
@@ -609,6 +661,8 @@ class Backend(QtCore.QObject):
                 
     @pyqtSlot(int, bool)
     def toggle_ir_shutter(self, num, val):
+        if DEBUG:
+            print("Inside toggle_ir_shutter")
         
         #TODO: change code to also update checkboxes in case of minflux measurement
         if (num == 5) or (num == 8):
@@ -621,6 +675,8 @@ class Backend(QtCore.QObject):
                 
     @pyqtSlot(int, bool)
     def shutter_handler(self, num, on):
+        if DEBUG:
+            print("Inside shutter_handler")
         self.shuttermodeSignal.emit(num, on)
         
     @pyqtSlot(bool)
@@ -632,11 +688,14 @@ class Backend(QtCore.QObject):
         Drift correction feedback loop is not automatically started.
         
         '''
-
+        if DEBUG:
+            print("Inside toggle_tracking")
         #TODO: write track procedure like in xy-tracking
         self.startTime = time.time()
         
         if val is True:
+            if DEBUG:
+                print("Inside toggle_tracking in val is True")
             
             self.reset()
             self.reset_data_arrays()
@@ -644,6 +703,8 @@ class Backend(QtCore.QObject):
             self.tracking_value = True
                     
         if val is False:
+            if DEBUG:
+                print("Inside toggle_tracking in val is False")
         
             self.tracking_value = False
             
@@ -654,7 +715,8 @@ class Backend(QtCore.QObject):
         or discrete (scan imaging) correction'''
         
         if val is True:
-            
+            if DEBUG:
+                print("Inside toggle_feedback in val is True")
             self.reset()
             self.setup_feedback()
             self.update()
@@ -672,7 +734,8 @@ class Backend(QtCore.QObject):
             print(datetime.now(), ' [focus] Feedback loop ON')
             
         if val is False:
-            
+            if DEBUG:
+                print("Inside toggle_feedback in val is False")
             self.feedback_active = False
             
             if mode == 'continous':
@@ -686,7 +749,8 @@ class Backend(QtCore.QObject):
     
     @pyqtSlot()    
     def setup_feedback(self):
-        
+        if DEBUG:
+                print("Inside setup_feedback")
         ''' set up on/off feedback loop'''
         
         self.setPoint = self.focusSignal * self.pxSize # define setpoint
@@ -698,6 +762,8 @@ class Backend(QtCore.QObject):
         # TO DO: implement calibrated version of this
     
     def update_feedback(self, mode='continous'):
+        if DEBUG:
+                print("Inside update_feedback")
          
         dz = self.focusSignal * self.pxSize - self.setPoint
         
@@ -730,7 +796,8 @@ class Backend(QtCore.QObject):
                 print(datetime.now(), '[focus] discrete correction to', self.target_z)
             
     def update_graph_data(self):
-        
+        if DEBUG:
+                print("Inside update_graph_data")
         ''' update of the data displayed in the gui graph '''
 
         if self.ptr < self.npoints:
@@ -751,6 +818,8 @@ class Backend(QtCore.QObject):
         self.ptr += 1
             
     def update_stats(self):
+        if DEBUG:
+                print("Inside update_stats")
         
         # TO DO: fix this function
 
@@ -774,6 +843,8 @@ class Backend(QtCore.QObject):
         self.n += 1
         
     def update(self):
+        if DEBUG:
+                print("Inside update")
         
         self.acquire_data()
         self.update_graph_data()
@@ -791,13 +862,15 @@ class Backend(QtCore.QObject):
             self.z_array.append(self.focusSignal)
             
     def acquire_data(self):
+        if DEBUG:
+                print("Inside acquire_data")
                 
         # acquire image
     
         raw_image = self.camera.latest_frame()
 
-        image = np.sum(raw_image, axis=2)   # sum the R, G, B images
-
+        #image = np.sum(raw_image, axis=2)  #comment FC 28-9 # sum the R, G, B images
+        self.image = raw_image[:, :, 0] # take only R channel
         # send image to gui
         self.changedImage.emit(image)
                 
@@ -807,6 +880,7 @@ class Backend(QtCore.QObject):
 
         if image.shape[0] > (2*extent):
             image = image[512-extent:512+extent, 640-extent:640+extent]
+            #362:662,490:790
         else:
             image = image[:, 0:300]
         
@@ -818,6 +892,8 @@ class Backend(QtCore.QObject):
         
     @pyqtSlot(bool, bool)
     def single_z_correction(self, feedback_val, initial):
+        if DEBUG:
+                print("Inside single_z_correction")
         
         if initial:
                     
@@ -858,7 +934,8 @@ class Backend(QtCore.QObject):
         self.zIsDone.emit(True, self.target_z)
 
     def calibrate(self):
-        
+        if DEBUG:
+                print("Inside calibrate")
         # TO DO: fix calibration function
         
         self.focusTimer.stop()
@@ -890,6 +967,8 @@ class Backend(QtCore.QObject):
     
             
     def reset(self):
+        if DEBUG:
+                print("Inside reset")
         
         self.data = np.zeros(self.npoints)
         self.time = np.zeros(self.npoints)
@@ -902,11 +981,15 @@ class Backend(QtCore.QObject):
         self.n = 1
         
     def reset_data_arrays(self):
+        if DEBUG:
+                print("Inside reset_data_arrays")
         
         self.time_array = []
         self.z_array = []
         
     def export_data(self):
+        if DEBUG:
+                print("Inside export_data")
         
         fname = self.filename
         #case distinction to prevent wrong filenaming when starting minflux or psf measurement
@@ -928,6 +1011,8 @@ class Backend(QtCore.QObject):
         
     @pyqtSlot()    
     def get_stop_signal(self):
+        if DEBUG:
+                print("Inside get_stop_signal")
         
         """
         From: [psf]
@@ -946,6 +1031,8 @@ class Backend(QtCore.QObject):
         
     @pyqtSlot()    
     def get_lock_signal(self):
+        if DEBUG:
+                print("Inside get_lock_signal")
         
         if not self.camON:
             self.liveviewSignal.emit(True)
@@ -967,6 +1054,8 @@ class Backend(QtCore.QObject):
             
     @pyqtSlot(np.ndarray)
     def get_new_roi(self, val):
+        if DEBUG:
+                print("Inside get_new_roi")
         '''
         Connection: [frontend] changedROI
         Description: gets coordinates of the ROI in the GUI
@@ -986,6 +1075,8 @@ class Backend(QtCore.QObject):
     
     @pyqtSlot(bool, str)   
     def get_tcspc_signal(self, val, fname):
+        if DEBUG:
+                print("Inside get_tcspc_signal")
         
         """ 
         Get signal to start/stop xy position tracking and lock during 
@@ -1023,6 +1114,8 @@ class Backend(QtCore.QObject):
             
     @pyqtSlot(bool, str)   
     def get_scan_signal(self, val, fname):
+        if DEBUG:
+                print("Inside get_scan_signal")
         
         """ 
         Get signal to stop continous xy tracking/feedback if active and to
@@ -1031,11 +1124,15 @@ class Backend(QtCore.QObject):
         
     @pyqtSlot(bool)
     def get_save_data_state(self, val):
+        if DEBUG:
+                print("Inside get_save_data_state")
         
         self.save_data_state = val
         
     @pyqtSlot(str)    
     def get_end_measurement_signal(self, fname):
+        if DEBUG:
+                print("Inside get_end_measurement_signal")
         
         """ 
         From: [minflux] or [psf]
@@ -1057,9 +1154,17 @@ class Backend(QtCore.QObject):
     def set_moveTo_param(self, x_f, y_f, z_f, n_pixels_x=128, n_pixels_y=128,
                          n_pixels_z=128, pixeltime=2000):
 
+        if DEBUG:
+            print("Inside set_moveTo_param")
+        print("x_f before change: ", x_f)
+        print("y_f before change: ", y_f)
+        print("z_f before change: ", z_f)
         x_f = tools.convert(x_f, 'XtoU')
         y_f = tools.convert(y_f, 'XtoU')
         z_f = tools.convert(z_f, 'XtoU')
+        print("x_f after change: ", x_f)
+        print("y_f after change: ", y_f)
+        print("z_f after change: ", z_f)
 
         self.adw.Set_Par(21, n_pixels_x)
         self.adw.Set_Par(22, n_pixels_y)
@@ -1072,11 +1177,15 @@ class Backend(QtCore.QObject):
         self.adw.Set_FPar(26, tools.timeToADwin(pixeltime))
 
     def moveTo(self, x_f, y_f, z_f):
-
+        if DEBUG:
+                print("Inside moveTo - line 1173")
+        print("x_f, y_f, z_f: ", x_f, y_f, z_f)
         self.set_moveTo_param(x_f, y_f, z_f)
         self.adw.Start_Process(2)
         
     def gaussian_fit(self):
+        if DEBUG:
+                print("Inside gaussian_fit")
         
         # set main reference frame
         
@@ -1181,6 +1290,8 @@ class Backend(QtCore.QObject):
         
     @pyqtSlot(float)
     def get_focuslockposition(self, position):
+        if DEBUG:
+                print("Inside get_focuslockposition")
         
         if position == -9999:
             position = self.setPoint
@@ -1191,7 +1302,8 @@ class Backend(QtCore.QObject):
         
     @pyqtSlot()
     def stop(self):
-        
+        if DEBUG:
+                print("Inside stop")
         self.toggle_ir_shutter(8, False)
         time.sleep(1)
         
@@ -1227,6 +1339,8 @@ class Backend(QtCore.QObject):
         
         
     def make_connection(self, frontend):
+        if DEBUG:
+                print("Inside make_connection in Backend")
           
         frontend.changedROI.connect(self.get_new_roi)
         frontend.closeSignal.connect(self.stop)
@@ -1238,13 +1352,14 @@ class Backend(QtCore.QObject):
         frontend.clearDataButton.clicked.connect(self.reset_data_arrays)
         frontend.calibrationButton.clicked.connect(self.calibrate)
         frontend.shutterCheckbox.stateChanged.connect(lambda: self.toggle_ir_shutter(8, frontend.shutterCheckbox.isChecked()))
-
         frontend.paramSignal.connect(self.get_frontend_param)
         frontend.liveviewButton.clicked.connect(self.liveview)
-        print("liveview & liviewbutton connected in backend- line 1247")
+        print("liveview & liviewbutton connected in backend- line 1350")
 
 
 if __name__ == '__main__':
+    if DEBUG:
+        print("Inside main")
     
     if not QtGui.QApplication.instance():
         app = QtGui.QApplication([])
