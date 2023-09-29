@@ -173,6 +173,11 @@ class Frontend(QtGui.QFrame):
 #        print(datetime.now(), '[focus] ROI deleted')
 #        
 #        self.deleteROIbutton.setEnabled(False)
+
+    def delete_roi(self):
+                
+        self.vb.removeItem(self.roi)
+        self.roi.hide()
             
     @pyqtSlot(bool)        
     def toggle_liveview(self, on):
@@ -329,15 +334,13 @@ class Frontend(QtGui.QFrame):
 
         self.ROIbutton = QtGui.QPushButton('ROI')
         self.ROIbutton.setCheckable(True)
-        self.ROIbutton.clicked.connect(lambda: self.roi_method)
         
         # Select ROI
         self.selectROIbutton = QtGui.QPushButton('Select ROI')
-        self.selectROIbutton.clicked.connect(lambda: self.select_roi())
         
-        #Delete ROI
+        # Delete ROI
         self.deleteROIbutton = QtGui.QPushButton('Delete ROI')
-        self.deleteROIbutton.clicked.connect(self.delete_roi)
+        
         self.calibrationButton = QtGui.QPushButton('Calibrate')
         
         self.exportDataButton = QtGui.QPushButton('Export data')
@@ -358,8 +361,8 @@ class Frontend(QtGui.QFrame):
         self.selectROIbutton.clicked.connect(self.select_roi)
         self.clearDataButton.clicked.connect(self.clear_graph)
         self.pxSizeEdit.textChanged.connect(self.emit_param)
-#        self.deleteROIbutton.clicked.connect(self.delete_roi)
-#        self.ROIbutton.clicked.connect(self.roi_method)
+        self.deleteROIbutton.clicked.connect(self.delete_roi)
+        self.ROIbutton.clicked.connect(self.roi_method)
 
         # focus camera display
         
