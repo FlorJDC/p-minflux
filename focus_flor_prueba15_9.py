@@ -323,13 +323,21 @@ class Frontend(QtGui.QFrame):
         self.shutterLabel = QtGui.QLabel('Shutter open?')
         self.shutterCheckbox = QtGui.QCheckBox('IR laser')
         
-        # ROI button
+        # Create ROI button
         
         # TODO: completely remove the ROI stuff from the code
 
-#        self.ROIbutton = QtGui.QPushButton('ROI')
+        self.ROIbutton = QtGui.QPushButton('ROI')
+        self.ROIbutton.setCheckable(True)
+        self.ROIbutton.clicked.connect(lambda: self.roi_method)
+        
+        # Select ROI
         self.selectROIbutton = QtGui.QPushButton('Select ROI')
-#        self.deleteROIbutton = QtGui.QPushButton('Delete ROI')
+        self.selectROIbutton.clicked.connect(lambda: self.select_roi())
+        
+        #Delete ROI
+        self.deleteROIbutton = QtGui.QPushButton('Delete ROI')
+        self.deleteROIbutton.clicked.connect(self.delete_roi)
         self.calibrationButton = QtGui.QPushButton('Calibrate')
         
         self.exportDataButton = QtGui.QPushButton('Export data')
@@ -419,6 +427,11 @@ class Frontend(QtGui.QFrame):
         
         subgrid.addWidget(self.feedbackLoopBox, 9, 0)
         subgrid.addWidget(self.saveDataBox, 10, 0)
+        
+        #Create button        
+        #self.ROIButton = QtGui.QPushButton('ROI')
+#        self.ROIButton.setCheckable(True)
+#        self.ROIButton.clicked.connect(lambda: self.roi_method())
         
         subgrid.addWidget(self.liveviewButton, 1, 0, 1, 2)
         subgrid.addWidget(self.ROIbutton, 2, 0, 1, 2)
