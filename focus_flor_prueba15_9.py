@@ -2,7 +2,7 @@
 """
 Created on Wed Oct  1 13:41:48 2018
 
-@authors: Luciano Masullo
+@authors: Luciano Masullo modified by Flor C. to use another ROI 
 """
 
 import numpy as np
@@ -717,7 +717,8 @@ class Backend(QtCore.QObject):
         self.setPoint = self.focusSignal * self.pxSize # define setpoint
         initial_z = tools.convert(self.adw.Get_FPar(72), 'UtoX') # current z position of the piezo
         self.target_z = initial_z # set initial_z as target_z
-        
+        print("Valor de focus signal en setup_feedback que es el set_point:", self.focusSignal)
+        print("initial_z es target_z: ", initial_z)
         self.changedSetPoint.emit(self.focusSignal)
         
         # TO DO: implement calibrated version of this
@@ -841,10 +842,11 @@ class Backend(QtCore.QObject):
         
         xmin, xmax, ymin, ymax = self.ROIcoordinates
         zimage = self.image[xmin:xmax, ymin:ymax]
+        print("zimage: ", zimage)
         
         # WARNING: extra rotation added to match the sensitive direction (hardware)
         
-        zimage = np.rot90(zimage, k=3)
+        #zimage = np.rot90(zimage, k=3)
         
         # calculate center of mass
         
@@ -853,7 +855,7 @@ class Backend(QtCore.QObject):
         # calculate z estimator
         
         self.focusSignal = np.sqrt(self.masscenter[0]**2 + self.masscenter[1]**2) #OJO aquí Flor E signo menos
-                
+        print("FocusSignal in center of mass:", self.focusSignal)       
         
     @pyqtSlot(bool, bool)
     def single_z_correction(self, feedback_val, initial):
