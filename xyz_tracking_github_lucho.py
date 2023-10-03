@@ -114,7 +114,7 @@ class Frontend(QtGui.QFrame):
             
             self.zROIButton.setChecked(False)
 
-    def emit_roi_info(self, roi_type):
+    def emit_roi_info(self, roi_type): #es select_roi en focus.py
         
         if roi_type == 'xy':
         
@@ -147,7 +147,7 @@ class Frontend(QtGui.QFrame):
             coordinates = np.array([xmin, xmax, ymin, ymax]) 
             coordinates_list = [coordinates]
             
-            self.z_roiInfoSignal.emit('z', 0, coordinates_list)
+            self.z_roiInfoSignal.emit('z', 0, coordinates_list) #esta señal envía coordinates_list a get_roi_info
                         
     def emit_pi_params(self):
         

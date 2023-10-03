@@ -89,13 +89,13 @@ class Frontend(QtGui.QFrame):
 
         self.setup_gui()
         
-        # x0 = 0
-        # y0 = 0
-        # x1 = 1280 
-        # y1 = 1024 
+        x0 = 0
+        y0 = 0
+        x1 = 1280 
+        y1 = 1024 
             
-        # value = np.array([x0, y0, x1, y1])
-        # self.changedROI.emit(value)
+        value = np.array([x0, y0, x1, y1])
+        self.changedROI.emit(value)
         
     def emit_param(self):
         
@@ -185,9 +185,10 @@ class Frontend(QtGui.QFrame):
             print("Inside toggle_liveview")
         if on:
             self.liveviewButton.setChecked(True)
-            print(datetime.now(), '[focus] adentro de toggle liveview: focus live view started line 194')
+            print(datetime.now(), '[focus] focus live view started')
         else:
             self.liveviewButton.setChecked(False)
+            self.select_roi()
             self.img.setImage(np.zeros((512,512)), autoLevels=False)
 
             print(datetime.now(), '[focus] focus live view stopped - line 202')
@@ -710,11 +711,11 @@ class Backend(QtCore.QObject):
 
     
     @pyqtSlot()    
-    def setup_feedback(self):
+    def setup_feedback(self): #analogo a track (en parte) en xyz_tracking
         if DEBUG:
                 print("Inside setup_feedback")
         ''' set up on/off feedback loop'''
-        
+        self.center_of_mass()
         self.setPoint = self.focusSignal * self.pxSize # define setpoint
         initial_z = tools.convert(self.adw.Get_FPar(72), 'UtoX') # current z position of the piezo
         self.target_z = initial_z # set initial_z as target_z
