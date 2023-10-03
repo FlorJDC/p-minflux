@@ -219,8 +219,9 @@ class Frontend(QtGui.QFrame):
     def get_image(self, img):
         if DEBUG:
             print("Inside get_image")
-      
         self.img.setImage(img, autoLevels=False)
+        #croppedimg = img[0:300, 0:300]
+        #self.img.setImage(croppedimg)  
             
     @pyqtSlot(np.ndarray, np.ndarray)
     def get_data(self, time, position):
