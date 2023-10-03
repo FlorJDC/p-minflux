@@ -34,7 +34,6 @@ import scan
 import drivers.ADwin as ADwin
 
 DEBUG = True
-AUX = 0
 
 def actuatorParameters(adwin, z_f, n_pixels_z=50, pixeltime=1000):
 
@@ -689,6 +688,8 @@ class Backend(QtCore.QObject):
             # set up and start actuator process
             
             if mode == 'continous':
+                if DEBUG:
+                    print("Inside toggle_feedback")
             
                 self.set_actuator_param()
 #                self.adw.Set_Par(39, 0)
@@ -720,26 +721,20 @@ class Backend(QtCore.QObject):
         self.setPoint = self.focusSignal * self.pxSize # define setpoint
         initial_z = tools.convert(self.adw.Get_FPar(72), 'UtoX') # current z position of the piezo
         self.target_z = initial_z # set initial_z as target_z
-        print("Valor de focus signal en setup_feedback que es el set_point:", self.focusSignal)
+        print("Valor de focus signal en setup_feedback:", self.focusSignal, " y setPoint: ", self.setPoint)
         print("initial_z es target_z: ", initial_z)
-        self.changedSetPoint.emit(self.focusSignal)
+        self.changedSetPoint.emit(self.setPoint)
         
         # TO DO: implement calibrated version of this
     
     def update_feedback(self, mode='continous'):
         if DEBUG:
                 print("Inside update_feedback")
-        initial_feedback = True       
-        if initial_feedback and AUX==0:
-            self.setup_feedback()
-            initial_feedback = False
-            AUX=1
-        initial_feedback=False
-            
             
         self.center_of_mass() #Esto se ejecuta para sacar self.focusSignal activamente
          
         dz = self.focusSignal * self.pxSize - self.setPoint
+        print("dz: ", dz)
         
         threshold = 7 # in nm
         far_threshold = 20 # in nm
