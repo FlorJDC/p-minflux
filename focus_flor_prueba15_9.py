@@ -34,7 +34,7 @@ import scan
 import drivers.ADwin as ADwin
 
 DEBUG = True
-initial_feedback = False
+AUX = 0
 
 def actuatorParameters(adwin, z_f, n_pixels_z=50, pixeltime=1000):
 
@@ -220,7 +220,7 @@ class Frontend(QtGui.QFrame):
     @pyqtSlot(np.ndarray)
     def get_image(self, img):
         if DEBUG:
-            print("Inside get_image")
+            print(" Inside get_image ")
         self.img.setImage(img, autoLevels=False)
         #croppedimg = img[0:300, 0:300]
         #self.img.setImage(croppedimg)  
@@ -228,7 +228,7 @@ class Frontend(QtGui.QFrame):
     @pyqtSlot(np.ndarray, np.ndarray)
     def get_data(self, time, position):
         if DEBUG:
-            print("Inside get_data")
+            print("Inside get_data ")
         
         self.focusCurve.setData(time, position)
              
@@ -729,9 +729,13 @@ class Backend(QtCore.QObject):
     def update_feedback(self, mode='continous'):
         if DEBUG:
                 print("Inside update_feedback")
-        if initial_feedback:
+        initial_feedback = True       
+        if initial_feedback and AUX==0:
             self.setup_feedback()
             initial_feedback = False
+            AUX=1
+        initial_feedback=False
+            
             
         self.center_of_mass() #Esto se ejecuta para sacar self.focusSignal activamente
          
@@ -845,6 +849,7 @@ class Backend(QtCore.QObject):
         self.image = raw_image[:, :, 0] # take only R channel
         # send image to gui
         self.changedImage.emit(self.image)
+        self.currentTime = ptime.time() - self.startTime
         
     def center_of_mass(self):
         
