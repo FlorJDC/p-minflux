@@ -34,6 +34,7 @@ import scan
 import drivers.ADwin as ADwin
 
 DEBUG = True
+initial_feedback = False
 
 def actuatorParameters(adwin, z_f, n_pixels_z=50, pixeltime=1000):
 
@@ -728,6 +729,10 @@ class Backend(QtCore.QObject):
     def update_feedback(self, mode='continous'):
         if DEBUG:
                 print("Inside update_feedback")
+        if initial_feedback:
+            self.setup_feedback()
+            initial_feedback = False
+            
         self.center_of_mass() #Esto se ejecuta para sacar self.focusSignal activamente
          
         dz = self.focusSignal * self.pxSize - self.setPoint
@@ -776,6 +781,7 @@ class Backend(QtCore.QObject):
         else:
             self.data[:-1] = self.data[1:]
             self.data[-1] = self.focusSignal
+            print("focusSignal in update_graph_data (in else): ", self.focusSignal)
             self.time[:-1] = self.time[1:]
             self.time[-1] = self.currentTime
 
@@ -1126,15 +1132,15 @@ class Backend(QtCore.QObject):
 
         if DEBUG:
             print("Inside set_moveTo_param")
-        print("x_f before change: ", x_f)
-        print("y_f before change: ", y_f)
-        print("z_f before change: ", z_f)
+        print("x_f in um before conversion: ", x_f)
+        print("y_f in um before conversion: ", y_f)
+        print("z_f in um before conversion: ", z_f)
         x_f = tools.convert(x_f, 'XtoU')
         y_f = tools.convert(y_f, 'XtoU')
         z_f = tools.convert(z_f, 'XtoU')
-        print("x_f after change: ", x_f)
-        print("y_f after change: ", y_f)
-        print("z_f after change: ", z_f)
+        print("x_f after conversion to ADwin units: ", x_f)
+        print("y_f after conversion to ADwin units: ", y_f)
+        print("z_f after conversion to ADwin units.: ", z_f)
 
         self.adw.Set_Par(21, n_pixels_x)
         self.adw.Set_Par(22, n_pixels_y)
