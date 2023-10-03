@@ -573,6 +573,7 @@ class Backend(QtCore.QObject):
             print("Inside actuator_z")
         
         z_f = tools.convert(z_f, 'XtoU')
+        print("z_f in actuator_z: ",z_f)
           
         self.adw.Set_FPar(32, z_f)
         self.adw.Set_Par(30, 1)
@@ -734,7 +735,7 @@ class Backend(QtCore.QObject):
         self.center_of_mass() #Esto se ejecuta para sacar self.focusSignal activamente
          
         dz = self.focusSignal * self.pxSize - self.setPoint
-        print("dz: ", dz)
+        print("dz: ", dz, "nm")
         
         threshold = 7 # in nm
         far_threshold = 20 # in nm
