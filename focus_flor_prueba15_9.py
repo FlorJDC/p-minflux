@@ -715,7 +715,7 @@ class Backend(QtCore.QObject):
         if DEBUG:
                 print("Inside setup_feedback")
         ''' set up on/off feedback loop'''
-        self.center_of_mass()
+        self.center_of_mass() #Esto se ejecuta para sacar self.focusSignal y configurar por primera vez el setpoint
         self.setPoint = self.focusSignal * self.pxSize # define setpoint
         initial_z = tools.convert(self.adw.Get_FPar(72), 'UtoX') # current z position of the piezo
         self.target_z = initial_z # set initial_z as target_z
@@ -728,6 +728,7 @@ class Backend(QtCore.QObject):
     def update_feedback(self, mode='continous'):
         if DEBUG:
                 print("Inside update_feedback")
+        self.center_of_mass() #Esto se ejecuta para sacar self.focusSignal activamente
          
         dz = self.focusSignal * self.pxSize - self.setPoint
         
