@@ -860,7 +860,6 @@ class Backend(QtCore.QObject):
         self.image = raw_image[:, :, 0] # take only R channel
         # send image to gui
         self.changedImage.emit(self.image) #esta señal va a get_image
-        self.center_of_mass() #para tener focus signal #VER CÖMO CAMBIA ESTO EL DESARROLLO DE LAS COSAS
         self.currentTime = ptime.time() - self.startTime
         
     def center_of_mass(self):
