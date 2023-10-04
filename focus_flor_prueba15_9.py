@@ -350,7 +350,7 @@ class Frontend(QtGui.QFrame):
         self.clearDataButton = QtGui.QPushButton('Clear data')
         
         self.pxSizeLabel = QtGui.QLabel('Pixel size (nm)')
-        self.pxSizeEdit = QtGui.QLineEdit('10')
+        self.pxSizeEdit = QtGui.QLineEdit('50') #Original: 10nm en focus.py
         self.focusPropertiesDisplay = QtGui.QLabel(' st_dev = 0  max_dev = 0')
         
 #        self.deleteROIbutton.setEnabled(False)
@@ -531,7 +531,7 @@ class Backend(QtCore.QObject):
         rawimage = self.camera.latest_frame()
         image = np.sum(rawimage, axis=2)
         
-        self.pxSize = 10   # in nm, TODO: check correspondence with GUI
+        self.pxSize = 50 #original 10nm FC  # in nm, TODO: check correspondence with GUI
         
         self.sensorSize = np.array(image.shape)
         self.focusSignal = 0
@@ -596,14 +596,13 @@ class Backend(QtCore.QObject):
     def liveview_start(self):
         
         if self.camON:
-            print("Liveview-start - line 632")
+            print("Liveview-start")
             self.camera.stop_live_video()
             self.camON = False
-        print("Liveview-start - line 635")
+        print("Liveview-start second line")
         self.camON = True
-        
         self.camera.start_live_video()
-        self.camera._set_exposure(Q_('50 ms'))
+        self.camera._set_exposure(Q_('5 ms')) #Original THORCAM 50ms
         print("camera started live video mode")
 
         self.focusTimer.start(self.focusTime)
@@ -848,7 +847,7 @@ class Backend(QtCore.QObject):
             self.time_array.append(self.currentTime)
             self.z_array.append(self.focusSignal)
             
-    def acquire_data(self):
+    def acquire_data(self): #Es update_view en otros códigos
         if DEBUG:
                 print("Inside acquire_data")
                 
@@ -858,6 +857,8 @@ class Backend(QtCore.QObject):
 
         #image = np.sum(raw_image, axis=2)  #comment FC 28-9 # sum the R, G, B images
         self.image = raw_image[:, :, 0] # take only R channel
+        # WARNING: fix to match camera orientation with piezo orientation
+        self.image = np.rot90(self.image, k=3)
         # send image to gui
         self.changedImage.emit(self.image) #esta señal va a get_image
         self.currentTime = ptime.time() - self.startTime
@@ -1374,8 +1375,7 @@ if __name__ == '__main__':
     try:
         cam = uc480.UC480_Camera()
     except:
-        pass
-    
+        print("error with cam")
     gui = Frontend()   
     worker = Backend(cam, adw)
     worker.standAlone = True
