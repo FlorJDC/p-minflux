@@ -683,7 +683,7 @@ class Backend(QtCore.QObject):
             if DEBUG:
                 print("Inside toggle_feedback in val is True")
             #Aquí capaz que puedo llamar a center of mass en lugar de hacerlo en setup_feedback
-            self.center_of_mass()
+            #self.center_of_mass()
             print("sigo en toggle_feedback")
             self.reset()
             self.setup_feedback()
@@ -695,7 +695,7 @@ class Backend(QtCore.QObject):
             if mode == 'continous':
                 if DEBUG:
                     print("Inside toggle_feedback in mode continuous")
-            
+            #Voy a comentar esto para ver si sigue funcionando, pero cual es su análogo?
                 self.set_actuator_param()
 #                self.adw.Set_Par(39, 0)
                 self.adw.Start_Process(3)
