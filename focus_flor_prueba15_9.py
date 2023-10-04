@@ -253,7 +253,7 @@ class Frontend(QtGui.QFrame):
             print("Inside get_setpoint")
         self.setPoint = value
         
-        print(datetime.now(), '[focus] set point', value)
+        print(datetime.now(), '[focus] set point', value, "nm")
         
         # TO DO: fix setpoint line
         
@@ -566,13 +566,14 @@ class Backend(QtCore.QObject):
         z_f = tools.convert(10, 'XtoU') # TO DO: make this more robust #Cómo es esto de 10um para que convierta a bits
         self.adw.Set_FPar(32, z_f)
         self.adw.Set_Par(30, 1)
+        print("z_f in set_actuator_param", z_f, "nm")
         
     def actuator_z(self, z_f):
         if DEBUG:
             print("Inside actuator_z")
         
         z_f = tools.convert(z_f, 'XtoU') # XtoU' lenght  (um) to bits
-        print("z_f is self.target_z in actuator_z: ",z_f)
+        print("z_f is self.target_z in actuator_z: ",z_f, "bits")
           
         self.adw.Set_FPar(32, z_f) # Index = 32 (to choose process 3), Value = z_f, le asigna a setpointz (en process 3) el valor z_f
         #Luego se asigna setpointz a currentz y ese valor se pasa al borne 6 de la ADwin
@@ -684,7 +685,6 @@ class Backend(QtCore.QObject):
                 print("Inside toggle_feedback in val is True")
             #Aquí capaz que puedo llamar a center of mass en lugar de hacerlo en setup_feedback
             #self.center_of_mass()
-            print("sigo en toggle_feedback")
             self.reset()
             self.setup_feedback()
             self.update()
@@ -732,7 +732,7 @@ class Backend(QtCore.QObject):
         initial_z = tools.convert(self.adw.Get_FPar(72), 'UtoX') # current z position of the piezo
         # self.adw.Get_FPar(72) toma la posicion en bits de la ADwin, luego la convierte a unidades de longitud (µm)
         self.target_z = initial_z # set initial_z as target_z, µm
-        print("Valor de focus signal en setup_feedback:", self.focusSignal, " y setPoint: ", self.setPoint)
+        print("Valor de focus signal en setup_feedback:", self.focusSignal, " y setPoint: ", self.setPoint, "nm")
         print("initial_z es target_z: ", initial_z, "µm")
         print("esto salió de tomar la posicion del piezo en bits y convertir a um")
         self.changedSetPoint.emit(self.setPoint) #Es posible que esta línea no afecte a update_feedback
