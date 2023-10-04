@@ -563,8 +563,7 @@ class Backend(QtCore.QObject):
         
         # set-up actuator initial param
     
-        z_f = tools.convert(10, 'XtoU') # TO DO: make this more robust
-        
+        z_f = tools.convert(10, 'XtoU') # TO DO: make this more robust 
         self.adw.Set_FPar(32, z_f)
         self.adw.Set_Par(30, 1)
         
@@ -572,10 +571,12 @@ class Backend(QtCore.QObject):
         if DEBUG:
             print("Inside actuator_z")
         
-        z_f = tools.convert(z_f, 'XtoU')
-        print("z_f in actuator_z: ",z_f)
+        z_f = tools.convert(z_f, 'XtoU') # XtoU' lenght  (um) to bits
+        print("z_f is self.target_z in actuator_z: ",z_f)
           
-        self.adw.Set_FPar(32, z_f)
+        self.adw.Set_FPar(32, z_f) # Index = 32 (to choose process 3), Value = z_f, le asigna a setpointz (en process 3) el valor z_f
+        #Luego se asigna setpointz a currentz y ese valor se pasa al borne 6 de la ADwin
+        #Luego ese valor currentz se asigna a fpar_72 y es el nuevo valor actual de z
         self.adw.Set_Par(30, 1)
     
     @pyqtSlot(bool)
@@ -719,13 +720,17 @@ class Backend(QtCore.QObject):
                 print("Inside setup_feedback")
         ''' set up on/off feedback loop'''
         self.center_of_mass() #Esto se ejecuta para sacar self.focusSignal y configurar por primera vez el setpoint
-        self.setPoint = self.focusSignal * self.pxSize # define setpoint
+        self.setPoint = self.focusSignal * self.pxSize # define setpoint 
+        # [self.focusSignal]= px que se mueve el reflejo en z
+        # [pxSize] = nm/px en z (entra desde interfaz, sale de la calibración)
+        # [self.setPoint] = nm
         initial_z = tools.convert(self.adw.Get_FPar(72), 'UtoX') # current z position of the piezo
-        self.target_z = initial_z # set initial_z as target_z
+        # self.adw.Get_FPar(72) toma la posicion en bits de la ADwin, luego la convierte a unidades de longitud (µm)
+        self.target_z = initial_z # set initial_z as target_z, µm
         print("Valor de focus signal en setup_feedback:", self.focusSignal, " y setPoint: ", self.setPoint)
-        print("initial_z es target_z: ", initial_z)
-        self.changedSetPoint.emit(self.setPoint)
-        
+        print("initial_z es target_z: ", initial_z, "µm")
+        self.changedSetPoint.emit(self.setPoint) #Es posible que esta línea no afecte a update_feedback
+        # antes de enviaba self.focusSignal en lugar de setPoint FC
         # TO DO: implement calibrated version of this
     
     def update_feedback(self, mode='continous'):
@@ -735,6 +740,7 @@ class Backend(QtCore.QObject):
         self.center_of_mass() #Esto se ejecuta para sacar self.focusSignal activamente
          
         dz = self.focusSignal * self.pxSize - self.setPoint
+        #[dz] = px*(nm/px) - nm =nm
         print("dz: ", dz, "nm")
         
         threshold = 7 # in nm
@@ -755,6 +761,8 @@ class Backend(QtCore.QObject):
         else:
             
             self.target_z = self.target_z + dz/1000  # conversion to µm
+            # [self.target_z] = µm + nm/1000 = µm
+            print("self.target_z en update_feedback: ", self.target_z, "µm. Se envía a actuator_z")
                         
             if mode == 'continous':
                 
