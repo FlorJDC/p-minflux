@@ -134,7 +134,7 @@ class Frontend(QtGui.QFrame):
         value = np.array([xmin, xmax, ymin, ymax])  
             
         #value = np.array([y0, x0, y1, x1])
-        print("value: ", value)
+        print("Coordinates of the selected roi: ", value)
             
         self.changedROI.emit(value)
     
@@ -234,7 +234,7 @@ class Frontend(QtGui.QFrame):
         if self.feedbackLoopBox.isChecked():
             
             if DEBUG:
-                print("self.feedbackLoopBox.isChecked()")
+                print("self.feedbackLoopBox.isChecked() in get_data")
             if len(position) > 2:
                 print("len(position) is higher than 2")
         
@@ -562,8 +562,8 @@ class Backend(QtCore.QObject):
         self.adw.Set_FPar(36, tools.timeToADwin(pixeltime))
         
         # set-up actuator initial param
-    
-        z_f = tools.convert(10, 'XtoU') # TO DO: make this more robust 
+    ##################NO entiendo esto
+        z_f = tools.convert(10, 'XtoU') # TO DO: make this more robust #Cómo es esto de 10um para que convierta a bits
         self.adw.Set_FPar(32, z_f)
         self.adw.Set_Par(30, 1)
         
@@ -682,6 +682,9 @@ class Backend(QtCore.QObject):
         if val is True:
             if DEBUG:
                 print("Inside toggle_feedback in val is True")
+            #Aquí capaz que puedo llamar a center of mass en lugar de hacerlo en setup_feedback
+            self.center_of_mass()
+            print("sigo en toggle_feedback")
             self.reset()
             self.setup_feedback()
             self.update()
@@ -691,7 +694,7 @@ class Backend(QtCore.QObject):
             
             if mode == 'continous':
                 if DEBUG:
-                    print("Inside toggle_feedback")
+                    print("Inside toggle_feedback in mode continuous")
             
                 self.set_actuator_param()
 #                self.adw.Set_Par(39, 0)
@@ -719,6 +722,8 @@ class Backend(QtCore.QObject):
         if DEBUG:
                 print("Inside setup_feedback")
         ''' set up on/off feedback loop'''
+        #Creo que podría anular la siguiente linea si va en toggle_feedback
+        
         self.center_of_mass() #Esto se ejecuta para sacar self.focusSignal y configurar por primera vez el setpoint
         self.setPoint = self.focusSignal * self.pxSize # define setpoint 
         # [self.focusSignal]= px que se mueve el reflejo en z
@@ -729,6 +734,7 @@ class Backend(QtCore.QObject):
         self.target_z = initial_z # set initial_z as target_z, µm
         print("Valor de focus signal en setup_feedback:", self.focusSignal, " y setPoint: ", self.setPoint)
         print("initial_z es target_z: ", initial_z, "µm")
+        print("esto salió de tomar la posicion del piezo en bits y convertir a um")
         self.changedSetPoint.emit(self.setPoint) #Es posible que esta línea no afecte a update_feedback
         # antes de enviaba self.focusSignal en lugar de setPoint FC
         # TO DO: implement calibrated version of this
@@ -779,11 +785,12 @@ class Backend(QtCore.QObject):
         ''' update of the data displayed in the gui graph '''
 
         if self.ptr < self.npoints:
-            self.data[self.ptr] = self.focusSignal
+            self.data[self.ptr] = self.focusSignal #Ahora se supone que focusSiganl no es cero
             print("focusSignal in update_graph_data: ", self.focusSignal)
+            print("Ya no es cero")
             self.time[self.ptr] = self.currentTime
             
-            self.changedData.emit(self.time[0:self.ptr + 1],
+            self.changedData.emit(self.time[0:self.ptr + 1], #Esta señal va a get_data
                                   self.data[0:self.ptr + 1])
 
         else:
@@ -852,7 +859,8 @@ class Backend(QtCore.QObject):
         #image = np.sum(raw_image, axis=2)  #comment FC 28-9 # sum the R, G, B images
         self.image = raw_image[:, :, 0] # take only R channel
         # send image to gui
-        self.changedImage.emit(self.image)
+        self.changedImage.emit(self.image) #esta señal va a get_image
+        self.center_of_mass() #para tener focus signal #VER CÖMO CAMBIA ESTO EL DESARROLLO DE LAS COSAS
         self.currentTime = ptime.time() - self.startTime
         
     def center_of_mass(self):
@@ -962,6 +970,7 @@ class Backend(QtCore.QObject):
 
         self.max_dev = 0
         self.mean = self.focusSignal
+        print("focusSignal in reset: ", self.mean)
         self.std = 0
         self.n = 1
         
