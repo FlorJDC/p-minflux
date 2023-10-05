@@ -43,8 +43,8 @@ from drivers import bpc_piezo as bpc
 DEBUG = True
 VIDEO = False
 
-PX_SIZE = 29.0 # px size of camera in nm
-PX_Z = 25.0 # px size for z in nm
+PX_SIZE = 32.0 # px size of camera in nm
+PX_Z = 50.0 # px size for z in nm
 
 # N_NP = 10 # number of AuNP required
 
@@ -603,9 +603,9 @@ class Backend(QtCore.QObject):
         super().__init__(*args, **kwargs)
         
         self.camera = thorcam # no need to setup or initialize camera
-        self.camera.master_gain = 4
-        self.camera.auto_blacklevel = True
-        self.camera.gain_boost = True
+        self.camera.master_gain = 1
+        #self.camera.auto_blacklevel = True
+        #self.camera.gain_boost = True
         
         if VIDEO:
             self.video = []
@@ -671,7 +671,7 @@ class Backend(QtCore.QObject):
         
         self.camON = True
         self.camera.start_live_video()
-        self.camera._set_exposure(Q_('50 ms')) # ms
+        self.camera._set_exposure(Q_('5 ms')) # ms
 
         self.view_timer.start(self.xyz_time)
         
@@ -744,9 +744,10 @@ class Backend(QtCore.QObject):
         raw_image = self.camera.latest_frame()
         
         # self.image = np.sum(raw_image, axis=2)   # sum the R, G, B images
-        self.image = raw_image[:, :, 0] # take only R channel
-        
+        #self.image = raw_image[:, :, 0] # take only R channel
+        self.image = raw_image #Es para ids
         # WARNING: fix to match camera orientation with piezo orientation
+        
         self.image = np.rot90(self.image, k=3)
         
         if np.all(self.previous_image == self.image):

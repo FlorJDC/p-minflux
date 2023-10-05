@@ -856,7 +856,8 @@ class Backend(QtCore.QObject):
         raw_image = self.camera.latest_frame()
 
         #image = np.sum(raw_image, axis=2)  #comment FC 28-9 # sum the R, G, B images
-        self.image = raw_image[:, :, 0] # take only R channel
+        #self.image = raw_image[:, :, 0] #Comment FC para colocar IDS # take only R channel
+        self.image = raw_image #Esta linea es para ids, comentar para thorcam
         # WARNING: fix to match camera orientation with piezo orientation
         self.image = np.rot90(self.image, k=3)
         # send image to gui
@@ -1375,7 +1376,7 @@ if __name__ == '__main__':
     try:
         cam = uc480.UC480_Camera()
     except:
-        print("error with cam")
+        print("Error with cam")
     gui = Frontend()   
     worker = Backend(cam, adw)
     worker.standAlone = True
