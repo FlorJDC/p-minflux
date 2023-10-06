@@ -45,29 +45,31 @@ def main():
             print("No device found. Exiting Program.")
             return
         
-        # list all available devices
-        # for i, device in enumerate(device_manager.Devices()):
-        #     print(str(i) + ": " + device.ModelName() + " ("
-        #           + device.ParentInterface().DisplayName() + "; "
-        #           + device.ParentInterface().ParentSystem().DisplayName() + "v."
-        #           + device.ParentInterface().ParentSystem().Version() + ")")
+        #list all available devices
+        for i, device in enumerate(device_manager.Devices()):
+            print(str(i) + ": " + device.ModelName() + " ("
+                  + device.ParentInterface().DisplayName() + "; "
+                  + device.ParentInterface().ParentSystem().DisplayName() + " v."
+                  + device.ParentInterface().ParentSystem().Version() + ")")
 
-        # # select a device to open
-        # selected_device = None
-        # print("Nro de dispositivos: ", range(len(device_manager.Devices())))
-        # while True:
-        #     try:
-        #         selected_device = int(input("Select device to open: "))
-        #         if selected_device in range(len(device_manager.Devices())):
-        #             break
-        #         else:
-        #             print("Invalid ID.")
-        #     except ValueError:
-        #         print("Please enter a correct id.")
-        #         continue
+        # select a device to open
+        selected_device = None
+        #print("Selected device: ", selected_device)
+        print("Nro de dispositivos: ", range(len(device_manager.Devices())))
+        while True:
+            try:
+                selected_device = int(input("Select device to open: "))
+                if selected_device in range(len(device_manager.Devices())):
+                    break
+                else:
+                    print("Invalid ID.")
+            except ValueError:
+                print("Please enter a correct id.")
+                continue
 
-        # open selected device
-        device = device_manager.Devices()[1].OpenDevice(ids_peak.DeviceAccessType_Control)
+        #open selected device
+        device = device_manager.Devices()[selected_device].OpenDevice(ids_peak.DeviceAccessType_Control)
+        
         print("llego aqui")
         # get the remote device node map
         nodemap_remote_device = device.RemoteDevice().NodeMaps()[0]
@@ -100,6 +102,8 @@ def main():
     finally:
         input("Press Enter to continue...")
         ids_peak.Library.Close()
+        print("Camera closed")
+        
 
 
 if __name__ == '__main__':

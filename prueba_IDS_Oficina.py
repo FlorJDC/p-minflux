@@ -6,7 +6,7 @@ Created on Fri Oct  6 13:47:41 2023
 """
 
 from ids_peak import ids_peak
-from ids_peak_ipl import ids_peak_ipl
+#from ids_peak_ipl import ids_peak_ipl
 import numpy as np
 import cv2
 
@@ -27,7 +27,7 @@ def main():
         # exit program if no device was found
         if device_manager.Devices().empty():
             print("No device was found. Exiting Program.")
-            return
+            return -1
         #Open first available device
         device = device_manager.Devices()[0].OpenDevice(ids_peak.DeviceAccessType_Control)
         #Get the remote device node map
@@ -35,5 +35,12 @@ def main():
         
         #Print model name and user ID
         print("Opening camera model: "+ nodemap_remote_device.FindNode("DeviceModeName").Value())
+        nodemap_remote_device.FindNode("ExposureTime").SetValue(218000)
+    except Exception as e:
+        print("Exception: "+str(e)+"")
+    finally:
+        ids_peak.Library.Close()
         
+if __name__ == '__main__':
+   main()        
         
