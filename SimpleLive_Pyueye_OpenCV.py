@@ -74,12 +74,12 @@ nRet = ueye.is_GetSensorInfo(hCam, sInfo)
 if nRet != ueye.IS_SUCCESS:
     print("is_GetSensorInfo ERROR")
 
-nRet = ueye.is_ResetToDefault( hCam) # Restablece todos los parámetros a los valores predeterminados
+nRet = ueye.is_ResetToDefault( hCam)
 if nRet != ueye.IS_SUCCESS:
     print("is_ResetToDefault ERROR")
 
 # Set display mode to DIB
-nRet = ueye.is_SetDisplayMode(hCam, ueye.IS_SET_DM_DIB) # Captura una imagen en la memoria del sistema (RAM). 
+nRet = ueye.is_SetDisplayMode(hCam, ueye.IS_SET_DM_DIB)
 
 # Set the right color mode
 if int.from_bytes(sInfo.nColorMode.value, byteorder='big') == ueye.IS_COLORMODE_BAYER:
