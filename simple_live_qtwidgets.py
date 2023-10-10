@@ -30,7 +30,7 @@ try:
 except ImportError:
     from PySide2.QtWidgets import QApplication
 
-from mainwindow import MainWindow
+from mainwindow import MainWindow #La clase MainWindow posee todas las funciones  open_device/cloe_device/start_acquisition/stop_acquisition
 
 
 def main():

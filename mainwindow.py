@@ -44,10 +44,10 @@ class MainWindow(QMainWindow):
     def __init__(self, parent: QWidget = None):
         super().__init__(parent)
 
-        self.widget = QWidget(self)
-        self.__layout = QVBoxLayout()
-        self.widget.setLayout(self.__layout)
-        self.setCentralWidget(self.widget)
+        self.widget = QWidget(self)#widget principal (self.widget) 
+        self.__layout = QVBoxLayout()# un diseño vertical (self.__layout) para organizar los elementos de la GUI
+        self.widget.setLayout(self.__layout) #configuración del widget principal como el widget central de la ventana principal.
+        self.setCentralWidget(self.widget) 
 
         self.__device = None
         self.__nodemap_remote_device = None
@@ -189,6 +189,7 @@ class MainWindow(QMainWindow):
         # acquisition interval to the maximum possible framerate
         try:
             max_fps = self.__nodemap_remote_device.FindNode("AcquisitionFrameRate").Maximum()
+            print("Max Frame Rate: ", max_fps, "FPS_LIMIT: ", FPS_LIMIT)
             target_fps = min(max_fps, FPS_LIMIT)
             self.__nodemap_remote_device.FindNode("AcquisitionFrameRate").SetValue(target_fps)
         except ids_peak.Exception:
