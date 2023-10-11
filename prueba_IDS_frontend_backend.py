@@ -34,6 +34,7 @@ from scipy import optimize as opt
 from ids_peak import ids_peak
 from mainwindow import MainWindow 
 DEBUG = True
+FPS_LIMIT = 30
 
 
 class Frontend(QtGui.QFrame):
@@ -392,7 +393,7 @@ class Backend(QtCore.QObject):
             print("Inside init in backend")
         super().__init__(*args, **kwargs)
 
-        self.camera = camera #es self.device
+        self.camera = camera #es self.__device #es device_manager.Devices()[0]
         self.standAlone = False
         self.camON = False
         self.roi_area = np.zeros(4)
@@ -415,9 +416,6 @@ class Backend(QtCore.QObject):
         self.focusTime = 1000 / self.scansPerS
         self.focusTimer = QtCore.QTimer()
         
-        #self.reset()
-        #self.reset_data_arrays()
-        
         self.nodemap_remote_device = None
         self.datastream = None
 
@@ -431,6 +429,7 @@ class Backend(QtCore.QObject):
         self.__label_version = None
         self.__label_aboutqt = None
         
+        #These lines open the device
         # Open standard data stream
         datastreams = self.camera.DataStreams()
         if datastreams.empty():
@@ -483,35 +482,82 @@ class Backend(QtCore.QObject):
             self.camON = False
 
         
-    def liveview_start(self):  
-        #Aquí debería empezar start_acquisition, se supone que está listo
-        if self.camON:
-            print("Liveview-start")
-            self.camera.stop_capture()
-            self.camON = False
-        print("Liveview-start second line")
-        self.camON = True
-        self.camera.start_capture()
-        #self.camera.set_exposure_time(Q_('5 ms')) #Original THORCAM 50ms
-        print("camera started live video mode")
+    def liveview_start(self):
+        try:
+            max_fps = self.__nodemap_remote_device.FindNode("AcquisitionFrameRate").Maximum()
+            print("Max Frame Rate: ", max_fps, "FPS_LIMIT: ", FPS_LIMIT)
+            target_fps = min(max_fps, FPS_LIMIT)
+            self.__nodemap_remote_device.FindNode("AcquisitionFrameRate").SetValue(target_fps)
+        except ids_peak.Exception:
+            # AcquisitionFrameRate is not available. Unable to limit fps. Print warning and continue on.
+            print("Warning","Unable to limit fps, since the AcquisitionFrameRate Node is",target_fps," not supported by the connected camera. Program will continue without limit.")
 
-        self.focusTimer.start(self.focusTime)
-        print("focus timer started")
+        # Setup acquisition timer accordingly
+        self.focusTimer.setInterval((1 / target_fps) * 1000)
+        self.focusTimer.setSingleShot(False)
+        #self.__acquisition_timer.timeout.connect(self.on_acquisition_timer)
+
+        try:
+            # Lock critical features to prevent them from changing during acquisition
+            self.nodemap_remote_device.FindNode("TLParamsLocked").SetValue(1)
+
+            # Start acquisition on camera #Parece que son estas tres lineas
+            self.datastream.StartAcquisition()
+            self.nodemap_remote_device.FindNode("AcquisitionStart").Execute()
+            self.nodemap_remote_device.FindNode("AcquisitionStart").WaitUntilDone()
+            
+        except Exception as e:
+            print("Exception: " + str(e))
+
+        # Start acquisition timer
+        self.focusTimer.start()
+        #Antes:
+        # if self.camON:
+        #     print("Liveview-start")
+        #     self.camera.stop_capture()
+        #     self.camON = False
+        # print("Liveview-start second line")
+        # self.camON = True
+        # self.camera.start_capture()
+        # #self.camera.set_exposure_time(Q_('5 ms')) #Original THORCAM 50ms
+        # print("camera started live video mode")
+
+        # self.focusTimer.start(self.focusTime)
+        # print("focus timer started")
         
     def liveview_stop(self):
-        if DEBUG:
-            print("Inside Liveview-stop")
-        self.focusTimer.stop()
-        print("focusTimer: stopped")
-        self.camON = False
+        try:
+            remote_nodemap = self.camera.RemoteDevice().NodeMaps()[0]
+            remote_nodemap.FindNode("AcquisitionStop").Execute()
+
+            # Stop and flush datastream
+            self.datastream.KillWait()
+            self.datastream.StopAcquisition(ids_peak.AcquisitionStopMode_Default)
+            self.datastream.Flush(ids_peak.DataStreamFlushMode_DiscardAll)
+
+            # Unlock parameters after acquisition stop
+            if self.nodemap_remote_device is not None:
+                try:
+                    self.nodemap_remote_device.FindNode("TLParamsLocked").SetValue(0)
+                except Exception as e:
+                    print("Exception in nodemap_remote_device", str(e))
+
+        except Exception as e:
+             print("Exception in liveview_stop", str(e))
+        #Antes
+        # if DEBUG:
+        #     print("Inside Liveview-stop")
+        # self.focusTimer.stop()
+        # print("focusTimer: stopped")
+        # self.camON = False
         
-        x0 = 0
-        y0 = 0
-        x1 = 1280 
-        y1 = 1024 
+        # x0 = 0
+        # y0 = 0
+        # x1 = 1280 
+        # y1 = 1024 
             
-        val = np.array([x0, y0, x1, y1])
-        print("val en liveview_stop:", val)
+        # val = np.array([x0, y0, x1, y1])
+        # print("val en liveview_stop:", val)
                              
     def update(self):
         if DEBUG:
@@ -566,18 +612,13 @@ class Backend(QtCore.QObject):
                 print("Inside stop")
         
         self.focusTimer.stop()
-        
-        if self.standAlone is True:
-            
-            # Go back to 0 position
-    
-            x_0 = 0
-            y_0 = 0
-            z_0 = 0
-    
-            self.moveTo(x_0, y_0, z_0)
-            
-        self.camera.close()
+                
+        if self.datastream is not None:
+            try:
+                for buffer in self.datastream.AnnouncedBuffers():
+                    self.datastream.RevokeBuffer(buffer)
+            except Exception as e:
+                print("Exception in stop", str(e))
 
         print(datetime.now(), '[focus] Focus stopped')
         
@@ -594,10 +635,7 @@ class Backend(QtCore.QObject):
         if DEBUG:
                 print("Inside make_connection in Backend")
           
-        #frontend.changedROI.connect(self.get_new_roi)
         frontend.closeSignal.connect(self.stop)
-#        frontend.lockFocusSignal.connect(self.lock_focus)
-        #frontend.clearDataButton.clicked.connect(self.reset)
         frontend.paramSignal.connect(self.get_frontend_param)
         frontend.liveviewButton.clicked.connect(self.liveview)
         print("liveview & liviewbutton connected in backend- line 574")
@@ -619,6 +657,7 @@ if __name__ == '__main__':
     
     # Initialize device     
     ids_peak.Library.Initialize()
+    
     # create a device manager object
     device_manager = ids_peak.DeviceManager.Instance()
     print("Device: ", device_manager)
