@@ -32,7 +32,8 @@ from scipy import optimize as opt
 #from instrumental.drivers.cameras import uc480
 #from instrumental import Q_
 from ids_peak import ids_peak
-from mainwindow import MainWindow 
+from mainwindow import MainWindow
+from display import Display
 DEBUG = True
 FPS_LIMIT = 30
 
@@ -111,17 +112,17 @@ class Frontend(QtGui.QFrame):
         
         if DEBUG:
             print("Inside select_roi")
-        #self.cropped = True
-        self.getStats = True
-        xmin, ymin = self.roi.pos()
-        xmax, ymax = self.roi.pos() + self.roi.size()
+        # #self.cropped = True
+        # self.getStats = True
+        # xmin, ymin = self.roi.pos()
+        # xmax, ymax = self.roi.pos() + self.roi.size()
         
-        value = np.array([xmin, xmax, ymin, ymax])  
+        # value = np.array([xmin, xmax, ymin, ymax])  
             
-        #value = np.array([y0, x0, y1, x1])
-        print("Coordinates of the selected roi: ", value)
+        # #value = np.array([y0, x0, y1, x1])
+        # print("Coordinates of the selected roi: ", value)
             
-        self.changedROI.emit(value)
+        # self.changedROI.emit(value)
     
         #self.vb.removeItem(self.roi)
         #elf.roi.hide()
@@ -484,10 +485,10 @@ class Backend(QtCore.QObject):
         
     def liveview_start(self):
         try:
-            max_fps = self.__nodemap_remote_device.FindNode("AcquisitionFrameRate").Maximum()
+            max_fps = self.nodemap_remote_device.FindNode("AcquisitionFrameRate").Maximum()
             print("Max Frame Rate: ", max_fps, "FPS_LIMIT: ", FPS_LIMIT)
             target_fps = min(max_fps, FPS_LIMIT)
-            self.__nodemap_remote_device.FindNode("AcquisitionFrameRate").SetValue(target_fps)
+            self.nodemap_remote_device.FindNode("AcquisitionFrameRate").SetValue(target_fps)
         except ids_peak.Exception:
             # AcquisitionFrameRate is not available. Unable to limit fps. Print warning and continue on.
             print("Warning","Unable to limit fps, since the AcquisitionFrameRate Node is",target_fps," not supported by the connected camera. Program will continue without limit.")
@@ -572,11 +573,11 @@ class Backend(QtCore.QObject):
                 
         # acquire image
     
-        raw_image = self.camera.retrieve_buffer()
+        self.__display = Display()
 
         #image = np.sum(raw_image, axis=2)  #comment FC 28-9 # sum the R, G, B images
         #self.image = raw_image[:, :, 0] #Comment FC para colocar IDS # take only R channel
-        self.image = raw_image #Esta linea es para ids, comentar para thorcam
+        self.image = self.__display #Esta linea es para ids, comentar para thorcam
         # WARNING: fix to match camera orientation with piezo orientation
         self.image = np.rot90(self.image, k=3)
         # send image to gui
