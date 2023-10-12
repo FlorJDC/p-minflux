@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 from datetime import date, datetime
 import os
 
-import pyqtgraph as pg
+import pyqtgraph as pg #Se podría usar también Pyside6
 from pyqtgraph.Qt import QtCore, QtGui
 import pyqtgraph.ptime as ptime
 import qdarkstyle # see https://stackoverflow.com/questions/48256772/dark-theme-for-in-qt-widgets
@@ -676,7 +676,7 @@ if __name__ == '__main__':
     device = device_manager.Devices()[0] #Es self.__device
     cam = device.OpenDevice(ids_peak.DeviceAccessType_Control) #0 means the first device founded
     
-    gui = Frontend()   
+    gui = Frontend()   #Es el análogo a instanciar la clase Mainwindow: mainwindow=Mainwindow()
     worker = Backend(cam)
     worker.standAlone = True
     

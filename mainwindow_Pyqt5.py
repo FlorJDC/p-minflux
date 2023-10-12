@@ -20,15 +20,9 @@
 # General permission to copy or modify is hereby granted.
 
 import sys
-
-try:
-    from PySide6.QtWidgets import QHBoxLayout, QVBoxLayout, QLabel, QMainWindow, QMessageBox, QWidget
-    from PySide6.QtGui import QImage
-    from PySide6.QtCore import Qt, Slot, QTimer
-except ImportError:
-    from PySide2.QtWidgets import QHBoxLayout, QVBoxLayout, QLabel, QMainWindow, QMessageBox, QWidget
-    from PySide2.QtGui import QImage
-    from PySide2.QtCore import Qt, Slot, QTimer
+from PyQt5 import QtWidgets, QtGui, QtCore
+from PyQt5.QtCore import Qt, pyqtSlot
+import qdarkstyle
 
 from ids_peak import ids_peak
 from ids_peak_ipl import ids_peak_ipl
@@ -40,12 +34,12 @@ VERSION = "1.2.0"
 FPS_LIMIT = 30
 
 
-class MainWindow(QMainWindow):
-    def __init__(self, parent: QWidget = None):
+class MainWindow(QtWidgets.QMainWindow):
+    def __init__(self, parent = None):
         super().__init__(parent)
 
-        self.widget = QWidget(self)#widget principal (self.widget) 
-        self.__layout = QVBoxLayout()# un diseño vertical (self.__layout) para organizar los elementos de la GUI
+        self.widget = QtWidgets.QWidget(self)#widget principal (self.widget) 
+        self.__layout = QtWidgets.QVBoxLayout()# un diseño vertical (self.__layout) para organizar los elementos de la GUI
         self.widget.setLayout(self.__layout) #configuración del widget principal como el widget central de la ventana principal.
         self.setCentralWidget(self.widget) 
 
@@ -327,3 +321,21 @@ class MainWindow(QMainWindow):
     def on_aboutqt_link_activated(self, link):
         if link == "#aboutQt":
             QMessageBox.aboutQt(self, "About Qt")
+if __name__ == '__main__':
+    
+    app = QtWidgets.QApplication([])
+
+    app.setStyleSheet(qdarkstyle.load_stylesheet_pyqt5())
+
+    print(QtCore.QDateTime.currentDateTime(), '[focus] Focus lock module running in stand-alone mode')
+
+    main_window = MainWindow()
+
+    # El resto de tu código, como la configuración de la cámara IDS y otros elementos,
+    # debe seguir siendo compatible con PyQt5 y no necesita cambios importantes.
+
+    main_window.setWindowTitle('Focus lock')
+    main_window.resize(1500, 500)
+
+    main_window.show()
+    app.exec_()
