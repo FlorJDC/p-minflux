@@ -67,9 +67,9 @@ class MainWindow(QtWidgets.QMainWindow):
                 self.__display = Display()
                 self.__layout.addWidget(self.__display)
                 if not self.__start_acquisition():
-                    QtWidgets.QMessageBox.critical(self, "Unable to start acquisition!", QMessageBox.Ok)
+                    QtWidgets.QMessageBox.critical(self, "Unable to start acquisition!", QtWidgets.QMessageBox.Ok)
             except Exception as e:
-                QtWidgets.QMessageBox.critical(self, "Exception", str(e), QMessageBox.Ok)
+                QtWidgets.QMessageBox.critical(self, "Exception", str(e), QtWidgets.QMessageBox.Ok)
 
         else:
             self.__destroy_all()
@@ -321,21 +321,21 @@ class MainWindow(QtWidgets.QMainWindow):
     def on_aboutqt_link_activated(self, link):
         if link == "#aboutQt":
             QtWidgets.QMessageBox.aboutQt(self, "About Qt")
-if __name__ == '__main__':
+# if __name__ == '__main__':
     
-    app = QtWidgets.QApplication([])
+#     app = QtWidgets.QApplication([])
 
-    app.setStyleSheet(qdarkstyle.load_stylesheet_pyqt5())
+#     app.setStyleSheet(qdarkstyle.load_stylesheet_pyqt5())
 
-    print(QtCore.QDateTime.currentDateTime(), '[focus] Focus lock module running in stand-alone mode')
+#     print(QtCore.QDateTime.currentDateTime(), '[focus] Focus lock module running in stand-alone mode')
 
-    main_window = MainWindow()
+#     main_window = MainWindow()
 
-    # El resto de tu código, como la configuración de la cámara IDS y otros elementos,
-    # debe seguir siendo compatible con PyQt5 y no necesita cambios importantes.
+#     # El resto de tu código, como la configuración de la cámara IDS y otros elementos,
+#     # debe seguir siendo compatible con PyQt5 y no necesita cambios importantes.
 
-    main_window.setWindowTitle('Focus lock')
-    main_window.resize(1500, 500)
+#     main_window.setWindowTitle('Focus lock')
+#     main_window.resize(1500, 500)
 
-    main_window.show()
-    app.exec_()
+#     main_window.show()
+#     app.exec_()

@@ -42,46 +42,40 @@ import sys
 #sys.path.append('C:\Program Files\Thorlabs\Scientific Imaging\ThorCam') #Comento porque import sys está en mainwindow y parece ir a la ruta indicada sin problemas
 #No sabía cuál ruta poner  porque veo dlls en ids_peak en program / generic_sdk /comfort_sdk
 # install from https://instrumental-lib.readthedocs.io/en/stable/install.html
-import tools.viewbox_tools as viewbox_tools
-import tools.tools as tools
-import tools.PSF as PSF
-import tools.colormaps as cmaps
-from scipy import optimize as opt
-
 #from instrumental.drivers.cameras import uc480
 #from instrumental import Q_
-from ids_peak import ids_peak
+
 from mainwindow import MainWindow #La clase MainWindow posee todas las funciones  open_device/cloe_device/start_acquisition/stop_acquisition
+from display import Display
 
-if __name__ == '__main__':
-    print("Inside main")
-
-    app = QtGui.QApplication([])
-
+print("Starting application")
+app = QtGui.QApplication([])
+print("Success loading app")
     # app.setStyle(QtGui.QStyleFactory.create('fusion'))
-    app.setStyleSheet(qdarkstyle.load_stylesheet_pyqt5())
+app.setStyleSheet(qdarkstyle.load_stylesheet_pyqt5())
 
-    print(datetime.now(), '[focus] Focus lock module running in stand-alone mode')
+print(datetime.now(), 'running mode')
 
-    main_window = MainWindow()
+main_window = MainWindow()
 
 
-    try:
-        cam = main_window.__open_device()
-        if cam:
-            main_window.__display = Display()
-            main_window.__layout.addWidget(main_window.__display)
-            if not main_window.__start_acquisition():
-                QtGui.QMessageBox.critical(main_window, "Unable to start acquisition!", QtGui.QMessageBox.Ok)
+try:
+    cam = main_window.__open_device()
+    if cam:
+        main_window.__display = Display()
+        main_window.__layout.addWidget(main_window.__display)
+        if not main_window.__start_acquisition():
+            QtGui.QMessageBox.critical(main_window, "Unable to start acquisition!", QtGui.QMessageBox.Ok)
         else:
             QtGui.QMessageBox.critical(main_window, "Error with cam", "Error with cam", QtGui.QMessageBox.Ok)
-    except Exception as e:
-        QtGui.QMessageBox.critical(main_window, "Exception", str(e), QtGui.QMessageBox.Ok)
+except Exception as e:
+    QtGui.QMessageBox.critical(main_window, "Exception", str(e), QtGui.QMessageBox.Ok)
 
-    # Resto de tu código existente...
 
-    main_window.setWindowTitle('Focus lock')
-    main_window.resize(1500, 500)
+main_window.setWindowTitle('Focus lock')
+main_window.resize(1500, 500)
 
-    main_window.show()
-    app.exec_()
+main_window.show()
+app.exec_()
+    
+    
