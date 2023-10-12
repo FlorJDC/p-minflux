@@ -61,6 +61,7 @@ class MainWindow(QtWidgets.QMainWindow):
     
             # initialize peak library
             ids_peak.Library.Initialize()
+            print("Success initializing constructor")
         except Exception as e:
             print("Error al inicializar MainWindow:", str(e))
             raise
@@ -70,6 +71,7 @@ class MainWindow(QtWidgets.QMainWindow):
                 # Create a display for the camera image
                 self.__display = Display()
                 self.__layout.addWidget(self.__display)
+                print("Succes calling Display module")
                 if not self.__start_acquisition():
                     QtWidgets.QMessageBox.critical(self, "Unable to start acquisition!", QtWidgets.QMessageBox.Ok)
             except Exception as e:
@@ -85,9 +87,11 @@ class MainWindow(QtWidgets.QMainWindow):
         
     def __del__(self):
         self.__destroy_all()
+        print("inside destroy_all")
 
     def __destroy_all(self):
         # Stop acquisition
+        print("Inside destroy_all")
         self.__stop_acquisition()
 
         # Close device and peak library
@@ -101,6 +105,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
             # Update the device manager
             device_manager.Update()
+            print("Success in updating")
 
             # Return if no device was found
             if device_manager.Devices().empty():
@@ -126,18 +131,24 @@ class MainWindow(QtWidgets.QMainWindow):
                 return False
 
             self.__datastream = datastreams[0].OpenDataStream()
+            print("Success opening datastream")
 
             # Get nodemap of the remote device for all accesses to the genicam nodemap tree
             self.__nodemap_remote_device = self.__device.RemoteDevice().NodeMaps()[0]
+            print("Success opening nodemap")
 
             # To prepare for untriggered continuous image acquisition, load the default user set if available and
             # wait until execution is finished
             try:
+                print("line143")
                 self.__nodemap_remote_device.FindNode("UserSetSelector").SetCurrentEntry("Default")
-                self.__nodemap_remote_device.FindNode("UserSetLoad").Execute()
+                print(1)
+                #self.__nodemap_remote_device.FindNode("UserSetLoad").Execute() #Esta es la linea del error
+                print(2)
                 self.__nodemap_remote_device.FindNode("UserSetLoad").WaitUntilDone()
+                print("line147")
             except ids_peak.Exception:
-                # Userset is not available
+                print("Userset is not available")
                 pass
 
             # Get the payload size for correct buffer allocation
@@ -150,11 +161,11 @@ class MainWindow(QtWidgets.QMainWindow):
             for i in range(buffer_count_max):
                 buffer = self.__datastream.AllocAndAnnounceBuffer(payload_size)
                 self.__datastream.QueueBuffer(buffer)
-
+            print("ready to say true")    
             return True
         except ids_peak.Exception as e:
             QtWidgets.QMessageBox.critical(self, "Exception", str(e), QtWidgets.QMessageBox.Ok)
-
+        print("ready to say false")
         return False
 
     def __close_device(self):
@@ -163,6 +174,7 @@ class MainWindow(QtWidgets.QMainWindow):
         """
         # Stop Acquisition in case it is still running
         self.__stop_acquisition()
+        print("inside close_device")
 
         # If a datastream has been opened, try to revoke its image buffers
         if self.__datastream is not None:
@@ -283,7 +295,6 @@ class MainWindow(QtWidgets.QMainWindow):
         """
         self.__label_infos.setText("Acquired: " + str(self.__frame_counter) + ", Errors: " + str(self.__error_counter))
 
-    @pyqtSlot()
     def on_acquisition_timer(self):
         """
         This function gets called on every timeout of the acquisition timer
@@ -321,7 +332,7 @@ class MainWindow(QtWidgets.QMainWindow):
         # Update counters
         self.update_counters()
 
-    @pyqtSlot(str)
+
     def on_aboutqt_link_activated(self, link):
         if link == "#aboutQt":
             QtWidgets.QMessageBox.aboutQt(self, "About Qt")
@@ -336,9 +347,6 @@ if __name__ == '__main__':
     print(QtCore.QDateTime.currentDateTime(), 'running in stand-alone mode')
 
     main_window = MainWindow()
-
-    #main_window.setWindowTitle('Focus lock')
-    #main_window.resize(1500, 500)
 
     main_window.show()
     app.exec_()
