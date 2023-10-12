@@ -143,7 +143,7 @@ class MainWindow(QtWidgets.QMainWindow):
                 print("line143")
                 self.__nodemap_remote_device.FindNode("UserSetSelector").SetCurrentEntry("Default")
                 print(1)
-                #self.__nodemap_remote_device.FindNode("UserSetLoad").Execute() #Esta es la linea del error
+                self.__nodemap_remote_device.FindNode("UserSetLoad").Execute() #Esta es la linea del error
                 print(2)
                 self.__nodemap_remote_device.FindNode("UserSetLoad").WaitUntilDone()
                 print("line147")
