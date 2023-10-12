@@ -36,30 +36,34 @@ FPS_LIMIT = 30
 
 class MainWindow(QtWidgets.QMainWindow):
     def __init__(self, parent = None):
-        super().__init__(parent)
-
-        self.widget = QtWidgets.QWidget(self)#widget principal (self.widget) 
-        self.__layout = QtWidgets.QVBoxLayout()# un diseño vertical (self.__layout) para organizar los elementos de la GUI
-        self.widget.setLayout(self.__layout) #configuración del widget principal como el widget central de la ventana principal.
-        self.setCentralWidget(self.widget) 
-
-        self.__device = None
-        self.__nodemap_remote_device = None
-        self.__datastream = None
-        
-        #Variables de instancia relacionadas con laadquisición de imágenes
-        self.__display = None
-        self.__acquisition_timer = QtCore.QTimer() #temporizador para controlar la frecuencia de adquisición,
-        self.__frame_counter = 0 #Contador del numero de cuadros
-        self.__error_counter = 0 #Contador del numero de errores
-        self.__acquisition_running = False #bandera para indicar si la adquisición está en curso.
-        #Declara variables de instancia para etiquetas de información en la GUI, incluyendo la versión de la aplicación y un enlace "Acerca de Qt".
-        self.__label_infos = None
-        self.__label_version = None
-        self.__label_aboutqt = None
-
-        # initialize peak library
-        ids_peak.Library.Initialize()
+        try:
+            super().__init__(parent)
+    
+            self.widget = QtWidgets.QWidget(self)#widget principal (self.widget) 
+            self.__layout = QtWidgets.QVBoxLayout()# un diseño vertical (self.__layout) para organizar los elementos de la GUI
+            self.widget.setLayout(self.__layout) #configuración del widget principal como el widget central de la ventana principal.
+            self.setCentralWidget(self.widget) 
+    
+            self.__device = None
+            self.__nodemap_remote_device = None
+            self.__datastream = None
+            
+            #Variables de instancia relacionadas con laadquisición de imágenes
+            self.__display = None
+            self.__acquisition_timer = QtCore.QTimer() #temporizador para controlar la frecuencia de adquisición,
+            self.__frame_counter = 0 #Contador del numero de cuadros
+            self.__error_counter = 0 #Contador del numero de errores
+            self.__acquisition_running = False #bandera para indicar si la adquisición está en curso.
+            #Declara variables de instancia para etiquetas de información en la GUI, incluyendo la versión de la aplicación y un enlace "Acerca de Qt".
+            self.__label_infos = None
+            self.__label_version = None
+            self.__label_aboutqt = None
+    
+            # initialize peak library
+            ids_peak.Library.Initialize()
+        except Exception as e:
+            print("Error al inicializar MainWindow:", str(e))
+            raise
 
         if self.__open_device():
             try:
@@ -279,7 +283,7 @@ class MainWindow(QtWidgets.QMainWindow):
         """
         self.__label_infos.setText("Acquired: " + str(self.__frame_counter) + ", Errors: " + str(self.__error_counter))
 
-    #@Slot()
+    @pyqtSlot()
     def on_acquisition_timer(self):
         """
         This function gets called on every timeout of the acquisition timer
@@ -317,25 +321,24 @@ class MainWindow(QtWidgets.QMainWindow):
         # Update counters
         self.update_counters()
 
-    #@Slot(str)
+    @pyqtSlot(str)
     def on_aboutqt_link_activated(self, link):
         if link == "#aboutQt":
             QtWidgets.QMessageBox.aboutQt(self, "About Qt")
-# if __name__ == '__main__':
-    
-#     app = QtWidgets.QApplication([])
+            
+if __name__ == '__main__':
+    print("starting application")
+    app = QtWidgets.QApplication([])
+    print("application started")
 
-#     app.setStyleSheet(qdarkstyle.load_stylesheet_pyqt5())
+    app.setStyleSheet(qdarkstyle.load_stylesheet_pyqt5())
 
-#     print(QtCore.QDateTime.currentDateTime(), '[focus] Focus lock module running in stand-alone mode')
+    print(QtCore.QDateTime.currentDateTime(), 'running in stand-alone mode')
 
-#     main_window = MainWindow()
+    main_window = MainWindow()
 
-#     # El resto de tu código, como la configuración de la cámara IDS y otros elementos,
-#     # debe seguir siendo compatible con PyQt5 y no necesita cambios importantes.
+    #main_window.setWindowTitle('Focus lock')
+    #main_window.resize(1500, 500)
 
-#     main_window.setWindowTitle('Focus lock')
-#     main_window.resize(1500, 500)
-
-#     main_window.show()
-#     app.exec_()
+    main_window.show()
+    app.exec_()
