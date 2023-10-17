@@ -67,6 +67,7 @@ class MainWindow(QtWidgets.QMainWindow):
             raise
 
         if self.__open_device():
+            print("Volvió de opne_device")
             try:
                 # Create a display for the camera image
                 self.__display = Display()
@@ -108,9 +109,9 @@ class MainWindow(QtWidgets.QMainWindow):
             print("Success in updating")
 
             # Return if no device was found
-            if device_manager.Devices().empty():
-                QtWidgets.QMessageBox.critical(self, "Error", "No device found!", QtWidgets.QMessageBox.Ok)
-                return False
+            # if device_manager.Devices().empty():
+            #     QtWidgets.QMessageBox.critical(self, "Error", "No device found!", QtWidgets.QMessageBox.Ok)
+            #     return False
 
             # Open the first openable device in the managers device list
             for device in device_manager.Devices():
@@ -119,33 +120,34 @@ class MainWindow(QtWidgets.QMainWindow):
                     break
 
             # Return if no device could be opened
-            if self.__device is None:
-                QtWidgets.QMessageBox.critical(self, "Error", "Device could not be opened!", QtWidgets.QMessageBox.Ok)
-                return False
+            # if self.__device is None:
+            #     QtWidgets.QMessageBox.critical(self, "Error", "Device could not be opened!", QtWidgets.QMessageBox.Ok)
+            #     return False
 
             # Open standard data stream
             datastreams = self.__device.DataStreams()
-            if datastreams.empty():
-                QtWidgets.QMessageBox.critical(self, "Error", "Device has no DataStream!", QtWidgets.QMessageBox.Ok)
-                self.__device = None
-                return False
-
-            self.__datastream = datastreams[0].OpenDataStream()
-            print("Success opening datastream")
-
+            # if datastreams.empty():
+            #     QtWidgets.QMessageBox.critical(self, "Error", "Device has no DataStream!", QtWidgets.QMessageBox.Ok)
+            #     self.__device = None
+            #     return False
+            
             # Get nodemap of the remote device for all accesses to the genicam nodemap tree
             self.__nodemap_remote_device = self.__device.RemoteDevice().NodeMaps()[0]
             print("Success opening nodemap")
 
-            # To prepare for untriggered continuous image acquisition, load the default user set if available and
-            # wait until execution is finished
+            self.__datastream = datastreams[0].OpenDataStream()
+            print("Success opening datastream")
+
+
+            #To prepare for untriggered continuous image acquisition, load the default user set if available and
+            #wait until execution is finished
             try:
                 print("line143")
-                self.__nodemap_remote_device.FindNode("UserSetSelector").SetCurrentEntry("Default")
+                #self.__nodemap_remote_device.FindNode("UserSetSelector").SetCurrentEntry("Default")
                 print(1)
-                self.__nodemap_remote_device.FindNode("UserSetLoad").Execute() #Esta es la linea del error
+                #self.__nodemap_remote_device.FindNode("UserSetLoad").Execute() #Esta es la linea del error
                 print(2)
-                self.__nodemap_remote_device.FindNode("UserSetLoad").WaitUntilDone()
+                #self.__nodemap_remote_device.FindNode("UserSetLoad").WaitUntilDone()
                 print("line147")
             except ids_peak.Exception:
                 print("Userset is not available")
