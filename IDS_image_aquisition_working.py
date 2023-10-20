@@ -6,6 +6,7 @@ Created on Tue Oct 17 13:37:21 2023
 """
 import sys
 from ids_peak import ids_peak as peak
+import ids_peak_ipl
 
 class ids_cam:
     def __init__(self):
@@ -124,9 +125,18 @@ class ids_cam:
      
                 # Alloc buffers
                 for i in range(num_buffers_min_required+1):
-                    buffer = self.m_dataStream.AllocAndAnnounceBuffer(payload_size)
-                    print("type buffer",type(buffer))
-                    self.m_dataStream.QueueBuffer(buffer)
+                    try:
+                        
+                        #buffer = self.m_dataStream.AllocAndAnnounceBuffer(payload_size)
+                        buffer = self.m_dataStream.WaitForFinishedBuffer(5000)
+                        print("Numero: ",i, "type buffer",type(buffer))
+                        image = ids_peak_ipl.Image_CreateFromSizeAndBuffer(buffer.PixelFormat(), buffer.BasePtr(), buffer.Size(), buffer.Width(), buffer.Height())
+                        
+                        image = image.ConvertTo(ids_peak_ipl.PixelFormatName_BGRa8, ids_peak_ipl.ConversionMode_Fast)
+                        self.m_dataStream.QueueBuffer(buffer)
+                    except Exception as e:
+                        str_error = str(e)
+                        print("Error en parte nueva de buffers: ", str_error)
                 return True
         except Exception as e:
             str_error = str(e)
