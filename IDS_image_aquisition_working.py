@@ -6,7 +6,10 @@ Created on Tue Oct 17 13:37:21 2023
 """
 import sys
 from ids_peak import ids_peak as peak
-import ids_peak_ipl
+from ids_peak_ipl import ids_peak_ipl 
+import matplotlib.pyplot as plt
+from display import Display
+from ids_peak import ids_peak_ipl_extension
 
 class ids_cam:
     def __init__(self):
@@ -38,7 +41,7 @@ class ids_cam:
                 return False
         except Exception as e:
             str_error = str(e)
-            print("error opening cam: ", str(e))
+            print("error opening cam: ", str_error)
 
         
         return True
@@ -52,11 +55,12 @@ class ids_cam:
               print("no data streams available")
               return False
             self.m_dataStream = self.m_device.DataStreams()[0].OpenDataStream()
+            print(type(self.m_dataStream))
      
             return True
         except Exception as e:
             str_error = str(e)
-            print("error preparing acquisition", str(e))
+            print("error preparing acquisition", str_error)
             return False
      
      
@@ -101,11 +105,36 @@ class ids_cam:
                 return True
         except Exception as e:
             str_error = str(e)
-            print("Error setting roi: ", str(e))
+            print("Error setting roi: ", str_error)
             return False
      
      
     def alloc_and_announce_buffers(self):
+        try:
+            if self.m_dataStream:
+                self.revoke_buffers()
+                payload_size = self.m_node_map_remote_device.FindNode("PayloadSize").Value()
+                print(payload_size, "-> Payload_size") # Payload_size in this case is: 65536 bytes, for width = 256 and height = 256
+     
+                # Get number of minimum required buffers
+                num_buffers_min_required = self.m_dataStream.NumBuffersAnnouncedMinRequired()
+                print("num_buffers_min_required: ", num_buffers_min_required)
+     
+                # Alloc buffers
+                for i in range(num_buffers_min_required):
+                    try:
+                        buffer = self.m_dataStream.AllocAndAnnounceBuffer(payload_size)
+                        self.m_dataStream.QueueBuffer(buffer)
+                    except Exception as e:
+                        str_error = str(e)
+                        print("Error en parte nueva de buffers: ", str_error)
+                return True
+        except Exception as e:
+            str_error = str(e)
+            print("Error in buffers: ", str_error)
+            return False
+                
+    def revoke_buffers(self):
         try:
             if self.m_dataStream:
                 # Flush queue and prepare all buffers for revoking
@@ -114,35 +143,11 @@ class ids_cam:
                 # Clear all old buffers
                 for buffer in self.m_dataStream.AnnouncedBuffers():
                     self.m_dataStream.RevokeBuffer(buffer)
-     
-                payload_size = self.m_node_map_remote_device.FindNode("PayloadSize").Value()
-                print(payload_size, "-> Payload_size")
-     
-                # Get number of minimum required buffers
-                num_buffers_min_required = self.m_dataStream.NumBuffersAnnouncedMinRequired()
-                
-                print("num_buffers_min_required: ", num_buffers_min_required)
-     
-                # Alloc buffers
-                for i in range(num_buffers_min_required+1):
-                    try:
-                        
-                        #buffer = self.m_dataStream.AllocAndAnnounceBuffer(payload_size)
-                        buffer = self.m_dataStream.WaitForFinishedBuffer(5000)
-                        print("Numero: ",i, "type buffer",type(buffer))
-                        image = ids_peak_ipl.Image_CreateFromSizeAndBuffer(buffer.PixelFormat(), buffer.BasePtr(), buffer.Size(), buffer.Width(), buffer.Height())
-                        
-                        image = image.ConvertTo(ids_peak_ipl.PixelFormatName_BGRa8, ids_peak_ipl.ConversionMode_Fast)
-                        self.m_dataStream.QueueBuffer(buffer)
-                    except Exception as e:
-                        str_error = str(e)
-                        print("Error en parte nueva de buffers: ", str_error)
                 return True
         except Exception as e:
             str_error = str(e)
-            print("Error in buffers: ", str(e))
-            return False
-     
+            print("Error revoking buffers: ", str_error)
+            return False     
      
     def start_acquisition(self):
         try:
@@ -160,6 +165,39 @@ class ids_cam:
             str_error = str(e)
             print("Error starting acquisition",str_error)
             return False
+    
+    def show_image(self):
+        try:
+            # Get buffer from device's DataStream. Wait 5000 ms. The buffer is automatically locked until it is queued again.
+            if self.m_dataStream:
+                print("Estoy en show_image: ",type(self.m_dataStream))
+                # Get buffer from device's datastream
+                buffer = self.m_dataStream.WaitForFinishedBuffer(5000)
+                print(type(buffer))
+                print("buffer pixel format",buffer.PixelFormat())
+                print("buffer basePtr", buffer.BasePtr())
+                print("buffer size: ", buffer.Size(), "buffer width: ", buffer.Width(), "buffer height: ", buffer.Height())
+                #image = ids_peak_ipl.Image.CreateFromSizeAndBuffer(buffer.PixelFormat(), buffer.BasePtr(), buffer.Size(), buffer.Width(),buffer.Height())
+                ipl_image = ids_peak_ipl_extension.BufferToImage(buffer)
+                print("line 180 CreateFromSizeAndPythonBuffer")
+                converted_ipl_image = ipl_image.ConvertTo(ids_peak_ipl.PixelFormatName_BGRa8, ids_peak_ipl.ConversionMode_Fast)
+                print("image type: ", type(converted_ipl_image))
+                # Queue buffer again
+                self.m_dataStream.QueueBuffer(buffer)
+                # Get raw image data from converted image and construct a QImage from it
+                image_np_array = converted_ipl_image.get_numpy_2D()
+                print("size np array: ", len(image_np_array))
+                plt.imshow(image_np_array)
+                plt.colorbar()
+                plt.show()
+                print("again in queue")
+                return True
+        
+        except Exception as e:
+            str_error = str(e)
+            print("Error showing image: ",str_error)
+            return False
+        
      
      
     def work(self):     
@@ -169,7 +207,7 @@ class ids_cam:
         if not self.prepare_acquisition():
             # error
             sys.exit(-2)
-        if not self.set_roi(16, 16, 256, 256): #Antes en lugar 256 estaba 128
+        if not self.set_roi(16, 16, 256, 256): #Antes en lugar 256 estaba 128 #tercer parametro es width, then height
             # error
             sys.exit(-3)
         if not self.alloc_and_announce_buffers():
@@ -178,6 +216,10 @@ class ids_cam:
         if not self.start_acquisition():
             # error
             sys.exit(-5)
+        if not self.show_image():
+            # error
+            sys.exit(-6)
+            
         
         peak.Library.Close()
         sys.exit(0)
