@@ -311,7 +311,7 @@ class MainWindow(QMainWindow):
             image_cpy = image.copy()
 
             # Emit signal that the image is ready to be displayed
-            self.__display.on_image_received(image_cpy)
+            self.get_image(image_cpy)
             self.__display.update()
 
             # Increase frame counter
@@ -322,8 +322,160 @@ class MainWindow(QMainWindow):
 
         # Update counters
         self.update_counters()
+    
+    def get_image(self, img):
+        print(" Inside get_image ")
+        self.img.setImage(img, autoLevels=False)
 
     @Slot(str)
     def on_aboutqt_link_activated(self, link):
         if link == "#aboutQt":
             QMessageBox.aboutQt(self, "About Qt")
+            
+            
+    def setup_gui(self):
+        if DEBUG:
+            print("Inside setup_gui")
+        
+         # Focus lock widget
+         
+        self.setFrameStyle(QtGui.QFrame.Panel | QtGui.QFrame.Raised)
+        #self.setMinimumSize(width, height)
+        self.setMinimumSize(2,200)
+        
+        # LiveView Button
+
+        self.liveviewButton = QtGui.QPushButton('Camera LIVEVIEW')
+        self.liveviewButton.setCheckable(True)
+
+        # turn ON/OFF feedback loop
+        
+        self.feedbackLoopBox = QtGui.QCheckBox('Feedback loop')
+        
+        #shutter button and label
+        self.shutterLabel = QtGui.QLabel('Shutter open?')
+        self.shutterCheckbox = QtGui.QCheckBox('IR laser')
+        
+        # Create ROI button
+        
+        # TODO: completely remove the ROI stuff from the code
+
+        self.ROIbutton = QtGui.QPushButton('ROI')
+        self.ROIbutton.setCheckable(True)
+        
+        # Select ROI
+        self.selectROIbutton = QtGui.QPushButton('Select ROI')
+        
+        # Delete ROI
+        self.deleteROIbutton = QtGui.QPushButton('Delete ROI')
+        
+        self.calibrationButton = QtGui.QPushButton('Calibrate')
+        
+        self.exportDataButton = QtGui.QPushButton('Export data')
+        self.saveDataBox = QtGui.QCheckBox("Save data")
+        self.clearDataButton = QtGui.QPushButton('Clear data')
+        
+        self.pxSizeLabel = QtGui.QLabel('Pixel size (nm)')
+        self.pxSizeEdit = QtGui.QLineEdit('50') #Original: 10nm en focus.py
+        self.focusPropertiesDisplay = QtGui.QLabel(' st_dev = 0  max_dev = 0')
+        
+#        self.deleteROIbutton.setEnabled(False)
+#        self.selectROIbutton.setEnabled(False)
+
+        
+        # gui connections
+        
+        self.saveDataBox.stateChanged.connect(self.emit_save_data_state)
+        self.selectROIbutton.clicked.connect(self.select_roi)
+        self.clearDataButton.clicked.connect(self.clear_graph)
+        self.pxSizeEdit.textChanged.connect(self.emit_param)
+        self.deleteROIbutton.clicked.connect(self.delete_roi)
+        self.ROIbutton.clicked.connect(self.roi_method)
+
+        # focus camera display
+        
+        self.camDisplay = pg.GraphicsLayoutWidget()
+        self.camDisplay.setMinimumHeight(300)
+        self.camDisplay.setMinimumWidth(300)
+        
+        self.vb = self.camDisplay.addViewBox(row=0, col=0)
+        self.vb.setAspectLocked(True)
+        self.vb.setMouseMode(pg.ViewBox.RectMode)
+        self.img = pg.ImageItem()
+        self.img.translate(-0.5, -0.5)
+        self.vb.addItem(self.img)
+
+        self.hist = pg.HistogramLUTItem(image=self.img)   # set up histogram for the liveview image
+        lut = viewbox_tools.generatePgColormap(cmaps.inferno)
+        self.hist.gradient.setColorMap(lut)
+        self.hist.vb.setLimits(yMin=0, yMax=10000)
+
+        for tick in self.hist.gradient.ticks:
+            tick.hide()
+            
+        self.camDisplay.addItem(self.hist, row=0, col=1)
+        
+        # focus lock graph
+        
+        self.focusGraph = pg.GraphicsWindow()
+        self.focusGraph.setAntialiasing(True)
+        
+        self.focusGraph.statistics = pg.LabelItem(justify='right')
+        self.focusGraph.addItem(self.focusGraph.statistics, row=0, col=0)
+        self.focusGraph.statistics.setText('---')
+        
+        self.focusGraph.zPlot = self.focusGraph.addPlot(row=0, col=0)
+        self.focusGraph.zPlot.setLabels(bottom=('Time', 's'),
+                                        left=('CM x position', 'px'))
+        self.focusGraph.zPlot.showGrid(x=True, y=True)
+        self.focusCurve = self.focusGraph.zPlot.plot(pen='r')
+ 
+#        self.focusSetPoint = self.focusGraph.plot.addLine(y=self.setPoint, pen='r')
+
+        # GUI layout
+        
+        grid = QtGui.QGridLayout()
+        self.setLayout(grid)
+        
+        # parameters widget
+        
+        self.paramWidget = QtGui.QFrame()
+        self.paramWidget.setFrameStyle(QtGui.QFrame.Panel |
+                                       QtGui.QFrame.Raised)
+        #Widget size (widgets with buttons)
+        self.paramWidget.setFixedHeight(330)
+        self.paramWidget.setFixedWidth(140)
+        
+        subgrid = QtGui.QGridLayout()
+        self.paramWidget.setLayout(subgrid)
+        
+        subgrid.addWidget(self.calibrationButton, 7, 0, 1, 2)
+        subgrid.addWidget(self.exportDataButton, 5, 0, 1, 2)
+        subgrid.addWidget(self.clearDataButton, 6, 0, 1, 2)
+        
+        subgrid.addWidget(self.pxSizeLabel, 8, 0)
+        subgrid.addWidget(self.pxSizeEdit, 8, 1)
+        
+        subgrid.addWidget(self.feedbackLoopBox, 9, 0)
+        subgrid.addWidget(self.saveDataBox, 10, 0)
+        
+        #Create button        
+        #self.ROIButton = QtGui.QPushButton('ROI')
+#        self.ROIButton.setCheckable(True)
+#        self.ROIButton.clicked.connect(lambda: self.roi_method())
+        
+        subgrid.addWidget(self.liveviewButton, 1, 0, 1, 2)
+        subgrid.addWidget(self.ROIbutton, 2, 0, 1, 2)
+        subgrid.addWidget(self.selectROIbutton, 3, 0, 1, 2)
+        subgrid.addWidget(self.deleteROIbutton, 4, 0, 1, 2)
+        
+        subgrid.addWidget(self.shutterLabel, 11, 0)
+        subgrid.addWidget(self.shutterCheckbox, 12, 0)
+        
+        grid.addWidget(self.paramWidget, 0, 0)
+        grid.addWidget(self.focusGraph, 0, 2)
+        grid.addWidget(self.camDisplay, 0, 1)
+        
+        #didnt want to work when being put at earlier point in this function
+        self.liveviewButton.clicked.connect(lambda: self.toggle_liveview(self.liveviewButton.isChecked()))
+        print("liveviewbutton & toogle liveview connected - line 453")

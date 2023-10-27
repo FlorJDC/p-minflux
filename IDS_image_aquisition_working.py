@@ -30,6 +30,7 @@ class ids_cam:
 
             if self.device_manager.Devices().empty():
                 print("No device found")
+                return False
             else:
                 print("Device found")
          
@@ -39,14 +40,14 @@ class ids_cam:
             if self.m_device is None:
                 print("Failed to open the device")
                 return False
+            
+            return True
+        
         except Exception as e:
             str_error = str(e)
             print("error opening cam: ", str_error)
+            return False
 
-        
-        return True
-     
-     
     def prepare_acquisition(self):
         global m_dataStream
         try:
