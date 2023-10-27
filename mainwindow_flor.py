@@ -334,8 +334,7 @@ class MainWindow(QMainWindow):
             
             
     def setup_gui(self):
-        if DEBUG:
-            print("Inside setup_gui")
+        print("Inside setup_gui")
         
          # Focus lock widget
          
