@@ -165,10 +165,11 @@ class MainWindow(QtWidgets.QMainWindow):
                 self.__datastream.QueueBuffer(buffer)
             print("ready to say true")    
             return True
+        
         except ids_peak.Exception as e:
             QtWidgets.QMessageBox.critical(self, "Exception", str(e), QtWidgets.QMessageBox.Ok)
-        print("ready to say false")
-        return False
+            print("ready to say false")
+            return False
 
     def __close_device(self):
         """

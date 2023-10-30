@@ -20,34 +20,53 @@
 # General permission to copy or modify is hereby granted.
 
 import sys
+from datetime import datetime
 
-try:
-    from PySide6.QtWidgets import QHBoxLayout, QVBoxLayout, QLabel, QMainWindow, QMessageBox, QWidget
-    from PySide6.QtGui import QImage
-    from PySide6.QtCore import Qt, Slot, QTimer
-except ImportError:
-    from PySide2.QtWidgets import QHBoxLayout, QVBoxLayout, QLabel, QMainWindow, QMessageBox, QWidget
-    from PySide2.QtGui import QImage
-    from PySide2.QtCore import Qt, Slot, QTimer
+import pyqtgraph as pg
+from pyqtgraph.Qt import QtCore, QtGui
+from PyQt5 import QtWidgets
+#from PyQt5.QtWidgets import QMainWindow, QApplication, QFrame, QGraphicsLayoutWidget, QGraphicsView, QGraphicsView, QGraphicsView, QGridLayout
+from PyQt5.QtGui import QImage
+from PyQt5.QtCore import QTimer, Qt, pyqtSignal, pyqtSlot
+from PyQt5.QtWidgets import QMessageBox
 
 from ids_peak import ids_peak
 from ids_peak_ipl import ids_peak_ipl
 from ids_peak import ids_peak_ipl_extension
 
-from display import Display
+from display_pyqt5 import Display
 
 VERSION = "1.2.0"
 FPS_LIMIT = 30
 
 
-class MainWindow(QMainWindow):
-    def __init__(self, parent: QWidget = None):
-        super().__init__(parent)
-
-        self.widget = QWidget(self)#widget principal (self.widget) 
-        self.__layout = QVBoxLayout()# un diseño vertical (self.__layout) para organizar los elementos de la GUI
-        self.widget.setLayout(self.__layout) #configuración del widget principal como el widget central de la ventana principal.
-        self.setCentralWidget(self.widget) 
+class MainWindow(QtGui.QFrame):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        
+        # Focus lock widget
+         
+        self.setFrameStyle(QtGui.QFrame.Panel | QtGui.QFrame.Raised)
+        #self.setMinimumSize(width, height)
+        self.setMinimumSize(2,200)
+        
+        # camera display
+        
+        self.camDisplay = pg.GraphicsLayoutWidget()
+        self.camDisplay.setMinimumHeight(300)
+        self.camDisplay.setMinimumWidth(300)
+        
+        self.vb = self.camDisplay.addViewBox(row=0, col=0)
+        self.vb.setAspectLocked(True)
+        self.vb.setMouseMode(pg.ViewBox.RectMode)
+        self.img = pg.ImageItem()
+        self.img.translate(-0.5, -0.5)
+        self.vb.addItem(self.img)
+        
+        # GUI layout
+        grid = QtGui.QGridLayout()
+        self.setLayout(grid)
+        
 
         self.__device = None
         self.__nodemap_remote_device = None
@@ -55,7 +74,7 @@ class MainWindow(QMainWindow):
         
         #Variables de instancia relacionadas con laadquisición de imágenes
         self.__display = None
-        self.__acquisition_timer = QTimer() #temporizador para controlar la frecuencia de adquisición,
+        self.__acquisition_timer = QtCore.QTimer() #temporizador para controlar la frecuencia de adquisición,
         self.__frame_counter = 0 #Contador del numero de cuadros
         self.__error_counter = 0 #Contador del numero de errores
         self.__acquisition_running = False #bandera para indicar si la adquisición está en curso.
@@ -71,17 +90,17 @@ class MainWindow(QMainWindow):
             try:
                 # Create a display for the camera image
                 self.__display = Display()
-                self.__layout.addWidget(self.__display)
+                grid.addWidget(self.__display, 0, 0)
                 if not self.__start_acquisition():
-                    QMessageBox.critical(self, "Unable to start acquisition!", QMessageBox.Ok)
+                    print( "Unable to start acquisition!")
             except Exception as e:
-                QMessageBox.critical(self, "Exception", str(e), QMessageBox.Ok)
+                print("Exception", str(e))
 
         else:
             self.__destroy_all()
             sys.exit(0)
 
-        self.__create_statusbar()
+        #self.__create_statusbar()
 
         self.setMinimumSize(700, 500)
         
@@ -106,7 +125,7 @@ class MainWindow(QMainWindow):
 
             # Return if no device was found
             if device_manager.Devices().empty():
-                QMessageBox.critical(self, "Error", "No device found!", QMessageBox.Ok)
+                print( "Error", "No device found!")
                 return False
 
             # Open the first openable device in the managers device list
@@ -117,13 +136,13 @@ class MainWindow(QMainWindow):
 
             # Return if no device could be opened
             if self.__device is None:
-                QMessageBox.critical(self, "Error", "Device could not be opened!", QMessageBox.Ok)
+                print("Error", "Device could not be opened!")
                 return False
 
             # Open standard data stream
             datastreams = self.__device.DataStreams()
             if datastreams.empty():
-                QMessageBox.critical(self, "Error", "Device has no DataStream!", QMessageBox.Ok)
+                print("Error", "Device has no DataStream!")
                 self.__device = None
                 return False
 
@@ -155,7 +174,7 @@ class MainWindow(QMainWindow):
 
             return True
         except ids_peak.Exception as e:
-            QMessageBox.critical(self, "Exception", str(e), QMessageBox.Ok)
+            print( "Exception", str(e))
 
             return False
 
@@ -172,7 +191,7 @@ class MainWindow(QMainWindow):
                 for buffer in self.__datastream.AnnouncedBuffers():
                     self.__datastream.RevokeBuffer(buffer)
             except Exception as e:
-                QMessageBox.information(self, "Exception", str(e), QMessageBox.Ok)
+                print("Exception", str(e))
 
     def __start_acquisition(self):
         """
@@ -195,7 +214,7 @@ class MainWindow(QMainWindow):
             self.__nodemap_remote_device.FindNode("AcquisitionFrameRate").SetValue(target_fps)
         except ids_peak.Exception:
             # AcquisitionFrameRate is not available. Unable to limit fps. Print warning and continue on.
-            QMessageBox.warning(self, "Warning",
+            print( "Warning",
                                 "Unable to limit fps, since the AcquisitionFrameRate Node is"
                                 " not supported by the connected camera. Program will continue without limit.")
 
@@ -248,35 +267,11 @@ class MainWindow(QMainWindow):
                 try:
                     self.__nodemap_remote_device.FindNode("TLParamsLocked").SetValue(0)
                 except Exception as e:
-                    QMessageBox.information(self, "Exception", str(e), QMessageBox.Ok)
+                    print( "Exception", str(e))
 
         except Exception as e:
-            QMessageBox.information(self, "Exception", str(e), QMessageBox.Ok)
+            print("Exception", str(e))
 
-    def __create_statusbar(self):
-        status_bar = QWidget(self.centralWidget())
-        status_bar_layout = QHBoxLayout()
-        status_bar_layout.setContentsMargins(0, 0, 0, 0)
-
-        self.__label_infos = QLabel(status_bar)
-        self.__label_infos.setAlignment(Qt.AlignLeft)
-        status_bar_layout.addWidget(self.__label_infos)
-        status_bar_layout.addStretch()
-
-        self.__label_version = QLabel(status_bar)
-        self.__label_version.setText("simple_live_qtwidgets v" + VERSION)
-        self.__label_version.setAlignment(Qt.AlignRight)
-        status_bar_layout.addWidget(self.__label_version)
-
-        self.__label_aboutqt = QLabel(status_bar)
-        self.__label_aboutqt.setObjectName("aboutQt")
-        self.__label_aboutqt.setText("<a href='#aboutQt'>About Qt</a>")
-        self.__label_aboutqt.setAlignment(Qt.AlignRight)
-        self.__label_aboutqt.linkActivated.connect(self.on_aboutqt_link_activated)
-        status_bar_layout.addWidget(self.__label_aboutqt)
-        status_bar.setLayout(status_bar_layout)
-
-        self.__layout.addWidget(status_bar)
 
     def update_counters(self):
         """
@@ -285,7 +280,7 @@ class MainWindow(QMainWindow):
         """
         self.__label_infos.setText("Acquired: " + str(self.__frame_counter) + ", Errors: " + str(self.__error_counter))
 
-    @Slot()
+    @pyqtSlot()
     def on_acquisition_timer(self):
         """
         This function gets called on every timeout of the acquisition timer
@@ -303,9 +298,9 @@ class MainWindow(QMainWindow):
 
             # Get raw image data from converted image and construct a QImage from it
             image_np_array = converted_ipl_image.get_numpy_1D()
-            image = QImage(image_np_array,
+            image = QtWidgets.QImage(image_np_array,
                            converted_ipl_image.Width(), converted_ipl_image.Height(),
-                           QImage.Format_RGB32)
+                           QtWidgets.QImage.Format_RGB32)
 
             # Make an extra copy of the QImage to make sure that memory is copied and can't get overwritten later on
             image_cpy = image.copy()
@@ -326,155 +321,22 @@ class MainWindow(QMainWindow):
     def get_image(self, img):
         print(" Inside get_image ")
         self.img.setImage(img, autoLevels=False)
-
-    @Slot(str)
-    def on_aboutqt_link_activated(self, link):
-        if link == "#aboutQt":
-            QMessageBox.aboutQt(self, "About Qt")
+          
             
-            
-    def setup_gui(self):
-        print("Inside setup_gui")
-        
-         # Focus lock widget
-         
-        self.setFrameStyle(QtGui.QFrame.Panel | QtGui.QFrame.Raised)
-        #self.setMinimumSize(width, height)
-        self.setMinimumSize(2,200)
-        
-        # LiveView Button
 
-        self.liveviewButton = QtGui.QPushButton('Camera LIVEVIEW')
-        self.liveviewButton.setCheckable(True)
+if __name__ == "__main__":
+    if not QtGui.QApplication.instance():
+        app = QtGui.QApplication([])
+    else:
+        app = QtGui.QApplication.instance()
+        
+    print(datetime.now(), '[mainwindow] Mainwindow module running in stand-alone mode')
+    
+    gui = MainWindow() #Mainwindow es Frontend
+    gui.setWindowTitle('Focus lock')
+    gui.resize(1500, 500)
+    
+    gui.show()
 
-        # turn ON/OFF feedback loop
-        
-        self.feedbackLoopBox = QtGui.QCheckBox('Feedback loop')
-        
-        #shutter button and label
-        self.shutterLabel = QtGui.QLabel('Shutter open?')
-        self.shutterCheckbox = QtGui.QCheckBox('IR laser')
-        
-        # Create ROI button
-        
-        # TODO: completely remove the ROI stuff from the code
 
-        self.ROIbutton = QtGui.QPushButton('ROI')
-        self.ROIbutton.setCheckable(True)
-        
-        # Select ROI
-        self.selectROIbutton = QtGui.QPushButton('Select ROI')
-        
-        # Delete ROI
-        self.deleteROIbutton = QtGui.QPushButton('Delete ROI')
-        
-        self.calibrationButton = QtGui.QPushButton('Calibrate')
-        
-        self.exportDataButton = QtGui.QPushButton('Export data')
-        self.saveDataBox = QtGui.QCheckBox("Save data")
-        self.clearDataButton = QtGui.QPushButton('Clear data')
-        
-        self.pxSizeLabel = QtGui.QLabel('Pixel size (nm)')
-        self.pxSizeEdit = QtGui.QLineEdit('50') #Original: 10nm en focus.py
-        self.focusPropertiesDisplay = QtGui.QLabel(' st_dev = 0  max_dev = 0')
-        
-#        self.deleteROIbutton.setEnabled(False)
-#        self.selectROIbutton.setEnabled(False)
-
-        
-        # gui connections
-        
-        self.saveDataBox.stateChanged.connect(self.emit_save_data_state)
-        self.selectROIbutton.clicked.connect(self.select_roi)
-        self.clearDataButton.clicked.connect(self.clear_graph)
-        self.pxSizeEdit.textChanged.connect(self.emit_param)
-        self.deleteROIbutton.clicked.connect(self.delete_roi)
-        self.ROIbutton.clicked.connect(self.roi_method)
-
-        # focus camera display
-        
-        self.camDisplay = pg.GraphicsLayoutWidget()
-        self.camDisplay.setMinimumHeight(300)
-        self.camDisplay.setMinimumWidth(300)
-        
-        self.vb = self.camDisplay.addViewBox(row=0, col=0)
-        self.vb.setAspectLocked(True)
-        self.vb.setMouseMode(pg.ViewBox.RectMode)
-        self.img = pg.ImageItem()
-        self.img.translate(-0.5, -0.5)
-        self.vb.addItem(self.img)
-
-        self.hist = pg.HistogramLUTItem(image=self.img)   # set up histogram for the liveview image
-        lut = viewbox_tools.generatePgColormap(cmaps.inferno)
-        self.hist.gradient.setColorMap(lut)
-        self.hist.vb.setLimits(yMin=0, yMax=10000)
-
-        for tick in self.hist.gradient.ticks:
-            tick.hide()
-            
-        self.camDisplay.addItem(self.hist, row=0, col=1)
-        
-        # focus lock graph
-        
-        self.focusGraph = pg.GraphicsWindow()
-        self.focusGraph.setAntialiasing(True)
-        
-        self.focusGraph.statistics = pg.LabelItem(justify='right')
-        self.focusGraph.addItem(self.focusGraph.statistics, row=0, col=0)
-        self.focusGraph.statistics.setText('---')
-        
-        self.focusGraph.zPlot = self.focusGraph.addPlot(row=0, col=0)
-        self.focusGraph.zPlot.setLabels(bottom=('Time', 's'),
-                                        left=('CM x position', 'px'))
-        self.focusGraph.zPlot.showGrid(x=True, y=True)
-        self.focusCurve = self.focusGraph.zPlot.plot(pen='r')
- 
-#        self.focusSetPoint = self.focusGraph.plot.addLine(y=self.setPoint, pen='r')
-
-        # GUI layout
-        
-        grid = QtGui.QGridLayout()
-        self.setLayout(grid)
-        
-        # parameters widget
-        
-        self.paramWidget = QtGui.QFrame()
-        self.paramWidget.setFrameStyle(QtGui.QFrame.Panel |
-                                       QtGui.QFrame.Raised)
-        #Widget size (widgets with buttons)
-        self.paramWidget.setFixedHeight(330)
-        self.paramWidget.setFixedWidth(140)
-        
-        subgrid = QtGui.QGridLayout()
-        self.paramWidget.setLayout(subgrid)
-        
-        subgrid.addWidget(self.calibrationButton, 7, 0, 1, 2)
-        subgrid.addWidget(self.exportDataButton, 5, 0, 1, 2)
-        subgrid.addWidget(self.clearDataButton, 6, 0, 1, 2)
-        
-        subgrid.addWidget(self.pxSizeLabel, 8, 0)
-        subgrid.addWidget(self.pxSizeEdit, 8, 1)
-        
-        subgrid.addWidget(self.feedbackLoopBox, 9, 0)
-        subgrid.addWidget(self.saveDataBox, 10, 0)
-        
-        #Create button        
-        #self.ROIButton = QtGui.QPushButton('ROI')
-#        self.ROIButton.setCheckable(True)
-#        self.ROIButton.clicked.connect(lambda: self.roi_method())
-        
-        subgrid.addWidget(self.liveviewButton, 1, 0, 1, 2)
-        subgrid.addWidget(self.ROIbutton, 2, 0, 1, 2)
-        subgrid.addWidget(self.selectROIbutton, 3, 0, 1, 2)
-        subgrid.addWidget(self.deleteROIbutton, 4, 0, 1, 2)
-        
-        subgrid.addWidget(self.shutterLabel, 11, 0)
-        subgrid.addWidget(self.shutterCheckbox, 12, 0)
-        
-        grid.addWidget(self.paramWidget, 0, 0)
-        grid.addWidget(self.focusGraph, 0, 2)
-        grid.addWidget(self.camDisplay, 0, 1)
-        
-        #didnt want to work when being put at earlier point in this function
-        self.liveviewButton.clicked.connect(lambda: self.toggle_liveview(self.liveviewButton.isChecked()))
-        print("liveviewbutton & toogle liveview connected - line 453")
+    app.exec_()
