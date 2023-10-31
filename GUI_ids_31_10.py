@@ -41,27 +41,16 @@ class Frontend(QtGui.QFrame):
     
     if DEBUG:
         print("Inside Frontend")
-    changedROI = pyqtSignal(np.ndarray)  # sends new roi size
+
     closeSignal = pyqtSignal()
-    saveDataSignal = pyqtSignal(bool)
-    
-    paramSignal = pyqtSignal(dict)
+
     
     """
     Signals
         
-    - changedROI: #This is the signal called roiInfoSignal in xy_tracking_2
-        To: [backend] get_new_roi #Named get_roi_info in xy_tracking_2
-        
     - closeSignal:
         To: [backend] stop
         
-    - saveDataSignal:
-        To: [backend] get_save_data_state
-        
-    - paramSignal:
-        To: [backend] get_frontend_param
-
     """
     
     def __init__(self, *args, **kwargs):
@@ -74,14 +63,6 @@ class Frontend(QtGui.QFrame):
 
         self.setup_gui()
         
-        x0 = 0
-        y0 = 0
-        x1 = 1280 
-        y1 = 1024 
-            
-        value = np.array([x0, y0, x1, y1])
-        self.changedROI.emit(value)
-
     @pyqtSlot(bool)        
     def toggle_liveview(self, on):
         if DEBUG:
@@ -139,20 +120,7 @@ class Frontend(QtGui.QFrame):
         self.vb.addItem(self.img)
 
         
-        # focus lock graph
-        
-        self.focusGraph = pg.GraphicsWindow()
-        self.focusGraph.setAntialiasing(True)
-        
-        self.focusGraph.statistics = pg.LabelItem(justify='right')
-        self.focusGraph.addItem(self.focusGraph.statistics, row=0, col=0)
-        self.focusGraph.statistics.setText('---')
-        
-        self.focusGraph.zPlot = self.focusGraph.addPlot(row=0, col=0)
-        self.focusGraph.zPlot.setLabels(bottom=('Time', 's'),
-                                        left=('CM x position', 'px'))
-        self.focusGraph.zPlot.showGrid(x=True, y=True)
-        self.focusCurve = self.focusGraph.zPlot.plot(pen='r')
+
  
 #        self.focusSetPoint = self.focusGraph.plot.addLine(y=self.setPoint, pen='r')
 
@@ -172,16 +140,8 @@ class Frontend(QtGui.QFrame):
         
         subgrid = QtGui.QGridLayout()
         self.paramWidget.setLayout(subgrid)
-        
-        subgrid.addWidget(self.calibrationButton, 7, 0, 1, 2)
-        subgrid.addWidget(self.exportDataButton, 5, 0, 1, 2)
-        subgrid.addWidget(self.clearDataButton, 6, 0, 1, 2)
-        
-        subgrid.addWidget(self.pxSizeLabel, 8, 0)
-        subgrid.addWidget(self.pxSizeEdit, 8, 1)
-        
-        subgrid.addWidget(self.feedbackLoopBox, 9, 0)
-        subgrid.addWidget(self.saveDataBox, 10, 0)
+
+  
         
         #Create button        
         #self.ROIButton = QtGui.QPushButton('ROI')
@@ -189,15 +149,9 @@ class Frontend(QtGui.QFrame):
 #        self.ROIButton.clicked.connect(lambda: self.roi_method())
         
         subgrid.addWidget(self.liveviewButton, 1, 0, 1, 2)
-        subgrid.addWidget(self.ROIbutton, 2, 0, 1, 2)
-        subgrid.addWidget(self.selectROIbutton, 3, 0, 1, 2)
-        subgrid.addWidget(self.deleteROIbutton, 4, 0, 1, 2)
-        
-        subgrid.addWidget(self.shutterLabel, 11, 0)
-        subgrid.addWidget(self.shutterCheckbox, 12, 0)
-        
+
         grid.addWidget(self.paramWidget, 0, 0)
-        grid.addWidget(self.focusGraph, 0, 2)
+
         grid.addWidget(self.camDisplay, 0, 1)
         
         #didnt want to work when being put at earlier point in this function
@@ -232,7 +186,7 @@ class Backend(QtCore.QObject):
 
     """
 
-    def __init__(self, camera, adw, *args, **kwargs):
+    def __init__(self, camera, *args, **kwargs):
         if DEBUG:
             print("Inside init in backend")
         super().__init__(*args, **kwargs)
@@ -271,20 +225,9 @@ class Backend(QtCore.QObject):
         self.focusTimer = QtCore.QTimer()
         
         self.reset()
-        self.reset_data_arrays()
+      
         
-        
-    def actuator_z(self, z_f):
-        if DEBUG:
-            print("Inside actuator_z")
-        
-        z_f = tools.convert(z_f, 'XtoU') # XtoU' lenght  (um) to bits
-        print("z_f is self.target_z in actuator_z: ",z_f, "bits")
-          
-        self.adw.Set_FPar(32, z_f) # Index = 32 (to choose process 3), Value = z_f, le asigna a setpointz (en process 3) el valor z_f
-        #Luego se asigna setpointz a currentz y ese valor se pasa al borne 6 de la ADwin
-        #Luego ese valor currentz se asigna a fpar_72 y es el nuevo valor actual de z
-        self.adw.Set_Par(30, 1)
+
     
     @pyqtSlot(bool)
     def liveview(self, value):
@@ -394,23 +337,43 @@ class Backend(QtCore.QObject):
         self.changedImage.emit(self.image) #esta señal va a get_image
         self.currentTime = ptime.time() - self.startTime
         
-    
+    def update_graph_data(self):
+        if DEBUG:
+                print("Inside update_graph_data")
+        ''' update of the data displayed in the gui graph '''
+
+        if self.ptr < self.npoints:
+            self.data[self.ptr] = self.focusSignal #Ahora se supone que focusSiganl no es cero
+            print("focusSignal in update_graph_data: ", self.focusSignal)
+            print("Ya no es cero")
+            self.time[self.ptr] = self.currentTime
+            
+            self.changedData.emit(self.time[0:self.ptr + 1], #Esta señal va a get_data
+                                  self.data[0:self.ptr + 1])
+
+        else:
+            self.data[:-1] = self.data[1:]
+            self.data[-1] = self.focusSignal
+            print("focusSignal in update_graph_data (in else): ", self.focusSignal)
+            self.time[:-1] = self.time[1:]
+            self.time[-1] = self.currentTime
+
+            self.changedData.emit(self.time, self.data)
+
+        self.ptr += 1
   
             
     def reset(self):
         if DEBUG:
                 print("Inside reset")
         
-        self.data = np.zeros(self.npoints)
+
         self.time = np.zeros(self.npoints)
         self.ptr = 0
         self.startTime = ptime.time()
 
-        self.max_dev = 0
-        self.mean = self.focusSignal
-        print("focusSignal in reset: ", self.mean)
-        self.std = 0
-        self.n = 1
+        print("focusSignal in reset: ")
+
         
     def reset_data_arrays(self):
         if DEBUG:
@@ -512,18 +475,8 @@ class Backend(QtCore.QObject):
     def make_connection(self, frontend):
         if DEBUG:
                 print("Inside make_connection in Backend")
-          
-        frontend.changedROI.connect(self.get_new_roi)
+
         frontend.closeSignal.connect(self.stop)
-#        frontend.lockFocusSignal.connect(self.lock_focus)
-        frontend.feedbackLoopBox.stateChanged.connect(lambda: self.toggle_feedback(frontend.feedbackLoopBox.isChecked()))
-        frontend.saveDataSignal.connect(self.get_save_data_state)
-        frontend.exportDataButton.clicked.connect(self.export_data)
-        frontend.clearDataButton.clicked.connect(self.reset)
-        frontend.clearDataButton.clicked.connect(self.reset_data_arrays)
-        frontend.calibrationButton.clicked.connect(self.calibrate)
-        frontend.shutterCheckbox.stateChanged.connect(lambda: self.toggle_ir_shutter(8, frontend.shutterCheckbox.isChecked()))
-        frontend.paramSignal.connect(self.get_frontend_param)
         frontend.liveviewButton.clicked.connect(self.liveview)
         print("liveview & liviewbutton connected in backend- line 1350")
 
@@ -550,13 +503,12 @@ if __name__ == '__main__':
     except:
         print("Error with cam")
     gui = Frontend()   
-    worker = Backend(cam, adw)
+    worker = Backend(cam)
     worker.standAlone = True
     
     gui.make_connection(worker)
     worker.make_connection(gui)
 
-    gui.emit_param()
     
     focusThread = QtCore.QThread()
     worker.moveToThread(focusThread)
