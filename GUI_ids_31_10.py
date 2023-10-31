@@ -102,7 +102,7 @@ class Frontend(QtGui.QFrame):
         self.liveviewButton = QtGui.QPushButton('Camera LIVEVIEW')
         self.liveviewButton.setCheckable(True)
 
-        # focus camera display
+        # Camera display
         
         self.camDisplay = pg.GraphicsLayoutWidget()
         self.camDisplay.setMinimumHeight(300)
@@ -117,6 +117,16 @@ class Frontend(QtGui.QFrame):
         print("before adding image")
         self.vb.addItem(self.img)
         print("item added")
+        
+        self.hist = pg.HistogramLUTItem(image=self.img)   # set up histogram for the liveview image
+        lut = viewbox_tools.generatePgColormap(cmaps.inferno)
+        self.hist.gradient.setColorMap(lut)
+        self.hist.vb.setLimits(yMin=0, yMax=10000)
+
+        for tick in self.hist.gradient.ticks:
+            tick.hide()
+            
+        self.camDisplay.addItem(self.hist, row=0, col=1)
 
         # GUI layout
         
