@@ -30,8 +30,8 @@ from scipy import optimize as opt
 
 from instrumental.drivers.cameras import uc480
 from instrumental import Q_
-import scan
-import drivers.ADwin as ADwin
+
+
 
 DEBUG = True
 
@@ -72,7 +72,6 @@ class Frontend(QtGui.QFrame):
             print(datetime.now(), '[focus] focus live view started')
         else:
             self.liveviewButton.setChecked(False)
-            self.select_roi()
             self.img.setImage(np.zeros((512,512)), autoLevels=False)
 
             print(datetime.now(), '[focus] focus live view stopped - line 202')
@@ -119,11 +118,6 @@ class Frontend(QtGui.QFrame):
         self.img.translate(-0.5, -0.5)
         self.vb.addItem(self.img)
 
-        
-
- 
-#        self.focusSetPoint = self.focusGraph.plot.addLine(y=self.setPoint, pen='r')
-
         # GUI layout
         
         grid = QtGui.QGridLayout()
@@ -141,12 +135,6 @@ class Frontend(QtGui.QFrame):
         subgrid = QtGui.QGridLayout()
         self.paramWidget.setLayout(subgrid)
 
-  
-        
-        #Create button        
-        #self.ROIButton = QtGui.QPushButton('ROI')
-#        self.ROIButton.setCheckable(True)
-#        self.ROIButton.clicked.connect(lambda: self.roi_method())
         
         subgrid.addWidget(self.liveviewButton, 1, 0, 1, 2)
 
@@ -272,8 +260,6 @@ class Backend(QtCore.QObject):
         val = np.array([x0, y0, x1, y1])
         print("val en liveview_stop:", val)
         self.get_new_roi(val)
-                                
-    
 
            
     def update_stats(self):
