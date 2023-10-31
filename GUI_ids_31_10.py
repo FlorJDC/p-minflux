@@ -113,10 +113,7 @@ class Frontend(QtGui.QFrame):
         self.vb.setMouseMode(pg.ViewBox.RectMode)
         self.img = pg.ImageItem()
         self.img.translate(-0.5, -0.5)
-        
-        print("before adding image")
         self.vb.addItem(self.img)
-        print("item added")
         
         self.hist = pg.HistogramLUTItem(image=self.img)   # set up histogram for the liveview image
         lut = viewbox_tools.generatePgColormap(cmaps.inferno)
@@ -144,7 +141,6 @@ class Frontend(QtGui.QFrame):
         
         subgrid = QtGui.QGridLayout()
         self.paramWidget.setLayout(subgrid)
-
         
         subgrid.addWidget(self.liveviewButton, 1, 0, 1, 2)
 
