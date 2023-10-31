@@ -71,7 +71,7 @@ class MainWindow(QMainWindow):
             try:
                 # Create a display for the camera image
                 self.__display = Display()
-                self.__layout.addWidget(self.__display)
+                self.__layout.addWidget(self.__display) #mi idea es que este display no se agregue al self.__layout sino a self.vb.addItem(self.img)
                 if not self.__start_acquisition():
                     QMessageBox.critical(self, "Unable to start acquisition!", QMessageBox.Ok)
             except Exception as e:
