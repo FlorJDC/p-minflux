@@ -88,6 +88,7 @@ class Frontend(QtGui.QFrame):
         if DEBUG:
             print(" Inside get_image ")
         self.img.setImage(img, autoLevels=False)
+        print("Image sent to GUI. Type: ", type(self.img))
                         
     def make_connection(self, backend):
         if DEBUG:
@@ -142,8 +143,7 @@ class Frontend(QtGui.QFrame):
         # parameters widget
         
         self.paramWidget = QtGui.QFrame()
-        self.paramWidget.setFrameStyle(QtGui.QFrame.Panel |
-                                       QtGui.QFrame.Raised)
+        self.paramWidget.setFrameStyle(QtGui.QFrame.Panel | QtGui.QFrame.Raised)
         #Widget size (widgets with buttons)
         self.paramWidget.setFixedHeight(330)
         self.paramWidget.setFixedWidth(140)
@@ -265,7 +265,7 @@ class Backend(QtCore.QObject):
 
             # Return if no device was found
             if device_manager.Devices().empty():
-                QMessageBox.critical(self, "Error", "No device found!", QMessageBox.Ok)
+                print( "Error", "No device found!")
                 return False
 
             # Open the first openable device in the managers device list
@@ -314,7 +314,7 @@ class Backend(QtCore.QObject):
 
             return True
         except ids_peak.Exception as e:
-            QMessageBox.critical(self, "Exception", str(e), QMessageBox.Ok)
+            print( "Exception", str(e))
 
             return False
         
@@ -433,14 +433,14 @@ class Backend(QtCore.QObject):
 
             # Make an extra copy of the QImage to make sure that memory is copied and can't get overwritten later on
             self.image_cpy = image_np_array #.copy()
+            print("type image_cpy: ", type(self.image_cpy))
 
             # Emit signal that the image is ready to be displayed
             self.changedImage.emit(self.image_cpy)
+            print("Image sent")
             #self.__display.on_image_received(image_cpy)
             #self.__display.update()
 
-            # Increase frame counter
-            self.__frame_counter += 1
         except ids_peak.Exception as e:
             self.__error_counter += 1
             print("Exception: " + str(e))
@@ -597,10 +597,7 @@ if __name__ == '__main__':
     # Initialize devices
        
     #if camera wasnt closed properly just keep using it without opening new one
-    try:
-        cam = uc480.UC480_Camera()
-    except:
-        print("Error with cam")
+
     gui = Frontend()   
     worker = Backend()
     worker.standAlone = True
@@ -614,6 +611,7 @@ if __name__ == '__main__':
     worker.cameraTimer.moveToThread(camThread)
     #worker.cameraTimer.timeout.connect(worker.update) #Esta línea sincroniza el cameraTimer con la ejecución de la función update del Backend
     worker.cameraTimer.timeout.connect(worker.on_acquisition_timer)
+
     camThread.start()
 
     gui.setWindowTitle('Camera display')
