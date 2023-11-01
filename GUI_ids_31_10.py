@@ -219,8 +219,8 @@ class Backend(QtCore.QObject):
         
         self.scansPerS = 10
 
-        self.focusTime = 1000 / self.scansPerS
-        self.focusTimer = QtCore.QTimer()
+        self.camTime = 1000 / self.scansPerS
+        self.cameraTimer = QtCore.QTimer()
         
         self.reset()
       
@@ -250,14 +250,14 @@ class Backend(QtCore.QObject):
         self.camera._set_exposure(Q_('50 ms')) #Original THORCAM 50ms #IDS 5ms
         print("camera started live video mode")
 
-        self.focusTimer.start(self.focusTime)
+        self.cameraTimer.start(self.camTime)
         print("focus timer started")
         
     def liveview_stop(self):
         if DEBUG:
             print("Inside Liveview-stop")
-        self.focusTimer.stop()
-        print("focusTimer: stopped")
+        self.cameraTimer.stop()
+        print("cameraTimer: stopped")
         self.camON = False  
         x0 = 0
         y0 = 0
@@ -315,7 +315,7 @@ class Backend(QtCore.QObject):
         
         time.sleep(1)
         
-        self.focusTimer.stop()
+        self.cameraTimer.stop()
         
         #prevent system to throw weird errors when not being able to close the camera, see uc480.py --> close()
 #        try:
@@ -383,18 +383,14 @@ if __name__ == '__main__':
     worker.make_connection(gui)
 
     
-    focusThread = QtCore.QThread()
-    worker.moveToThread(focusThread)
-    worker.focusTimer.moveToThread(focusThread)
-    worker.focusTimer.timeout.connect(worker.update)
+    camThread = QtCore.QThread()
+    worker.moveToThread(camThread)
+    worker.cameraTimer.moveToThread(camThread)
+    worker.cameraTimer.timeout.connect(worker.update) #Esta línea sincroniza el cameraTimer con la ejecución de la función update del Backend
     
-    focusThread.start()
-    
-    # initialize fpar_70, fpar_71, fpar_72 ADwin position parameters
-    pos_zero = tools.convert(0, 'XtoU')
+    camThread.start()
 
-
-    gui.setWindowTitle('Focus lock')
+    gui.setWindowTitle('Camera display')
     gui.resize(600, 500)
 
     gui.show()
