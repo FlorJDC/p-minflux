@@ -359,7 +359,7 @@ class Backend(QtCore.QObject):
         # Setup acquisition timer accordingly
         self.cameraTimer.setInterval((1 / target_fps) * 1000) #Same timer than in uc480
         self.cameraTimer.setSingleShot(False)
-        self.cameraTimer.timeout.connect(self.on_acquisition_timer)#Esta linea es importante
+        #self.cameraTimer.timeout.connect(self.on_acquisition_timer)#Esta linea es importante
 
         try:
             # Lock critical features to prevent them from changing during acquisition
