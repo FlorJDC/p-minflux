@@ -31,6 +31,9 @@ from scipy import optimize as opt
 from instrumental.drivers.cameras import uc480
 from instrumental import Q_
 
+from ids_peak import ids_peak
+from ids_peak_ipl import ids_peak_ipl
+from ids_peak import ids_peak_ipl_extension
 
 
 DEBUG = True
@@ -355,6 +358,95 @@ class Backend(QtCore.QObject):
 
 
 if __name__ == '__main__':
+    
+    def open_device():
+        try:
+            # Create instance of the device manager
+            device_manager = ids_peak.DeviceManager.Instance()
+
+            # Update the device manager
+            device_manager.Update()
+
+            # Return if no device was found
+            if device_manager.Devices().empty():
+                print("Error", "No device found!")
+                return False
+
+            # Open the first openable device in the managers device list
+            for device in device_manager.Devices():
+                if device.IsOpenable():
+                    cam_device = device.OpenDevice(ids_peak.DeviceAccessType_Control)
+                    break
+
+            # Return if no device could be opened
+            if cam_device is None:
+                print("Device could not be opened!")
+                return False
+
+            # Open standard data stream
+            datastreams = cam_device.DataStreams()
+            if datastreams.empty():
+                print("Device has no DataStream!")
+                cam_device = None
+                return False
+
+            cam_datastream = datastreams[0].OpenDataStream()
+
+            # Get nodemap of the remote device for all accesses to the genicam nodemap tree
+            cam_nodemap_remote_device = cam_device.RemoteDevice().NodeMaps()[0]
+
+            # To prepare for untriggered continuous image acquisition, load the default user set if available and
+            # wait until execution is finished
+            try:
+                cam_nodemap_remote_device.FindNode("UserSetSelector").SetCurrentEntry("Default")
+                cam_nodemap_remote_device.FindNode("UserSetLoad").Execute()
+                cam_nodemap_remote_device.FindNode("UserSetLoad").WaitUntilDone()
+            except ids_peak.Exception:
+                print("Userset is not available")
+                
+
+            # Get the payload size for correct buffer allocation
+            payload_size = cam_nodemap_remote_device.FindNode("PayloadSize").Value()
+
+            # Get minimum number of buffers that must be announced
+            buffer_count_max = cam_datastream.NumBuffersAnnouncedMinRequired()
+
+            # Allocate and announce image buffers and queue them
+            for i in range(buffer_count_max):
+                buffer = cam_datastream.AllocAndAnnounceBuffer(payload_size)
+                cam_datastream.QueueBuffer(buffer)
+
+            return True
+        except ids_peak.Exception as e:
+            print("Exception", str(e))
+
+            return False
+
+    def destroy_all():
+        # Stop acquisition
+        stop_acquisition()
+
+        # Close device and peak library
+        close_device()
+        ids_peak.Library.Close()
+        
+    def close_device():
+        """
+        Stop acquisition if still running and close datastream and nodemap of the device
+        """
+        # Stop Acquisition in case it is still running
+        stop_acquisition()
+
+        # If a datastream has been opened, try to revoke its image buffers
+        if cam_datastream is not None:
+            try:
+                for buffer in cam_datastream.AnnouncedBuffers():
+                    cam_datastream.RevokeBuffer(buffer)
+            except Exception as e:
+                print("Exception", str(e))
+    #Falta agregar start_acquisition y stop acquisition, etc
+#___________________________________________________________________________________
+    
     if DEBUG:
         print("Inside main")
     
@@ -363,16 +455,26 @@ if __name__ == '__main__':
     else:
         app = QtGui.QApplication.instance()
         
+        
     #app.setStyle(QtGui.QStyleFactory.create('fusion'))
     app.setStyleSheet(qdarkstyle.load_stylesheet_pyqt5())
     
     print(datetime.now(), 'Module running in stand-alone mode')
-    
+    ids_peak.Library.Initialize()
+    if open_device():
+        print("IDS Cam Oppened")
+        if not start_acquisition():
+            print("Unable to start acquisition!")
+            except Exception as e:
+                print("Exception", str(e))
+        else:
+            destroy_all()
+        
     # Initialize devices
        
     #if camera wasnt closed properly just keep using it without opening new one
     try:
-        cam = uc480.UC480_Camera()
+        cam = uc480.UC480_Camera() #Now I will change the camera
     except:
         print("Error with cam")
     gui = Frontend()   
