@@ -1,0 +1,13 @@
+Curso PyQt | QThread | Hilos 
+https://www.youtube.com/watch?v=z7irccne1V4&ab_channel=IsselCode
+Issel Code
+
+https://www.youtube.com/watch?v=Hwk242UMFR8&ab_channel=AlanDMooreCodes
+alan D Moore Codes
+Master PyQt5 part 10: Make responsive GUIs with Threads
+
+Busqueda interesante Youtube
+https://www.youtube.com/results?search_query=QtCore.QtTimer+python+threads
+
+codeloop.org
+Blog con tutoriales de python: PyQt5 & pyqtgraph
