@@ -79,7 +79,7 @@ class Frontend(QtGui.QFrame):
             print(datetime.now(), '[toggle liveview activated] live view started')
         else:
             self.liveviewButton.setChecked(False)
-            self.img.setImage(np.zeros((1002,1002)), autoLevels=False)
+            self.img.setImage(np.zeros((1200,7680)), autoLevels=False)
 
             print(datetime.now(), '[toggle liveview] live view stopped ')
             
@@ -421,27 +421,49 @@ class Backend(QtCore.QObject):
         try:
             # Get buffer from device's datastream
             buffer = self.__datastream.WaitForFinishedBuffer(5000)
-
-            # Create IDS peak IPL image for debayering and convert it to RGBa8 format
-            ipl_image = ids_peak_ipl_extension.BufferToImage(buffer)
-            ##converted_ipl_image = ipl_image.ConvertTo(ids_peak_ipl.PixelFormatName_BGRa8)
+            
+            # Create IDS peak IPL image from buffer
+            image = ids_peak_ipl.Image.CreateFromSizeAndBuffer(buffer.PixelFormat(), buffer.BasePtr(), buffer.Size(),buffer.Width(), buffer.Height())
+ 
+            # Convert it to RGBa8 format by debayering
+            image_processed = image.ConvertTo(ids_peak_ipl.PixelFormatName_BGRa8, ids_peak_ipl.ConversionMode_Fast)
+            # # Create IDS peak IPL image for debayering and convert it to RGBa8 format
+            # ipl_image = ids_peak_ipl_extension.BufferToImage(buffer)
+            # converted_ipl_image = ipl_image.ConvertTo(ids_peak_ipl.PixelFormatName_BGRa8) #<ids_peak_ipl.ids_peak_ipl.Image; proxy of <Swig Object of type 'peak::ipl::Image *' at 0x00000260E52ECDB0> > type image_cpy <class 'ids_peak_ipl.ids_peak_ipl.Image'>
 
             # Queue buffer so that it can be used again
             self.__datastream.QueueBuffer(buffer)
 
             # Get raw image data from converted image and construct a QImage from it
-            #image_np_array = converted_ipl_image.get_numpy_1D()
-            #Esta linea me da error si no la comente, problema con el Qtwidgets.QImage
+            #image_np_array = converted_ipl_image.get_numpy_2D()
+            image_np_array = image_processed.get_numpy_2D()
+            #Esta linea me da error si no la comente, problema con el QImage
             #image = QImage(image_np_array, converted_ipl_image.Width(), converted_ipl_image.Height(), QImage.Format_RGB32)
 
             # Make an extra copy of the QImage to make sure that memory is copied and can't get overwritten later on
-            self.image_cpy = ipl_image #.copy()
-            print(" image_cpy: ", self.image_cpy)
+            self.image_cpy = image_np_array #.copy()
+
+            # Crear un gráfico de dispersión
+            # plt.scatter(self.image_cpy[0], self.image_cpy[1])
+
+            # # Etiquetas de los ejes
+            # plt.xlabel('Eje X')
+            # plt.ylabel('Eje Y')
+
+            # # Título del gráfico
+            # plt.title('Gráfico de dispersión del array')
+
+            # # Mostrar el gráfico
+            #plt.imshow(self.image_cpy)
+            
+            print(" image_cpy: ", self.image_cpy, "type image_cpy", type(self.image_cpy))
+            print("shape: ", self.image_cpy.shape)
 
             # Emit signal that the image is ready to be displayed
             self.changedImage.emit(self.image_cpy)
             self.counter = self.counter + 1
             print("Image number: ", self.counter, " sent")
+
             #self.__display.on_image_received(image_cpy)
             #self.__display.update()
 

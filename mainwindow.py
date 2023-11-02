@@ -306,7 +306,7 @@ class MainWindow(QMainWindow):
             image = QImage(image_np_array,
                            converted_ipl_image.Width(), converted_ipl_image.Height(),
                            QImage.Format_RGB32)
-
+            print("Type image: ", type(image))
             # Make an extra copy of the QImage to make sure that memory is copied and can't get overwritten later on
             image_cpy = image.copy()
 
