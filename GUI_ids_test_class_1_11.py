@@ -41,6 +41,7 @@ ids_peak.Library.Initialize()
 
 FPS_LIMIT = 30
 
+
 DEBUG = True
 
 class Frontend(QtGui.QFrame):
@@ -78,7 +79,7 @@ class Frontend(QtGui.QFrame):
             print(datetime.now(), '[toggle liveview activated] live view started')
         else:
             self.liveviewButton.setChecked(False)
-            self.img.setImage(np.zeros((512,512)), autoLevels=False)
+            self.img.setImage(np.zeros((1002,1002)), autoLevels=False)
 
             print(datetime.now(), '[toggle liveview] live view stopped ')
             
@@ -87,6 +88,7 @@ class Frontend(QtGui.QFrame):
     def get_image(self, img):
         if DEBUG:
             print(" Inside get_image ")
+        print("Type of image received in get image", type(img))
         self.img.setImage(img, autoLevels=False)
         print("Image sent to GUI. Type: ", type(self.img))
                         
@@ -168,7 +170,7 @@ class Frontend(QtGui.QFrame):
         self.closeSignal.emit()
         time.sleep(1)
         
-        camThread.exit()
+#        camThread.exit()
         super().closeEvent(*args, **kwargs)
         app.quit()
         
@@ -202,7 +204,7 @@ class Backend(QtCore.QObject):
         #Variables de instancia relacionadas con laadquisición de imágenes
         self.__display = None
         #self.__acquisition_timer = QTimer() #temporizador para controlar la frecuencia de adquisición,
-        self.__frame_counter = 0 #Contador del numero de cuadros
+        self.counter = 0 #Contador del numero de cuadros
         self.__error_counter = 0 #Contador del numero de errores
         self.__acquisition_running = False #bandera para indicar si la adquisición está en curso.
         
@@ -359,8 +361,8 @@ class Backend(QtCore.QObject):
         # Setup acquisition timer accordingly
         self.cameraTimer.setInterval((1 / target_fps) * 1000) #Same timer than in uc480
         self.cameraTimer.setSingleShot(False)
-        #self.cameraTimer.timeout.connect(self.on_acquisition_timer)#Esta linea es importante
-
+        self.cameraTimer.timeout.connect(self.on_acquisition_timer)#Esta linea es importante
+        print("inside line 365")
         try:
             # Lock critical features to prevent them from changing during acquisition
             self.__nodemap_remote_device.FindNode("TLParamsLocked").SetValue(1)
@@ -369,12 +371,13 @@ class Backend(QtCore.QObject):
             self.__datastream.StartAcquisition()
             self.__nodemap_remote_device.FindNode("AcquisitionStart").Execute()
             self.__nodemap_remote_device.FindNode("AcquisitionStart").WaitUntilDone()
+            print("Success starting acquisition - line 374")
         except Exception as e:
             print("Exception: " + str(e))
             return False
 
         # Start acquisition timer
-        #self.__acquisition_timer.start()
+        self.cameraTimer.start()
         self.__acquisition_running = True
 
         return True
@@ -421,23 +424,24 @@ class Backend(QtCore.QObject):
 
             # Create IDS peak IPL image for debayering and convert it to RGBa8 format
             ipl_image = ids_peak_ipl_extension.BufferToImage(buffer)
-            converted_ipl_image = ipl_image.ConvertTo(ids_peak_ipl.PixelFormatName_BGRa8)
+            ##converted_ipl_image = ipl_image.ConvertTo(ids_peak_ipl.PixelFormatName_BGRa8)
 
             # Queue buffer so that it can be used again
             self.__datastream.QueueBuffer(buffer)
 
             # Get raw image data from converted image and construct a QImage from it
-            image_np_array = converted_ipl_image.get_numpy_1D()
+            #image_np_array = converted_ipl_image.get_numpy_1D()
             #Esta linea me da error si no la comente, problema con el Qtwidgets.QImage
-            #image = QtWidgets.QImage(image_np_array, converted_ipl_image.Width(), converted_ipl_image.Height(), QtWidgets.QImage.Format_RGB32)
+            #image = QImage(image_np_array, converted_ipl_image.Width(), converted_ipl_image.Height(), QImage.Format_RGB32)
 
             # Make an extra copy of the QImage to make sure that memory is copied and can't get overwritten later on
-            self.image_cpy = image_np_array #.copy()
-            print("type image_cpy: ", type(self.image_cpy))
+            self.image_cpy = ipl_image #.copy()
+            print(" image_cpy: ", self.image_cpy)
 
             # Emit signal that the image is ready to be displayed
             self.changedImage.emit(self.image_cpy)
-            print("Image sent")
+            self.counter = self.counter + 1
+            print("Image number: ", self.counter, " sent")
             #self.__display.on_image_received(image_cpy)
             #self.__display.update()
 
@@ -452,46 +456,21 @@ class Backend(QtCore.QObject):
             try:
                 if self.__start_acquisition():
                     print("Acquisition started!")
+                    self.on_acquisition_timer()
+                    print("camera started live video mode")
+                    self.cameraTimer.start() #self.camTime
+                    print("timer started in liveview_start")
             except Exception as e:
                     print("Exception", str(e))
         else:
             try:
                 self.__stop_acquisition()
-                self.cameraTimer.stop()
                 print("Acquisition stopped!")
+                self.cameraTimer.stop()
+                print("cameraTimer: stopped")
             except Exception as e:
                 print("Exception", str(e))
-        
-    def liveview_start(self):
-        
-        if self.camON:
-            print("Liveview-start")
-            self.camera.stop_live_video()
-            self.camON = False
-        print("Liveview-start second line")
-        self.camON = True
-        self.camera.start_live_video()
-        self.camera._set_exposure(Q_('50 ms')) #Original THORCAM 50ms #IDS 5ms
-        print("camera started live video mode")
 
-        self.cameraTimer.start(self.camTime)
-        print("focus timer started")
-        
-    def liveview_stop(self):
-        if DEBUG:
-            print("Inside Liveview-stop")
-        self.cameraTimer.stop()
-        print("cameraTimer: stopped")
-        self.camON = False  
-        x0 = 0
-        y0 = 0
-        x1 = 1280 
-        y1 = 1024 
-            
-        val = np.array([x0, y0, x1, y1])
-        print("val en liveview_stop:", val)
-           
-        
     def update(self):
         if DEBUG:
                 print("Inside update")
@@ -606,13 +585,13 @@ if __name__ == '__main__':
     worker.make_connection(gui)
 
     
-    camThread = QtCore.QThread()
-    worker.moveToThread(camThread)
-    worker.cameraTimer.moveToThread(camThread)
-    #worker.cameraTimer.timeout.connect(worker.update) #Esta línea sincroniza el cameraTimer con la ejecución de la función update del Backend
-    worker.cameraTimer.timeout.connect(worker.on_acquisition_timer)
-
-    camThread.start()
+    # camThread = QtCore.QThread()
+    # worker.moveToThread(camThread)
+    # worker.cameraTimer.moveToThread(camThread)
+    # #worker.cameraTimer.timeout.connect(worker.update) #Esta línea sincroniza el cameraTimer con la ejecución de la función update del Backend
+    # worker.cameraTimer.timeout.connect(worker.on_acquisition_timer)
+    # print("line 614")
+    # camThread.start()
 
     gui.setWindowTitle('Camera display')
     gui.resize(600, 500)

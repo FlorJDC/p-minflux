@@ -228,9 +228,11 @@ class Frontend(QtGui.QFrame):
         #  The croppingis done because otherwise the displayed image will be
         #  300 x 1024. It doesn't affect the performance of the system
         
+        print("Type of image in get image before: ", img)
         if self.cropped is False: 
             
             self.img.setImage(img, autoLevels=False)
+            print("Type of image in get image after: ", type(self.img.setImage(img, autoLevels=False)))
             
             if self.roi == None:
             

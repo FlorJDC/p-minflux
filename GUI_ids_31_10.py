@@ -3,6 +3,7 @@
 Created on Th Oct  31 2023
 
 @authors: Flor C
+Script for image_acquisition using Thorcam
 """
 
 import numpy as np
@@ -79,7 +80,7 @@ class Frontend(QtGui.QFrame):
     def get_image(self, img):
         if DEBUG:
             print(" Inside get_image ")
-        self.img.setImage(img, autoLevels=False)
+        self.img.setImage(img, autoLevels=False) #type self.img:  <class 'pyqtgraph.graphicsItems.ImageItem.ImageItem'>
                         
     def make_connection(self, backend):
         if DEBUG:
@@ -189,6 +190,7 @@ class Backend(QtCore.QObject):
         self.camera.master_gain = 4 # Thorcam = 4, IDScam = 1
         self.camera.auto_blacklevel = True  # Comentar para IDS
         self.camera.gain_boost = True # Comentar para IDS
+        self.counter =0
         
         self.standAlone = False
         self.camON = False
@@ -293,6 +295,8 @@ class Backend(QtCore.QObject):
         # send image to gui
         self.changedImage.emit(self.image) #esta señal va a get_image
         print("image sent to get_image. Type: ", type(self.image))
+        self.counter += 1
+        print("contador: ", self.counter)
         self.currentTime = ptime.time() - self.startTime
         
             
