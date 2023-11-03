@@ -189,8 +189,7 @@ class ids_cam:
                 image_np_array = converted_ipl_image.get_numpy_2D()
                 print("size np array: ", len(image_np_array))
                 plt.imshow(image_np_array)
-                plt.colorbar()
-                plt.show()
+
                 print("again in queue")
                 return True
         

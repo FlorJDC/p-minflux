@@ -61,6 +61,7 @@ class Frontend(QtGui.QFrame):
         self.cropped = False
 
         self.setup_gui()
+        self.cnt =0
         
     @pyqtSlot(bool)        
     def toggle_liveview(self, on):
@@ -71,7 +72,7 @@ class Frontend(QtGui.QFrame):
             print(datetime.now(), '[toggle liveview activated] live view started')
         else:
             self.liveviewButton.setChecked(False)
-            self.img.setImage(np.zeros((512,512)), autoLevels=False)
+            self.img.setImage(np.zeros((1024,1280)), autoLevels=False)
 
             print(datetime.now(), '[toggle liveview] live view stopped ')
             
@@ -80,6 +81,16 @@ class Frontend(QtGui.QFrame):
     def get_image(self, img):
         if DEBUG:
             print(" Inside get_image ")
+        print("image received in get img: ", img, "type: ", type(img), "shape: ", img.shape)
+        #---------------------
+        mat = np.matrix(img)
+        if self.cnt ==0:
+            with open('outfile.txt','wb') as f:
+                for line in mat:
+                    np.savetxt(f, line, fmt='%.2f')
+            self.cnt=self.cnt +1
+        #------------
+        #plt.imshow(img)
         self.img.setImage(img, autoLevels=False) #type self.img:  <class 'pyqtgraph.graphicsItems.ImageItem.ImageItem'>
                         
     def make_connection(self, backend):
