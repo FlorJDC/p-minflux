@@ -422,31 +422,19 @@ class Backend(QtCore.QObject):
             # Get buffer from device's datastream
             buffer = self.__datastream.WaitForFinishedBuffer(5000) #buffer.Size() gives 2304000
 
-            # Create IDS peak IPL image from buffer
-            #image = ids_peak_ipl.Image.CreateFromSizeAndBuffer(buffer.PixelFormat(), buffer.BasePtr(), buffer.Size(),buffer.Width(), buffer.Height())
-            #print("buffer features: Pixel format", buffer.PixelFormat(), "BasePtr: ", buffer.BasePtr(), "Size: ", buffer.Size(), "Width: " ,buffer.Width(), "Height: ", buffer.Height())
-            #buffer features: Pixel format 17301505 BasePtr:  <Swig Object of type 'void *' at 0x0000022A2DF73A80> Size:  2304000 Width:  1920 Height:  1200
-            
-            # Convert it to RGBa8 format by debayering
-            #image_processed = image.ConvertTo(ids_peak_ipl.PixelFormatName_BGRa8, ids_peak_ipl.ConversionMode_Fast)
-            #print("type image_processed: ", type(image_processed)) #type image_processed:  <class 'ids_peak_ipl.ids_peak_ipl.Image'>
-            
-            
             # Create IDS peak IPL image for debayering and convert it to RGBa8 format
             ipl_image = ids_peak_ipl_extension.BufferToImage(buffer)
-            converted_ipl_image = ipl_image.ConvertTo(ids_peak_ipl.PixelFormatName_BGRa8) #<ids_peak_ipl.ids_peak_ipl.Image; proxy of <Swig Object of type 'peak::ipl::Image *' at 0x00000260E52ECDB0> > type image_cpy <class 'ids_peak_ipl.ids_peak_ipl.Image'>
-            
+            converted_ipl_image = ipl_image.ConvertTo(ids_peak_ipl.PixelFormatName_BGRa8)
+
             # Queue buffer so that it can be used again
             self.__datastream.QueueBuffer(buffer)
 
             # Get raw image data from converted image and construct a QImage from it
-            image_np_array = converted_ipl_image.get_numpy_2D()
-            #Esta linea me da error si no la comente, problema con el QImage, converted_ipl_image.Width(), converted_ipl_image.Height()
-            #image = QImage(image_np_array, converted_ipl_image.Width(), converted_ipl_image.Height(), QImage.Format_RGB32)
-            print("converted_ipl_image features: Width ", converted_ipl_image.Width(), "Height: ", converted_ipl_image.Height())
-
+            image_np_array = converted_ipl_image.get_numpy_1D()
+            image_gray = image_np_array.reshape(converted_ipl_image.Height(), converted_ipl_image.Width(), 4)[:, :, 0]
+            print("Type image_1channel: ", type(image_gray))
             # Make an extra copy of the QImage to make sure that memory is copied and can't get overwritten later on
-            self.image_cpy = image_np_array #.copy()
+            self.image_cpy = image_gray #.copy()
             #---------------------
             mat = np.matrix(self.image_cpy)
             if self.cnt ==0:

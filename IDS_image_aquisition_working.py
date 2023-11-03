@@ -182,13 +182,15 @@ class ids_cam:
                 ipl_image = ids_peak_ipl_extension.BufferToImage(buffer)
                 print("line 180 CreateFromSizeAndPythonBuffer")
                 converted_ipl_image = ipl_image.ConvertTo(ids_peak_ipl.PixelFormatName_BGRa8, ids_peak_ipl.ConversionMode_Fast)
-                print("image type: ", type(converted_ipl_image))
+                print("converted_ipl_image type: ", type(converted_ipl_image))
                 # Queue buffer again
                 self.m_dataStream.QueueBuffer(buffer)
                 # Get raw image data from converted image and construct a QImage from it
-                image_np_array = converted_ipl_image.get_numpy_2D()
-                print("size np array: ", len(image_np_array))
-                plt.imshow(image_np_array)
+                image_np_array = converted_ipl_image.get_numpy_1D()
+                image_gray = image_np_array.reshape(converted_ipl_image.Height(), converted_ipl_image.Width(), 4)[:, :, 0]
+                print("Type image_gray: ", type(image_gray))
+
+                plt.imshow(image_gray)
 
                 print("again in queue")
                 return True
