@@ -40,15 +40,15 @@ class IDS_U3:
         
         ids_peak.Library.Initialize() 
  
-    def __destroy_all(self):
+    def destroy_all(self):
         # Stop acquisition
-        self.__stop_acquisition()
+        self.stop_acquisition()
 
         # Close device and peak library
-        self.__close_device()
+        self.close_device()
         ids_peak.Library.Close()
      
-    def __open_device(self):
+    def open_device(self):
         try:
             # Create instance of the device manager
             device_manager = ids_peak.DeviceManager.Instance()
@@ -185,12 +185,12 @@ class IDS_U3:
             print("Error revoking buffers: ", str(e))
             return False     
     
-    def __close_device(self):
+    def close_device(self):
         """
         Stop acquisition if still running and close datastream and nodemap of the device
         """
         # Stop Acquisition in case it is still running
-        self.__stop_acquisition()
+        self.stop_acquisition()
 
         # If a datastream has been opened, try to revoke its image buffers
         if self.__datastream is not None:
@@ -200,7 +200,7 @@ class IDS_U3:
             except Exception as e:
                 print("Exception", str(e))
     
-    def __start_acquisition(self):
+    def start_acquisition(self):
         """
         Start Acquisition on camera and start the acquisition timer to receive and display images
 
@@ -247,7 +247,7 @@ class IDS_U3:
 
         return True
     
-    def __stop_acquisition(self):
+    def stop_acquisition(self):
         """
         Stop acquisition timer and stop acquisition on camera
         :return:
@@ -306,28 +306,30 @@ class IDS_U3:
             return False
      
     def work(self):     
-        if not self.__open_device():
+        if self.open_device():
             # error
-            sys.exit(-1)
+            print("Success opening device")
         if not self.set_roi(16, 16, 1920, 1200): # full chip (width:1920, height: 1200)
             # error
             sys.exit(-2)
         if not self.alloc_and_announce_buffers():
             # error
             sys.exit(-3)
-        if not self.__start_acquisition():
+        if not self.start_acquisition():
             # error
             sys.exit(-4)
         if not self.on_acquisition_timer():
             # error
             sys.exit(-5)
         
-        self.__destroy_all()
+        self.destroy_all()
         sys.exit(0)
 
      
 if __name__ == '__main__':
     device = IDS_U3()
-    device.__open_device()
+    value = device.open_device()
+    if value == True:
+        print("big success")
 
 
