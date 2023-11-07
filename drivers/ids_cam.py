@@ -292,6 +292,7 @@ class IDS_U3:
                 self.image_np_array = converted_ipl_image.get_numpy_3D() 
                 # 2D array, each element is the sum of the R,G,B,A channels
                 self.image_sum = np.sum(self.image_np_array, axis=2)
+                #self.image_sum = self.image_np_array[:, :, 0] #R channel
 
                 #plt.imshow(self.image_sum)
                 return self.image_sum

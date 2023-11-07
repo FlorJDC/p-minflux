@@ -36,7 +36,7 @@ import drivers.ids_cam as ids_cam
 
 FPS_LIMIT = 30
 
-DEBUG = True
+DEBUG = False
 
 def actuatorParameters(adwin, z_f, n_pixels_z=50, pixeltime=1000):
 
@@ -786,8 +786,8 @@ class Backend(QtCore.QObject):
 
         if self.ptr < self.npoints:
             self.data[self.ptr] = self.focusSignal #Ahora se supone que focusSiganl no es cero
-            print("focusSignal in update_graph_data: ", self.focusSignal)
-            print("Ya no es cero")
+            #print("focusSignal in update_graph_data: ", self.focusSignal)
+            #print("Ya no es cero")
             self.time[self.ptr] = self.currentTime
             
             self.changedData.emit(self.time[0:self.ptr + 1], #Esta señal va a get_data
@@ -796,7 +796,7 @@ class Backend(QtCore.QObject):
         else:
             self.data[:-1] = self.data[1:]
             self.data[-1] = self.focusSignal
-            print("focusSignal in update_graph_data (in else): ", self.focusSignal)
+            #print("focusSignal in update_graph_data (in else): ", self.focusSignal)
             self.time[:-1] = self.time[1:]
             self.time[-1] = self.currentTime
 

@@ -198,7 +198,8 @@ class ids_cam:
                 start = time.perf_counter()
                 image_np_array = converted_ipl_image.get_numpy_3D() 
                 # 2D array, each element is the sum of the R,G,B,A channels
-                image_sum = np.sum(image_np_array, axis=2)
+                image_sum=image_np_array[:, :, 0]
+                #image_sum = np.sum(image_np_array, axis=2)
                 end = time.perf_counter()
                 print("Time: ", end - start) #Time:  0.0040275999999721535
 
