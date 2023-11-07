@@ -1,0 +1,499 @@
+z_f is self.target_z in actuator_z:  265051.0 bits
+len(position) is higher than 2
+FocusSignal in center of mass: 98.51950874872216
+dz:  21.51877196698024 nm
+self.target_z en update_feedback:  206.28350434712635 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  265076.0 bits
+len(position) is higher than 2
+FocusSignal in center of mass: 98.52505102491371
+dz:  21.795885776557043 nm
+self.target_z en update_feedback:  206.3053002329029 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  265100.0 bits
+len(position) is higher than 2
+FocusSignal in center of mass: 98.53699357383506
+dz:  22.393013222625086 nm
+self.target_z en update_feedback:  206.32769324612553 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  265125.0 bits
+len(position) is higher than 2
+len(position) is higher than 2
+FocusSignal in center of mass: 98.49705325334538
+dz:  20.39599719814123 nm
+self.target_z en update_feedback:  206.34808924332367 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  265148.0 bits
+FocusSignal in center of mass: 98.57147746439706
+dz:  24.117207750725356 nm
+self.target_z en update_feedback:  206.3722064510744 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  265176.0 bits
+len(position) is higher than 2
+FocusSignal in center of mass: 98.5371513235847
+dz:  22.400900710106725 nm
+self.target_z en update_feedback:  206.3946073517845 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  265201.0 bits
+FocusSignal in center of mass: 98.55925566359568
+dz:  23.506117710656326 nm
+self.target_z en update_feedback:  206.41811346949515 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  265227.0 bits
+len(position) is higher than 2
+len(position) is higher than 2
+FocusSignal in center of mass: 98.5045893161685
+dz:  20.772800339297646 nm
+self.target_z en update_feedback:  206.43888626983446 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  265251.0 bits
+len(position) is higher than 2
+len(position) is higher than 2
+FocusSignal in center of mass: 98.58538045159231
+dz:  24.812357110487937 nm
+self.target_z en update_feedback:  206.46369862694493 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  265279.0 bits
+FocusSignal in center of mass: 98.54342475273133
+dz:  22.714572167438746 nm
+self.target_z en update_feedback:  206.48641319911238 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  265304.0 bits
+len(position) is higher than 2
+FocusSignal in center of mass: 98.56339970259285
+dz:  23.71331966051457 nm
+self.target_z en update_feedback:  206.5101265187729 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  265331.0 bits
+FocusSignal in center of mass: 98.50641156094498
+dz:  20.863912578121017 nm
+self.target_z en update_feedback:  206.530990431351 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  265354.0 bits
+len(position) is higher than 2
+len(position) is higher than 2
+FocusSignal in center of mass: 98.5950616583527
+dz:  25.296417448506872 nm
+self.target_z en update_feedback:  206.55628684879952 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  265383.0 bits
+len(position) is higher than 2
+len(position) is higher than 2
+FocusSignal in center of mass: 98.51140802525228
+dz:  21.11373579348583 nm
+self.target_z en update_feedback:  206.577400584593 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  265407.0 bits
+FocusSignal in center of mass: 98.55987157986077
+dz:  23.536913523910698 nm
+self.target_z en update_feedback:  206.6009374981169 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  265433.0 bits
+len(position) is higher than 2
+FocusSignal in center of mass: 98.5500388216319
+dz:  23.045275612466867 nm
+self.target_z en update_feedback:  206.62398277372938 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  265459.0 bits
+FocusSignal in center of mass: 98.54833410973822
+dz:  22.960040017783285 nm
+self.target_z en update_feedback:  206.64694281374716 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  265485.0 bits
+len(position) is higher than 2
+len(position) is higher than 2
+FocusSignal in center of mass: 98.49923580519379
+dz:  20.50512479056124 nm
+self.target_z en update_feedback:  206.66744793853772 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  265508.0 bits
+len(position) is higher than 2
+len(position) is higher than 2
+FocusSignal in center of mass: 98.58569826532808
+dz:  24.828247797276163 nm
+self.target_z en update_feedback:  206.692276186335 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  265536.0 bits
+FocusSignal in center of mass: 98.53162210159977
+dz:  22.124439610860463 nm
+self.target_z en update_feedback:  206.71440062594584 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  265561.0 bits
+len(position) is higher than 2
+len(position) is higher than 2
+FocusSignal in center of mass: 98.58064845655294
+dz:  24.575757358518786 nm
+self.target_z en update_feedback:  206.73897638330436 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  265589.0 bits
+FocusSignal in center of mass: 98.51394186132043
+dz:  21.240427596893824 nm
+self.target_z en update_feedback:  206.76021681090126 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  265612.0 bits
+len(position) is higher than 2
+FocusSignal in center of mass: 98.58725281918304
+dz:  24.905975490023593 nm
+self.target_z en update_feedback:  206.78512278639127 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  265641.0 bits
+FocusSignal in center of mass: 98.53259288113382
+dz:  22.172978587563193 nm
+self.target_z en update_feedback:  206.80729576497885 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  265665.0 bits
+len(position) is higher than 2
+len(position) is higher than 2
+FocusSignal in center of mass: 98.57050550457633
+dz:  24.068609759689025 nm
+self.target_z en update_feedback:  206.83136437473854 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  265693.0 bits
+len(position) is higher than 2
+len(position) is higher than 2
+FocusSignal in center of mass: 98.54135701822747
+dz:  22.611185442245187 nm
+self.target_z en update_feedback:  206.8539755601808 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  265718.0 bits
+FocusSignal in center of mass: 98.57744169823414
+dz:  24.41541944257915 nm
+self.target_z en update_feedback:  206.8783909796234 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  265746.0 bits
+len(position) is higher than 2
+FocusSignal in center of mass: 98.52009059991755
+dz:  21.547864526749436 nm
+self.target_z en update_feedback:  206.89993884415014 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  265770.0 bits
+FocusSignal in center of mass: 98.57559485254481
+dz:  24.323077158112937 nm
+self.target_z en update_feedback:  206.92426192130824 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  265797.0 bits
+len(position) is higher than 2
+len(position) is higher than 2
+FocusSignal in center of mass: 98.52520377751499
+dz:  21.803523406621025 nm
+self.target_z en update_feedback:  206.94606544471486 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  265822.0 bits
+len(position) is higher than 2
+len(position) is higher than 2
+FocusSignal in center of mass: 98.50525295679913
+dz:  20.805982370828133 nm
+self.target_z en update_feedback:  206.9668714270857 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  265845.0 bits
+FocusSignal in center of mass: 98.55053304421102
+dz:  23.069986741423236 nm
+self.target_z en update_feedback:  206.98994141382713 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  265871.0 bits
+len(position) is higher than 2
+FocusSignal in center of mass: 98.56268138208058
+dz:  23.677403634901566 nm
+self.target_z en update_feedback:  207.01361881746203 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  265898.0 bits
+FocusSignal in center of mass: 98.54152899822454
+dz:  22.619784442098535 nm
+self.target_z en update_feedback:  207.03623860190413 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  265923.0 bits
+len(position) is higher than 2
+len(position) is higher than 2
+FocusSignal in center of mass: 98.4848625406618
+dz:  19.786461563961893 nm
+self.target_z en update_feedback:  207.0560250634681 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  265946.0 bits
+len(position) is higher than 2
+len(position) is higher than 2
+FocusSignal in center of mass: 98.55975173940789
+dz:  23.530921501266675 nm
+self.target_z en update_feedback:  207.07955598496937 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  265972.0 bits
+FocusSignal in center of mass: 98.553031205222
+dz:  23.19489479197182 nm
+self.target_z en update_feedback:  207.10275087976135 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  265998.0 bits
+len(position) is higher than 2
+len(position) is higher than 2
+FocusSignal in center of mass: 98.54266784775761
+dz:  22.676726918753047 nm
+self.target_z en update_feedback:  207.1254276066801 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  266024.0 bits
+FocusSignal in center of mass: 98.55320698435368
+dz:  23.203683748555704 nm
+self.target_z en update_feedback:  207.14863129042865 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  266050.0 bits
+len(position) is higher than 2
+FocusSignal in center of mass: 98.61280264113248
+dz:  26.183466587495786 nm
+self.target_z en update_feedback:  207.17481475701615 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  266079.0 bits
+FocusSignal in center of mass: 98.51153895724809
+dz:  21.120282393276284 nm
+self.target_z en update_feedback:  207.19593503940942 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  266103.0 bits
+len(position) is higher than 2
+len(position) is higher than 2
+FocusSignal in center of mass: 98.53555291831371
+dz:  22.32098044655777 nm
+self.target_z en update_feedback:  207.21825601985597 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  266128.0 bits
+len(position) is higher than 2
+len(position) is higher than 2
+FocusSignal in center of mass: 98.5546022777953
+dz:  23.27344842063667 nm
+self.target_z en update_feedback:  207.2415294682766 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  266154.0 bits
+FocusSignal in center of mass: 98.60132884084798
+dz:  25.60977657327112 nm
+self.target_z en update_feedback:  207.2671392448499 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  266183.0 bits
+len(position) is higher than 2
+FocusSignal in center of mass: 98.48884235613028
+dz:  19.98545233738605 nm
+self.target_z en update_feedback:  207.28712469718727 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  266206.0 bits
+FocusSignal in center of mass: 98.54779419948306
+dz:  22.933044505025464 nm
+self.target_z en update_feedback:  207.3100577416923 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  266232.0 bits
+len(position) is higher than 2
+len(position) is higher than 2
+FocusSignal in center of mass: 98.53600939487991
+dz:  22.34380427486758 nm
+self.target_z en update_feedback:  207.33240154596717 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  266257.0 bits
+len(position) is higher than 2
+len(position) is higher than 2
+FocusSignal in center of mass: 98.57391996009726
+dz:  24.23933253573523 nm
+self.target_z en update_feedback:  207.3566408785029 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  266284.0 bits
+FocusSignal in center of mass: 98.48850853469857
+dz:  19.968761265800822 nm
+self.target_z en update_feedback:  207.3766096397687 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  266307.0 bits
+len(position) is higher than 2
+FocusSignal in center of mass: 98.5452500232861
+dz:  22.80583569517694 nm
+self.target_z en update_feedback:  207.39941547546388 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  266332.0 bits
+FocusSignal in center of mass: 98.53000382139851
+dz:  22.043525600797693 nm
+self.target_z en update_feedback:  207.42145900106468 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  266357.0 bits
+len(position) is higher than 2
+len(position) is higher than 2
+FocusSignal in center of mass: 98.55608173477484
+dz:  23.347421269613733 nm
+self.target_z en update_feedback:  207.4448064223343 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  266383.0 bits
+len(position) is higher than 2
+len(position) is higher than 2
+FocusSignal in center of mass: 98.52310726337328
+dz:  21.698697699535842 nm
+self.target_z en update_feedback:  207.46650512003384 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  266408.0 bits
+FocusSignal in center of mass: 98.60070348181806
+dz:  25.578508621774745 nm
+self.target_z en update_feedback:  207.49208362865562 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  266437.0 bits
+len(position) is higher than 2
+FocusSignal in center of mass: 98.48596923034384
+dz:  19.84179604806377 nm
+self.target_z en update_feedback:  207.5119254247037 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  266459.0 bits
+len(position) is higher than 2
+FocusSignal in center of mass: 98.54884578593698
+dz:  22.9856238277207 nm
+self.target_z en update_feedback:  207.5349110485314 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  266485.0 bits
+len(position) is higher than 2
+len(position) is higher than 2
+FocusSignal in center of mass: 98.55739885600067
+dz:  23.413277330905657 nm
+self.target_z en update_feedback:  207.55832432586232 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  266511.0 bits
+len(position) is higher than 2
+FocusSignal in center of mass: 98.55783491598906
+dz:  23.435080330325036 nm
+self.target_z en update_feedback:  207.58175940619265 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  266538.0 bits
+FocusSignal in center of mass: 98.49496572269088
+dz:  20.291620665416303 nm
+self.target_z en update_feedback:  207.60205102685805 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  266560.0 bits
+len(position) is higher than 2
+FocusSignal in center of mass: 98.53430849201983
+dz:  22.25875913186337 nm
+self.target_z en update_feedback:  207.6243097859899 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  266585.0 bits
+len(position) is higher than 2
+FocusSignal in center of mass: 98.50702520268732
+dz:  20.89459466523749 nm
+self.target_z en update_feedback:  207.64520438065514 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  266609.0 bits
+len(position) is higher than 2
+FocusSignal in center of mass: 98.52866433087362
+dz:  21.976551074552845 nm
+self.target_z en update_feedback:  207.6671809317297 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  266634.0 bits
+len(position) is higher than 2
+len(position) is higher than 2
+FocusSignal in center of mass: 98.50956370640931
+dz:  21.02151985133787 nm
+self.target_z en update_feedback:  207.68820245158102 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  266657.0 bits
+FocusSignal in center of mass: 98.56539775312017
+dz:  23.81322218688001 nm
+self.target_z en update_feedback:  207.7120156737679 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  266684.0 bits
+len(position) is higher than 2
+FocusSignal in center of mass: 98.53799524948373
+dz:  22.443097005058007 nm
+self.target_z en update_feedback:  207.73445877077296 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  266710.0 bits
+FocusSignal in center of mass: 98.51426526599383
+dz:  21.256597830563805 nm
+self.target_z en update_feedback:  207.75571536860352 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  266733.0 bits
+len(position) is higher than 2
+len(position) is higher than 2
+FocusSignal in center of mass: 98.55836288313792
+dz:  23.46147868776825 nm
+self.target_z en update_feedback:  207.7791768472913 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  266760.0 bits
+len(position) is higher than 2
+len(position) is higher than 2
+FocusSignal in center of mass: 98.58076051833909
+dz:  24.581360447826228 nm
+self.target_z en update_feedback:  207.80375820773912 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  266788.0 bits
+FocusSignal in center of mass: 98.51184560117399
+dz:  21.13561458957156 nm
+self.target_z en update_feedback:  207.8248938223287 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  266811.0 bits
+len(position) is higher than 2
+FocusSignal in center of mass: 98.5171863172114
+dz:  21.402650391441966 nm
+self.target_z en update_feedback:  207.84629647272016 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  266835.0 bits
+FocusSignal in center of mass: 98.5898377239445
+dz:  25.035220728096647 nm
+self.target_z en update_feedback:  207.87133169344824 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  266864.0 bits
+len(position) is higher than 2
+len(position) is higher than 2
+FocusSignal in center of mass: 98.57547568030606
+dz:  24.317118546175152 nm
+self.target_z en update_feedback:  207.89564881199442 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  266891.0 bits
+len(position) is higher than 2
+FocusSignal in center of mass: 98.54728113164988
+dz:  22.90739111336643 nm
+self.target_z en update_feedback:  207.91855620310778 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  266917.0 bits
+len(position) is higher than 2
+FocusSignal in center of mass: 98.56730883732227
+dz:  23.90877639698556 nm
+self.target_z en update_feedback:  207.94246497950476 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  266944.0 bits
+len(position) is higher than 2
+len(position) is higher than 2
+FocusSignal in center of mass: 98.58224986863901
+dz:  24.655827962822514 nm
+self.target_z en update_feedback:  207.96712080746758 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  266972.0 bits
+FocusSignal in center of mass: 98.54980638299166
+dz:  23.033653680455245 nm
+self.target_z en update_feedback:  207.99015446114802 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  266997.0 bits
+len(position) is higher than 2
+FocusSignal in center of mass: 98.53547162038879
+dz:  22.316915550311933 nm
+self.target_z en update_feedback:  208.01247137669833 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  267023.0 bits
+FocusSignal in center of mass: 98.54871732229611
+dz:  22.979200645677338 nm
+self.target_z en update_feedback:  208.035450577344 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  267048.0 bits
+len(position) is higher than 2
+len(position) is higher than 2
+FocusSignal in center of mass: 98.55419323534178
+dz:  23.252996297961545 nm
+self.target_z en update_feedback:  208.05870357364196 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  267075.0 bits
+len(position) is higher than 2
+len(position) is higher than 2
+FocusSignal in center of mass: 98.53867226015592
+dz:  22.476947538668355 nm
+self.target_z en update_feedback:  208.08118052118064 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  267100.0 bits
+FocusSignal in center of mass: 98.57336356228063
+dz:  24.21151264490345 nm
+self.target_z en update_feedback:  208.10539203382555 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  267127.0 bits
+len(position) is higher than 2
+FocusSignal in center of mass: 98.56201831121204
+dz:  23.644250091474532 nm
+self.target_z en update_feedback:  208.12903628391703 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  267154.0 bits
+FocusSignal in center of mass: 98.55010418243154
+dz:  23.048543652448643 nm
+self.target_z en update_feedback:  208.15208482756947 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  267180.0 bits
+len(position) is higher than 2
+len(position) is higher than 2
+FocusSignal in center of mass: 98.50928958079663
+dz:  21.007813570703547 nm
+self.target_z en update_feedback:  208.17309264114016 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  267203.0 bits
+len(position) is higher than 2
+len(position) is higher than 2
+FocusSignal in center of mass: 98.60002603536358
+dz:  25.54463629905149 nm
+self.target_z en update_feedback:  208.19863727743922 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  267232.0 bits
+FocusSignal in center of mass: 98.54952406565651
+dz:  23.019537813697752 nm
+self.target_z en update_feedback:  208.2216568152529 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  267258.0 bits
+len(position) is higher than 2
+FocusSignal in center of mass: 98.53499717120404
+dz:  22.29319309107359 nm
+self.target_z en update_feedback:  208.243950008344 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  267283.0 bits
+FocusSignal in center of mass: 98.5485714497178
+dz:  22.97190701676209 nm
+self.target_z en update_feedback:  208.26692191536077 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  267309.0 bits
+len(position) is higher than 2
+len(position) is higher than 2
+FocusSignal in center of mass: 98.58467554118515
+dz:  24.777111590129607 nm
+self.target_z en update_feedback:  208.2916990269509 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  267337.0 bits
+len(position) is higher than 2
+len(position) is higher than 2
+FocusSignal in center of mass: 98.50762495075234
+dz:  20.924582068489144 nm
+self.target_z en update_feedback:  208.3126236090194 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  267361.0 bits
+FocusSignal in center of mass: 98.57360075537747
+dz:  24.22337229974528 nm
+self.target_z en update_feedback:  208.33684698131916 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  267388.0 bits
+len(position) is higher than 2
+FocusSignal in center of mass: 98.5480380808826
+dz:  22.945238575001895 nm
+self.target_z en update_feedback:  208.35979221989416 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  267414.0 bits
+FocusSignal in center of mass: 98.56491156751694
+dz:  23.788912906718906 nm
+self.target_z en update_feedback:  208.38358113280088 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  267440.0 bits
+len(position) is higher than 2
+len(position) is higher than 2
+len(position) is higher than 2
+len(position) is higher than 2
+FocusSignal in center of mass: 98.51755953057493
+dz:  21.421311059618347 nm
+self.target_z en update_feedback:  208.4050024438605 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  267465.0 bits
+len(position) is higher than 2
+FocusSignal in center of mass: 98.5752827801595
+dz:  24.307473538847262 nm
+self.target_z en update_feedback:  208.42930991739934 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  267492.0 bits
+FocusSignal in center of mass: 98.53882805166566
+dz:  22.484737114154996 nm
+self.target_z en update_feedback:  208.4517946545135 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  267517.0 bits
+len(position) is higher than 2
+len(position) is higher than 2
+FocusSignal in center of mass: 98.53938128696525
+dz:  22.512398879134707 nm
+self.target_z en update_feedback:  208.47430705339264 µm. Se envía a actuator_z
+z_f is self.target_z in actuator_z:  267543.0 bits
+2023-11-07 19:22:09.867714 [focus] IR shutter closed
+focusSignal in reset:  98.53938128696525
+x_f, y_f, z_f:  0 0 0
+x_f in um before conversion:  0
+y_f in um before conversion:  0
+z_f in um before conversion:  0
+x_f after conversion to ADwin units:  32791.0
+y_f after conversion to ADwin units:  32791.0
+z_f after conversion to ADwin units.:  32791.0
+2023-11-07 19:22:16.054278 [focus] Focus stopped
+len(position) is higher than 2
