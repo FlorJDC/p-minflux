@@ -3,7 +3,7 @@
 Created on Th Oct  31 2023
 Test using class
 
-@authors: Florencia D. Choque
+@author: Florencia D. Choque
 """
 
 import numpy as np
@@ -86,11 +86,9 @@ class Frontend(QtGui.QFrame):
         
     @pyqtSlot(np.ndarray)
     def get_image(self, img):
-        if DEBUG:
-            print(" Inside get_image ")
-        print("Type of image received in get image", type(img))
-        self.img.setImage(img, autoLevels=False)
-        print("Image sent to GUI. Type: ", type(self.img))
+        #if DEBUG:
+            #print(" Inside get_image ") #Type of image received in get image <class 'numpy.ndarray'>
+        self.img.setImage(img, autoLevels=False) #Image sent to GUI. Type:  <class 'pyqtgraph.graphicsItems.ImageItem.ImageItem'>
                         
     def make_connection(self, backend):
         if DEBUG:
@@ -203,8 +201,7 @@ class Backend(QtCore.QObject):
         
         #Variables de instancia relacionadas con laadquisición de imágenes
         self.__display = None
-        #self.__acquisition_timer = QTimer() #temporizador para controlar la frecuencia de adquisición,
-        self.counter = 0 #Contador del numero de cuadros
+        #self.__acquisition_timer = QTimer() #temporizador para controlar la frecuencia de adquisición
         self.__error_counter = 0 #Contador del numero de errores
         self.__acquisition_running = False #bandera para indicar si la adquisición está en curso.
         
@@ -432,33 +429,11 @@ class Backend(QtCore.QObject):
             # Get raw image data from converted image and construct a QImage from it
             image_np_array = converted_ipl_image.get_numpy_3D()
             image_sum = np.sum(image_np_array, axis=2)
-            print("Type image_1channel: ", type(image_sum))
             # Make an extra copy of the QImage to make sure that memory is copied and can't get overwritten later on
             self.image_cpy = image_sum.copy()
-            #---------------------
-            # mat = np.matrix(self.image_cpy)
-            # if self.cnt ==0:
-            #     with open('outfile.txt','wb') as f:
-            #         for line in mat:
-            #             np.savetxt(f, line, fmt='%.2f')
-            #     self.cnt=self.cnt +1
-
-            # # Título del gráfico
-            # plt.title('Gráfico de dispersión del array')
-
-            # # Mostrar el gráfico
-            #plt.imshow(self.image_cpy)
-            
-            print(" image_cpy: ", self.image_cpy, "type image_cpy", type(self.image_cpy))
-            print("shape: ", self.image_cpy.shape)
 
             # Emit signal that the image is ready to be displayed
             self.changedImage.emit(self.image_cpy)
-            self.counter = self.counter + 1
-            print("Image number: ", self.counter, " sent")
-
-            #self.__display.on_image_received(image_cpy)
-            #self.__display.update()
 
         except ids_peak.Exception as e:
             self.__error_counter += 1
