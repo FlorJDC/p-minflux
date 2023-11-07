@@ -195,12 +195,9 @@ class Backend(QtCore.QObject):
         if DEBUG:
             print("Inside init in backend")
         super().__init__(*args, **kwargs)
-        
-        self.cnt=0
+
         self.camera = camera
         
-        #self.__acquisition_timer = QTimer() #temporizador para controlar la frecuencia de adquisición
-        self.__error_counter = 0 #Contador del numero de errores
         self.__acquisition_running = False #bandera para indicar si la adquisición está en curso.
         
         
@@ -218,15 +215,9 @@ class Backend(QtCore.QObject):
         self.save_data_state = False
     
         self.npoints = 400
-        
-        # checks image size
-        
-        #rawimage = self.camera.latest_frame()
-        #image = np.sum(rawimage, axis=2)
-#        self.sensorSize = np.array(image.shape)        
+              
         self.pxSize = 50 #original 10nm FC  # in nm, TODO: check correspondence with GUI
         
-
         self.focusSignal = 0
         
         # set focus update rate
@@ -241,15 +232,14 @@ class Backend(QtCore.QObject):
         if self.camera.open_device():
             print("Success opening IDS")
             self.camera.set_roi()
+            print("success setting roi")
             try:
                 self.camera.alloc_and_announce_buffers()
-                self.camera.start_acquisition()
+                #self.camera.start_acquisition()
             except Exception as e:
                 print("Exception", str(e))
         else:
             self.camera.destroy_all()
-
-
 
     @pyqtSlot(bool)
     def liveview(self, value):
@@ -258,14 +248,14 @@ class Backend(QtCore.QObject):
                 if self.camera.start_acquisition():
                     print("Acquisition started!")
                     self.camera.on_acquisition_timer()
-                    print("camera started live video mode")
+                    print("camera should show an image")
                     self.cameraTimer.start() #self.camTime
                     print("timer started in liveview_start")
             except Exception as e:
                     print("Exception", str(e))
         else:
             try:
-                self.__stop_acquisition()
+                self.camera.stop_acquisition()
                 print("Acquisition stopped!")
                 self.cameraTimer.stop()
                 print("cameraTimer: stopped")
@@ -393,7 +383,7 @@ if __name__ == '__main__':
     worker.moveToThread(camThread)
     worker.cameraTimer.moveToThread(camThread)
     #worker.cameraTimer.timeout.connect(worker.update) #Esta línea sincroniza el cameraTimer con la ejecución de la función update del Backend
-    worker.cameraTimer.timeout.connect(worker.self.camera.on_acquisition_timer)
+    worker.cameraTimer.timeout.connect(worker.self.camera.on_acquisition_timer) #Check this function
     print("line 614")
     camThread.start()
 
