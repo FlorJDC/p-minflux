@@ -3,7 +3,8 @@
 Created on Th Oct  31 2023
 Test using class
 
-@author: Florencia D. Choque
+@author: Florencia D. Choque 
+Stand alone example for testing IDS driver (ids_cam)
 """
 
 import numpy as np
@@ -44,7 +45,7 @@ ids_peak.Library.Initialize()
 FPS_LIMIT = 30
 
 
-DEBUG = True
+DEBUG = False
 
 class Frontend(QtGui.QFrame):
     
@@ -170,7 +171,7 @@ class Frontend(QtGui.QFrame):
         self.closeSignal.emit()
         time.sleep(1)
         
-#        camThread.exit()
+        camThread.exit()
         super().closeEvent(*args, **kwargs)
         app.quit()
         
@@ -194,6 +195,7 @@ class Backend(QtCore.QObject):
     def __init__(self, camera, *args, **kwargs):
         if DEBUG:
             print("Inside init in backend")
+            
         super().__init__(*args, **kwargs)
 
         self.camera = camera
@@ -230,9 +232,7 @@ class Backend(QtCore.QObject):
         self.reset()
       
         if self.camera.open_device():
-            print("Success opening IDS")
             self.camera.set_roi(16, 16, 1920, 1200)
-            print("success setting roi")
             try:
                 self.camera.alloc_and_announce_buffers()
                 self.camera.start_acquisition()
@@ -275,24 +275,7 @@ class Backend(QtCore.QObject):
         x1 = 1200 
         y1 = 1920
             
-        val = np.array([x0, y0, x1, y1])
-        #print("val en liveview_stop:", val)
-        
-        
-        # if value:
-        #     try:
-        #         self.cameraTimer.start() 
-        #         print("timer started in liveview_start")
-        #     except Exception as e:
-        #             print("Exception", str(e))
-        # else:
-        #     try:
-        #         self.camera.stop_acquisition()
-        #         print("Acquisition stopped!")
-        #         self.cameraTimer.stop()
-        #         print("cameraTimer: stopped")
-        #     except Exception as e:
-        #         print("Exception", str(e))
+        #val = np.array([x0, y0, x1, y1])
 
     def update(self):
         
@@ -307,15 +290,15 @@ class Backend(QtCore.QObject):
                 
         # acquire image
     
-        self.image = self.camera.on_acquisition_timer() #This is a 3D array
-
-        #self.image = np.sum(raw_image, axis=2)  # sum the R, G, B images
+        self.image = self.camera.on_acquisition_timer() #This is a 2D array
+        #This following lines are executed inside ids_cam driver, to change  this I should modify these lines there (depending on which one I prefer: R or R+G+B+A)
+        #self.image = np.sum(raw_image, axis=2)  # sum the R, G, B images 
         #self.image = raw_image[:, :, 0] # take only R channel
 
         # WARNING: check if it is necessary to fix to match camera orientation with piezo orientation
-        #find command
-        # send image to gui
-        self.changedImage.emit(self.image) #this signal goes to get_image
+        #find command for IDS, maybe in user manual
+        # Send image to gui
+        self.changedImage.emit(self.image) # This signal goes to get_image
         print("image sent to get_image. Type: ", type(self.image))
         self.currentTime = ptime.time() - self.startTime
             
@@ -323,12 +306,9 @@ class Backend(QtCore.QObject):
         if DEBUG:
                 print("Inside reset")
         
-
         self.time = np.zeros(self.npoints)
         self.ptr = 0
         self.startTime = ptime.time()
-
-        print("finishing reset")
 
     @pyqtSlot()
     def stop(self):
@@ -340,20 +320,11 @@ class Backend(QtCore.QObject):
         self.cameraTimer.stop()
         
         #prevent system to throw weird errors when not being able to close the camera, see uc480.py --> close()
-#        try:
-        self.reset()
-#        except:
-#            pass
+        try:
+            self.reset()
+        except:
+            pass
         
-        if self.standAlone is True:
-            
-            # Go back to 0 position
-    
-            x_0 = 0
-            y_0 = 0
-            z_0 = 0
-    
-            
         #self.camera.close()
 
         print(datetime.now(), '[] program stopped')
@@ -365,8 +336,7 @@ class Backend(QtCore.QObject):
             os.remove(r'C:\Users\USUARIO\Documents\GitHub\pyflux\yacctab.py')
         except:
             pass
-        
-        
+                
     def make_connection(self, frontend):
         if DEBUG:
                 print("Inside make_connection in Backend")
@@ -395,7 +365,7 @@ if __name__ == '__main__':
     try:
         cam = ids_cam.IDS_U3()
     except:
-        print("No device found")
+        pass
        
     #if camera wasnt closed properly just keep using it without opening new one
 
@@ -412,7 +382,6 @@ if __name__ == '__main__':
     worker.cameraTimer.moveToThread(camThread)
     #Esta línea sincroniza el cameraTimer con la ejecución de la función update del Backend
     worker.cameraTimer.timeout.connect(worker.update) #Check this function
-    print("Camera timer connected to update function in main")
     camThread.start()
 
     gui.setWindowTitle('Camera display')
