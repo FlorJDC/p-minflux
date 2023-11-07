@@ -162,7 +162,6 @@ class Frontend(QtGui.QFrame):
         
         #didnt want to work when being put at earlier point in this function
         self.liveviewButton.clicked.connect(lambda: self.toggle_liveview(self.liveviewButton.isChecked()))
-        print("liveviewbutton & toogle liveview connected")
 
     def closeEvent(self, *args, **kwargs):
         if DEBUG:
@@ -254,19 +253,17 @@ class Backend(QtCore.QObject):
             
             
     def liveview_start(self):
-        
+        if DEBUG:
+            print("Inside Liveview-start")
         if self.camON:
-            print("Liveview-start")
             self.cameraTimer.stop()
             self.camON = False
-        print("Liveview-start second line")
         self.camON = True
         self.cameraTimer.start()
         
     def liveview_stop(self):
         if DEBUG:
             print("Inside Liveview-stop")
-        #self.camera.stop_acquisition()
         self.cameraTimer.stop()
         print("cameraTimer: stopped")
         self.camON = False  
@@ -299,7 +296,7 @@ class Backend(QtCore.QObject):
         #find command for IDS, maybe in user manual
         # Send image to gui
         self.changedImage.emit(self.image) # This signal goes to get_image
-        print("image sent to get_image. Type: ", type(self.image))
+        #image sent to get_image. Type:  <class 'numpy.ndarray'>
         self.currentTime = ptime.time() - self.startTime
             
     def reset(self):
@@ -343,8 +340,6 @@ class Backend(QtCore.QObject):
 
         frontend.closeSignal.connect(self.stop)
         frontend.liveviewButton.clicked.connect(self.liveview)
-        print("liveview & liviewbutton connected in backend")
-
 
 if __name__ == '__main__':
     if DEBUG:

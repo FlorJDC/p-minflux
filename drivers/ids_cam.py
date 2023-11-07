@@ -108,13 +108,13 @@ class IDS_U3:
         try:
             # Get the minimum ROI and set it. After that there are no size restrictions anymore
             x_min = self.__nodemap_remote_device.FindNode("OffsetX").Minimum()
-            print("x_min:", x_min)
+            #print("x_min:", x_min)
             y_min = self.__nodemap_remote_device.FindNode("OffsetY").Minimum()
-            print("y_min:", y_min)
+            #print("y_min:", y_min)
             w_min = self.__nodemap_remote_device.FindNode("Width").Minimum()
-            print("w_min:", w_min)
+            #print("w_min:", w_min)
             h_min = self.__nodemap_remote_device.FindNode("Height").Minimum()
-            print("h_min:", h_min)
+            #print("h_min:", h_min)
      
             self.__nodemap_remote_device.FindNode("OffsetX").SetValue(x_min)
             self.__nodemap_remote_device.FindNode("OffsetY").SetValue(y_min)
@@ -123,18 +123,17 @@ class IDS_U3:
      
             # Get the maximum ROI values
             x_max = self.__nodemap_remote_device.FindNode("OffsetX").Maximum()
-            print("x_max:", x_max)
+            #print("x_max:", x_max)
             y_max = self.__nodemap_remote_device.FindNode("OffsetY").Maximum()
-            print("y_max:", y_max)
+            #print("y_max:", y_max)
             w_max = self.__nodemap_remote_device.FindNode("Width").Maximum()
-            print("w_max:", w_max)
+            #print("w_max:", w_max)
             h_max = self.__nodemap_remote_device.FindNode("Height").Maximum()
-            print("h_max:", h_max)
+            #print("h_max:", h_max)
      
             if (x < x_min) or (y < y_min) or (x > x_max) or (y > y_max):
                 return False
             elif (width < w_min) or (height < h_min) or ((x + width) > w_max) or ((y + height) > h_max):
-                print("Here")
                 return False
             else:
                 # Now, set final AOI
@@ -153,11 +152,10 @@ class IDS_U3:
             if self.__datastream:
                 self.revoke_buffers()
                 payload_size = self.__nodemap_remote_device.FindNode("PayloadSize").Value()
-                print(payload_size, "-> Payload_size") # Payload_size in this case is: 65536 bytes, for width = 256 and height = 256
+                #print(payload_size, "-> Payload_size") # Payload_size in this case is: 65536 bytes, for width = 256 and height = 256 # 2304000 -> Payload_size for full chip
      
                 # Get number of minimum required buffers
-                num_buffers_min_required = self.__datastream.NumBuffersAnnouncedMinRequired()
-                print("num_buffers_min_required: ", num_buffers_min_required)
+                num_buffers_min_required = self.__datastream.NumBuffersAnnouncedMinRequired() #num_buffers_min_required:  3
      
                 # Alloc buffers
                 for i in range(num_buffers_min_required):
@@ -216,8 +214,8 @@ class IDS_U3:
         # Get the maximum framerate possible, limit it to the configured FPS_LIMIT. If the limit can't be reached, set
         # acquisition interval to the maximum possible framerate
         try:
-            max_fps = self.__nodemap_remote_device.FindNode("AcquisitionFrameRate").Maximum()
-            print("Max Frame Rate: ", max_fps, "FPS_LIMIT: ", FPS_LIMIT)
+            max_fps = self.__nodemap_remote_device.FindNode("AcquisitionFrameRate").Maximum() #Max Frame Rate:  66.49384258032052 FPS_LIMIT:  30
+            #print("Max Frame Rate: ", max_fps, "FPS_LIMIT: ", FPS_LIMIT)
             target_fps = min(max_fps, FPS_LIMIT)
             self.__nodemap_remote_device.FindNode("AcquisitionFrameRate").SetValue(target_fps)
         except ids_peak.Exception:
@@ -236,7 +234,7 @@ class IDS_U3:
             self.__datastream.StartAcquisition()
             self.__nodemap_remote_device.FindNode("AcquisitionStart").Execute()
             self.__nodemap_remote_device.FindNode("AcquisitionStart").WaitUntilDone()
-            print("Success starting acquisition - inside driver")
+
         except Exception as e:
             print("Exception: " + str(e))
             return False
