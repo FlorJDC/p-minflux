@@ -290,17 +290,17 @@ class IDS_U3:
                 self.__datastream.QueueBuffer(buffer)
                 
                 # Get raw image data from converted image and construct a 3D array
-                image_np_array = converted_ipl_image.get_numpy_3D() 
+                self.image_np_array = converted_ipl_image.get_numpy_3D() 
                 # 2D array, each element is the sum of the R,G,B,A channels
-                image_sum = np.sum(image_np_array, axis=2)
+                self.image_sum = np.sum(self.image_np_array, axis=2)
 
-                plt.imshow(image_sum)
-                return True
+                #plt.imshow(self.image_sum)
+                return self.image_sum
         
         except Exception as e:
             str_error = str(e)
             print("Error showing image: ",str_error)
-            return False
+
      
     def work(self):     
         if self.open_device():
@@ -319,8 +319,9 @@ class IDS_U3:
             # error
             sys.exit(-5)
         # image_np_array=self.on_acquisition_timer()
-        # image_sum = np.sum(image_np_array, axis=2)
-        # plt.imshow(image_sum)
+        #image_sum = np.sum(image_np_array, axis=2)
+        image_sum=self.on_acquisition_timer()
+        plt.imshow(image_sum)
 
         
         self.destroy_all()
