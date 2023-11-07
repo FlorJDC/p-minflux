@@ -244,21 +244,55 @@ class Backend(QtCore.QObject):
     @pyqtSlot(bool)
     def liveview(self, value):
         if value:
-            try:
-                #self.camera.start_acquisition()
+            self.camON = True
+            #self.cameraTimer.start() 
+            self.liveview_start()
 
-                self.cameraTimer.start() #self.camTime
-                print("timer started in liveview_start")
-            except Exception as e:
-                    print("Exception", str(e))
         else:
-            try:
-                self.camera.stop_acquisition()
-                print("Acquisition stopped!")
-                self.cameraTimer.stop()
-                print("cameraTimer: stopped")
-            except Exception as e:
-                print("Exception", str(e))
+            self.liveview_stop()
+            self.camON = False
+            
+            
+    def liveview_start(self):
+        
+        if self.camON:
+            print("Liveview-start")
+            self.cameraTimer.stop()
+            self.camON = False
+        print("Liveview-start second line")
+        self.camON = True
+        self.cameraTimer.start()
+        
+    def liveview_stop(self):
+        if DEBUG:
+            print("Inside Liveview-stop")
+        #self.camera.stop_acquisition()
+        self.cameraTimer.stop()
+        print("cameraTimer: stopped")
+        self.camON = False  
+        x0 = 0
+        y0 = 0
+        x1 = 1200 
+        y1 = 1920
+            
+        val = np.array([x0, y0, x1, y1])
+        #print("val en liveview_stop:", val)
+        
+        
+        # if value:
+        #     try:
+        #         self.cameraTimer.start() 
+        #         print("timer started in liveview_start")
+        #     except Exception as e:
+        #             print("Exception", str(e))
+        # else:
+        #     try:
+        #         self.camera.stop_acquisition()
+        #         print("Acquisition stopped!")
+        #         self.cameraTimer.stop()
+        #         print("cameraTimer: stopped")
+        #     except Exception as e:
+        #         print("Exception", str(e))
 
     def update(self):
         
