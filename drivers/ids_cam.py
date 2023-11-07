@@ -11,7 +11,8 @@ The sensor gives us a bayered image that can be debayered using ids_peak_ipl
 The converted image can then be processed to convert raw data to image
 The faster process: taking just 1 channel
 User Manual: https://de.ids-imaging.com/manuals/ids-peak/ids-peak-user-manual/1.3.0/en/basics-bayer-pattern.html
-I created this class to introduce camera as an IDS object in backend, otherwise I had problems with threading
+I created this class to introduce camera as an IDS object in a backend class (another program, bigger), otherwise I had problems with threading, on_acquisition_timer can be modified to return 1 channel image
+When running in stand alone mode device.work() gives a camera photo
 """
 
 import sys
@@ -298,8 +299,7 @@ class IDS_U3:
                 return self.image_sum
         
         except Exception as e:
-            str_error = str(e)
-            print("Error showing image: ",str_error)
+            print("Error showing image: ", str(e))
 
      
     def work(self):     
