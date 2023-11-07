@@ -227,7 +227,6 @@ class IDS_U3:
         #self.cameraTimer.setInterval((1 / target_fps) * 1000) #Same timer than in uc480
         #self.cameraTimer.setSingleShot(False)
         #self.cameraTimer.timeout.connect(self.on_acquisition_timer)# Important line when working with no Thread
-        print("inside line 365")
         try:
             # Lock critical features to prevent them from changing during acquisition
             self.__nodemap_remote_device.FindNode("TLParamsLocked").SetValue(1)
@@ -236,7 +235,7 @@ class IDS_U3:
             self.__datastream.StartAcquisition()
             self.__nodemap_remote_device.FindNode("AcquisitionStart").Execute()
             self.__nodemap_remote_device.FindNode("AcquisitionStart").WaitUntilDone()
-            print("Success starting acquisition - line 374")
+            print("Success starting acquisition - inside driver")
         except Exception as e:
             print("Exception: " + str(e))
             return False
@@ -296,8 +295,6 @@ class IDS_U3:
                 image_sum = np.sum(image_np_array, axis=2)
 
                 plt.imshow(image_sum)
-
-                print("again in queue")
                 return True
         
         except Exception as e:
@@ -321,6 +318,10 @@ class IDS_U3:
         if not self.on_acquisition_timer():
             # error
             sys.exit(-5)
+        # image_np_array=self.on_acquisition_timer()
+        # image_sum = np.sum(image_np_array, axis=2)
+        # plt.imshow(image_sum)
+
         
         self.destroy_all()
         sys.exit(0)
@@ -328,8 +329,9 @@ class IDS_U3:
      
 if __name__ == '__main__':
     device = IDS_U3()
-    value = device.open_device()
-    if value == True:
-        print("big success")
+    # value = device.open_device()
+    # if value == True:
+    #     print("big success")
+    device.work()
 
 

@@ -88,8 +88,8 @@ class Frontend(QtGui.QFrame):
         
     @pyqtSlot(np.ndarray)
     def get_image(self, img):
-        #if DEBUG:
-            #print(" Inside get_image ") #Type of image received in get image <class 'numpy.ndarray'>
+        if DEBUG:
+            print(" Inside get_image ") #Type of image received in get image <class 'numpy.ndarray'>
         self.img.setImage(img, autoLevels=False) #Image sent to GUI. Type:  <class 'pyqtgraph.graphicsItems.ImageItem.ImageItem'>
                         
     def make_connection(self, backend):
@@ -231,11 +231,11 @@ class Backend(QtCore.QObject):
       
         if self.camera.open_device():
             print("Success opening IDS")
-            self.camera.set_roi()
+            self.camera.set_roi(16, 16, 1920, 1200)
             print("success setting roi")
             try:
                 self.camera.alloc_and_announce_buffers()
-                #self.camera.start_acquisition()
+                self.camera.start_acquisition()
             except Exception as e:
                 print("Exception", str(e))
         else:
@@ -245,12 +245,11 @@ class Backend(QtCore.QObject):
     def liveview(self, value):
         if value:
             try:
-                if self.camera.start_acquisition():
-                    print("Acquisition started!")
-                    self.camera.on_acquisition_timer()
-                    print("camera should show an image")
-                    self.cameraTimer.start() #self.camTime
-                    print("timer started in liveview_start")
+                self.camera.start_acquisition()
+                self.camera.on_acquisition_timer() #This is a 3D array
+                print("success turning on acquisition timer ")
+                self.cameraTimer.start() #self.camTime
+                print("timer started in liveview_start")
             except Exception as e:
                     print("Exception", str(e))
         else:
@@ -277,18 +276,17 @@ class Backend(QtCore.QObject):
                 
         # acquire image
     
-        raw_image = self.camera.latest_frame()
+        raw_image = self.camera.on_acquisition_timer() #This is a 3D array
 
-        #self.image = np.sum(raw_image, axis=2)  #comment FC 28-9 # sum the R, G, B images
-        self.image = raw_image[:, :, 0] #Comment FC para colocar IDS # take only R channel
-        #self.image = raw_image #Esta linea es para ids, comentar para thorcam
-        # WARNING: fix to match camera orientation with piezo orientation
-        #self.image = np.rot90(self.image, k=3)
+        self.image = np.sum(raw_image, axis=2)  # sum the R, G, B images
+        #self.image = raw_image[:, :, 0] # take only R channel
+
+        # WARNING: check if it is necessary to fix to match camera orientation with piezo orientation
+        #find command
         # send image to gui
-        #self.changedImage.emit(self.image) #esta señal va a get_image
+        self.changedImage.emit(self.image) #this signal goes to get_image
         print("image sent to get_image. Type: ", type(self.image))
         self.currentTime = ptime.time() - self.startTime
-        
             
     def reset(self):
         if DEBUG:
@@ -300,7 +298,6 @@ class Backend(QtCore.QObject):
         self.startTime = ptime.time()
 
         print("finishing reset")
-
 
     @pyqtSlot()
     def stop(self):
@@ -345,7 +342,7 @@ class Backend(QtCore.QObject):
 
         frontend.closeSignal.connect(self.stop)
         frontend.liveviewButton.clicked.connect(self.liveview)
-        print("liveview & liviewbutton connected in backend- line 464")
+        print("liveview & liviewbutton connected in backend")
 
 
 if __name__ == '__main__':
@@ -382,9 +379,9 @@ if __name__ == '__main__':
     camThread = QtCore.QThread()
     worker.moveToThread(camThread)
     worker.cameraTimer.moveToThread(camThread)
-    #worker.cameraTimer.timeout.connect(worker.update) #Esta línea sincroniza el cameraTimer con la ejecución de la función update del Backend
-    worker.cameraTimer.timeout.connect(worker.self.camera.on_acquisition_timer) #Check this function
-    print("line 614")
+    #Esta línea sincroniza el cameraTimer con la ejecución de la función update del Backend
+    worker.cameraTimer.timeout.connect(worker.update) #Check this function
+    print("Camera timer connected to update function in main")
     camThread.start()
 
     gui.setWindowTitle('Camera display')
