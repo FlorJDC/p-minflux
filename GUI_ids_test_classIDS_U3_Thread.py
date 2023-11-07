@@ -245,9 +245,8 @@ class Backend(QtCore.QObject):
     def liveview(self, value):
         if value:
             try:
-                self.camera.start_acquisition()
-                self.camera.on_acquisition_timer() #This is a 3D array
-                print("success turning on acquisition timer ")
+                #self.camera.start_acquisition()
+
                 self.cameraTimer.start() #self.camTime
                 print("timer started in liveview_start")
             except Exception as e:
@@ -262,8 +261,6 @@ class Backend(QtCore.QObject):
                 print("Exception", str(e))
 
     def update(self):
-        if DEBUG:
-                print("Inside update")
         
         self.acquire_data()
         
@@ -276,9 +273,9 @@ class Backend(QtCore.QObject):
                 
         # acquire image
     
-        raw_image = self.camera.on_acquisition_timer() #This is a 3D array
+        self.image = self.camera.on_acquisition_timer() #This is a 3D array
 
-        self.image = np.sum(raw_image, axis=2)  # sum the R, G, B images
+        #self.image = np.sum(raw_image, axis=2)  # sum the R, G, B images
         #self.image = raw_image[:, :, 0] # take only R channel
 
         # WARNING: check if it is necessary to fix to match camera orientation with piezo orientation

@@ -315,9 +315,9 @@ class IDS_U3:
         if not self.start_acquisition():
             # error
             sys.exit(-4)
-        if not self.on_acquisition_timer():
-            # error
-            sys.exit(-5)
+        # if not self.on_acquisition_timer():
+        #     # error
+        #     sys.exit(-5)
         # image_np_array=self.on_acquisition_timer()
         #image_sum = np.sum(image_np_array, axis=2)
         image_sum=self.on_acquisition_timer()
