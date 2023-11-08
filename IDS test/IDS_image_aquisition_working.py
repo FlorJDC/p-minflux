@@ -19,7 +19,7 @@ import matplotlib.pyplot as plt
 from ids_peak import ids_peak_ipl_extension
 import numpy as np
 import time
-
+peak.Library.Initialize() 
 
 class ids_cam:
     def __init__(self):
@@ -198,8 +198,8 @@ class ids_cam:
                 start = time.perf_counter()
                 image_np_array = converted_ipl_image.get_numpy_3D() 
                 # 2D array, each element is the sum of the R,G,B,A channels
-                #image_sum=image_np_array[:, :, 0]
-                image_sum = np.sum(image_np_array, axis=2)
+                image_sum=image_np_array[:, :, 0]
+                #image_sum = np.sum(image_np_array, axis=2)
                 end = time.perf_counter()
                 print("Time: ", end - start) #Time:  0.0040275999999721535
 
@@ -215,7 +215,7 @@ class ids_cam:
                 #plt.imshow(image_sum)
 
                 print("again in queue")
-                return np.copy(image_sum) if copy else image_sum
+                return image_sum.copy() 
         
         except Exception as e:
             str_error = str(e)
@@ -238,20 +238,23 @@ class ids_cam:
         if not self.start_acquisition():
             # error
             sys.exit(-5)
-        image= self.show_image()
-
-        
-        print("succes getting image")
         
         peak.Library.Close()
-        #sys.exit(0)
-        return image
+        
+        return True
+        
      
 if __name__ == '__main__':
     device = ids_cam()
-    image=device.work()
-    print(type(image),image.shape)
+    device.work()
+    start=time.perf_counter()
+    image= device.show_image()
+    end=time.perf_counter()
+    #print("time show_image() execution: ", end-start) #time show_image() execution:  0.05100199999999866
+    #print(type(image)) #<class 'numpy.ndarray'>
     plt.imshow(image)
+    sys.exit(0)
+
     
 
     
