@@ -245,7 +245,7 @@ class Backend(QtCore.QObject):
         if value:
             self.camON = True
             #self.cameraTimer.start() 
-            self.liveview_start()
+            self.liveview_start() #Duda con este valor
 
         else:
             self.liveview_stop()
@@ -259,7 +259,7 @@ class Backend(QtCore.QObject):
             self.cameraTimer.stop()
             self.camON = False
         self.camON = True
-        self.cameraTimer.start()
+        self.cameraTimer.start(self.camTime) #Aqui tambien duda
         
     def liveview_stop(self):
         if DEBUG:
@@ -287,16 +287,17 @@ class Backend(QtCore.QObject):
                 
         # acquire image
     
-        self.image = self.camera.on_acquisition_timer() #This is a 2D array
+        image_np_array = self.camera.on_acquisition_timer() #This is a 2D array
+        print("raw_image obtained")
         #This following lines are executed inside ids_cam driver, to change  this I should modify these lines there (depending on which one I prefer: R or R+G+B+A)
         #self.image = np.sum(raw_image, axis=2)  # sum the R, G, B images 
-        #self.image = raw_image[:, :, 0] # take only R channel
-
+        self.image = image_np_array.reshape(converted_ipl_image.Height(), converted_ipl_image.Width(), 4)[:, :, 0] # take only R channel
+        print("Self.image obtained")
         # WARNING: check if it is necessary to fix to match camera orientation with piezo orientation
         #find command for IDS, maybe in user manual
         # Send image to gui
         self.changedImage.emit(self.image) # This signal goes to get_image
-        #image sent to get_image. Type:  <class 'numpy.ndarray'>
+        print("image sent to get_image") #. Type:  <class 'numpy.ndarray'>
         self.currentTime = ptime.time() - self.startTime
             
     def reset(self):

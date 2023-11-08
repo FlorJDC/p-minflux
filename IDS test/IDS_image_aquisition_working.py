@@ -212,15 +212,15 @@ class ids_cam:
                 
                 print("Type image_sum: ", type(image_sum))
 
-                plt.imshow(image_sum)
+                #plt.imshow(image_sum)
 
                 print("again in queue")
-                return True
+                return image_sum
         
         except Exception as e:
             str_error = str(e)
             print("Error showing image: ",str_error)
-            return False
+            #return False
      
     def work(self):     
         if not self.open_camera():
@@ -238,17 +238,21 @@ class ids_cam:
         if not self.start_acquisition():
             # error
             sys.exit(-5)
-        if not self.show_image():
-            # error
-            sys.exit(-6)
+        image= self.show_image()
+
+        
+        print("succes getting image")
         
         peak.Library.Close()
-        sys.exit(0)
-
+        #sys.exit(0)
+        return image
      
 if __name__ == '__main__':
     device = ids_cam()
-    device.work()
+    image=device.work()
+    print(type(image), image.shape)
+    plt.imshow(image)
+    
 
     
 
