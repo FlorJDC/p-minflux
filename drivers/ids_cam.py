@@ -289,14 +289,15 @@ class IDS_U3:
                 self.__datastream.QueueBuffer(buffer)
                 
                 # Get raw image data from converted image and construct a 3D array
-                self.image_np_array = converted_ipl_image.get_numpy_1D() 
-                self.image_red = self.image_np_array.reshape(converted_ipl_image.Height(), converted_ipl_image.Width(), 4)[:, :, 0]
+                self.image_np_array = converted_ipl_image.get_numpy_3D()
+                image_sum = self.image_np_array[:, :, 0]#R channel
+                
                 # 2D array, each element is the sum of the R,G,B,A channels
-                #self.image_sum = np.sum(self.image_np_array, axis=2)
-                #self.image_sum = self.image_np_array[:, :, 0] #R channel
+                #image_sum = np.sum(self.image_np_array, axis=2)
+
 
                 #plt.imshow(self.image_red)
-                return self.image_red
+                return image_sum.copy()
         
         except Exception as e:
             print("Error showing image: ", str(e))
@@ -315,25 +316,23 @@ class IDS_U3:
         if not self.start_acquisition():
             # error
             sys.exit(-4)
-        # if not self.on_acquisition_timer():
-        #     # error
-        #     sys.exit(-5)
-        # image_np_array=self.on_acquisition_timer()
-        #image_sum = np.sum(image_np_array, axis=2)
-        image_red=self.on_acquisition_timer()
-        plt.imshow(image_red)
-        time.sleep(2)
-
-        
-        self.destroy_all()
-        sys.exit(0)
+        #sys.exit(0)
 
      
 if __name__ == '__main__':
+    
     device = IDS_U3()
-    # value = device.open_device()
-    # if value == True:
-    #     print("big success")
+    
+    value = device.open_device()
+    if value == True:
+        print("Big success")
     device.work()
+    start=time.perf_counter()
+    image= device.on_acquisition_timer()
+    end=time.perf_counter()
+    print("Time on_acquisition_timer execution: ", end-start) #time show_image() execution:  0.05100199999999866
+    print(type(image)) #<class 'numpy.ndarray'>
+    plt.imshow(image)
+    sys.exit(0)
 
 
