@@ -198,8 +198,8 @@ class ids_cam:
                 start = time.perf_counter()
                 image_np_array = converted_ipl_image.get_numpy_3D() 
                 # 2D array, each element is the sum of the R,G,B,A channels
-                image_sum=image_np_array[:, :, 0]
-                #image_sum = np.sum(image_np_array, axis=2)
+                #image_sum=image_np_array[:, :, 0]
+                image_sum = np.sum(image_np_array, axis=2)
                 end = time.perf_counter()
                 print("Time: ", end - start) #Time:  0.0040275999999721535
 
@@ -215,7 +215,7 @@ class ids_cam:
                 #plt.imshow(image_sum)
 
                 print("again in queue")
-                return image_sum
+                return np.copy(image_sum) if copy else image_sum
         
         except Exception as e:
             str_error = str(e)
@@ -250,7 +250,7 @@ class ids_cam:
 if __name__ == '__main__':
     device = ids_cam()
     image=device.work()
-    print(type(image), image.shape)
+    print(type(image),image.shape)
     plt.imshow(image)
     
 
