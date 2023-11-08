@@ -608,7 +608,7 @@ class Backend(QtCore.QObject):
             self.focusTimer.stop()
             self.camON = False
         self.camON = True
-        self.focusTimer.start()
+        self.focusTimer.start(self.focusTime)
         
     def liveview_stop(self):
         if DEBUG:
@@ -854,7 +854,7 @@ class Backend(QtCore.QObject):
                 
         # acquire image
     
-        self.image = self.camera.on_acquisition_timer() #This is a 2D array
+        self.image = self.camera.on_acquisition_timer() #This is a 2D array, (only R channel, to have other channel, or the sum, go to ids_cam driver)
         #This following lines are executed inside ids_cam driver, to change  this I should modify these lines there (depending on which one I prefer: R or R+G+B+A)
         #self.image = np.sum(raw_image, axis=2)  # sum the R, G, B images 
         #self.image = raw_image[:, :, 0] # take only R channel
