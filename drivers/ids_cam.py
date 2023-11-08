@@ -297,7 +297,7 @@ class IDS_U3:
 
 
                 #plt.imshow(self.image_red)
-                return image_sum.copy()
+                return image_sum.copy() ## Make an extra copy of the to make sure that memory is copied and can't get overwritten later on, this is also done in uc480
         
         except Exception as e:
             print("Error showing image: ", str(e))

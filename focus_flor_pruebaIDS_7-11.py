@@ -2,7 +2,7 @@
 """
 Created on Wed Oct  1 13:41:48 2018
 
-@authors: Luciano Masullo modified by Flor C. to use another ROI 
+@authors: Luciano Masullo modified by Flor C. to use another ROI and IDS cam
 """
 
 import numpy as np
@@ -882,7 +882,7 @@ class Backend(QtCore.QObject):
         
         # calculate z estimator
         
-        self.focusSignal = np.sqrt(self.masscenter[0]**2 + self.masscenter[1]**2) #OJO aquí Flor E signo menos
+        self.focusSignal = -np.sqrt(self.masscenter[0]**2 + self.masscenter[1]**2) #OJO aquí Flor E signo menos
         print("FocusSignal in center of mass:", self.focusSignal)       
         self.currentTime = ptime.time() - self.startTime
         
