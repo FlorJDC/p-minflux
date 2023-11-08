@@ -287,17 +287,13 @@ class Backend(QtCore.QObject):
                 
         # acquire image
     
-        image_np_array = self.camera.on_acquisition_timer() #This is a 2D array
-        print("raw_image obtained")
-        #This following lines are executed inside ids_cam driver, to change  this I should modify these lines there (depending on which one I prefer: R or R+G+B+A)
-        #self.image = np.sum(raw_image, axis=2)  # sum the R, G, B images 
-        self.image = image_np_array.reshape(converted_ipl_image.Height(), converted_ipl_image.Width(), 4)[:, :, 0] # take only R channel
-        print("Self.image obtained")
+        self.image = self.camera.on_acquisition_timer() #This is a 2D array (only R channel, to have other channel go to ids_cam driver)
+        #print("Self.image obtained")
         # WARNING: check if it is necessary to fix to match camera orientation with piezo orientation
         #find command for IDS, maybe in user manual
         # Send image to gui
         self.changedImage.emit(self.image) # This signal goes to get_image
-        print("image sent to get_image") #. Type:  <class 'numpy.ndarray'>
+        #print("image sent to get_image") #. Type:  <class 'numpy.ndarray'>
         self.currentTime = ptime.time() - self.startTime
             
     def reset(self):
