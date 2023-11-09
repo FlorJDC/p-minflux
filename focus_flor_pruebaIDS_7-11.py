@@ -125,7 +125,7 @@ class Frontend(QtGui.QFrame):
         self.ROIbutton.setChecked(False)
         self.selectROIbutton.setEnabled(True) #duda: debe ir esto?
         
-    def select_roi(self): #Analogo a emit_roi_info
+    def select_roi(self): #Analogo a emit_roi_info #Esta señal va al backend a get_new_roi
         
         if DEBUG:
             print("Inside select_roi")
@@ -718,7 +718,7 @@ class Backend(QtCore.QObject):
 
     
     @pyqtSlot()    
-    def setup_feedback(self): #analogo a track (en parte) en xyz_tracking
+    def setup_feedback(self): #analogo a track (en parte) en xyz_tracking #Actúa una vez, cuando se inicia el feedback loop
         if DEBUG:
                 print("Inside setup_feedback")
         ''' set up on/off feedback loop'''
@@ -729,6 +729,7 @@ class Backend(QtCore.QObject):
         # [self.focusSignal]= px que se mueve el reflejo en z
         # [pxSize] = nm/px en z (entra desde interfaz, sale de la calibración)
         # [self.setPoint] = nm
+        
         initial_z = tools.convert(self.adw.Get_FPar(72), 'UtoX') # current z position of the piezo
         # self.adw.Get_FPar(72) toma la posicion en bits de la ADwin, luego la convierte a unidades de longitud (µm)
         self.target_z = initial_z # set initial_z as target_z, µm
@@ -882,7 +883,7 @@ class Backend(QtCore.QObject):
         
         # calculate z estimator
         
-        self.focusSignal = -np.sqrt(self.masscenter[0]**2 + self.masscenter[1]**2) #OJO aquí Flor E signo menos
+        self.focusSignal = -np.sqrt(self.masscenter[0]**2 + self.masscenter[1]**2) #OJO aquí, le puse signo menos
         print("FocusSignal in center of mass:", self.focusSignal)       
         self.currentTime = ptime.time() - self.startTime
         
