@@ -40,8 +40,8 @@ DEBUG = True
 DEBUG1 = True
 VIDEO = False
 #to commit
-PX_SIZE = 29.0 #px size of camera in nm #antes 80.0 para Andor
-PX_Z = 25 # px size for z in nm //Thorcam px size 25nm // IDS px size 50nm 
+PX_SIZE = 33.5 #px size of camera in nm #antes 80.0 para Andor
+PX_Z = 202 # px size for z in nm //Thorcam px size 25nm // IDS px size 50nm 
 
 def actuatorParameters(adwin, z_f, n_pixels_z=50, pixeltime=1000): #funciones necesarias para calibrate
 
@@ -452,14 +452,14 @@ class Frontend(QtGui.QFrame):
         
         self.xyzGraph.xPlot = self.xyzGraph.addPlot(row=0, col=0) #no sé si esta linea va con row=0, parece que yo la modifiqué en xyz_tracking_flor y le puse 1
         self.xyzGraph.xPlot.setLabels(bottom=('Time', 's'),
-                            left=('Y position', 'nm'))   # TO DO: clean-up the x-y mess (they're interchanged)
+                            left=('X position', 'nm'))   # TO DO: clean-up the x-y mess (they're interchanged)
         self.xyzGraph.xPlot.showGrid(x=True, y=True)
-        self.xmeanCurve = self.xyzGraph.xPlot.plot(pen='b', width=40)
+        self.xmeanCurve = self.xyzGraph.xPlot.plot(pen='w', width=40)
         
         
         self.xyzGraph.yPlot = self.xyzGraph.addPlot(row=1, col=0)
         self.xyzGraph.yPlot.setLabels(bottom=('Time', 's'),
-                                     left=('X position', 'nm'))
+                                     left=('Y position', 'nm'))
         self.xyzGraph.yPlot.showGrid(x=True, y=True)
         self.ymeanCurve = self.xyzGraph.yPlot.plot(pen='r', width=40)
         
@@ -652,7 +652,7 @@ class Frontend(QtGui.QFrame):
              self.xCurve = [0] * len(self.roilist)
              
              for i in range(len(self.roilist)):
-                 self.xCurve[i] = self.xyzGraph.xPlot.plot(pen='b', alpha=0.3)
+                 self.xCurve[i] = self.xyzGraph.xPlot.plot(pen='w', alpha=0.3)
                  self.xCurve[i].setAlpha(0.3, auto=False)
                  
              self.yCurve = [0] * len(self.roilist)
