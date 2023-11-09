@@ -96,7 +96,30 @@ class IDS_U3:
             except ids_peak.Exception:
                 # Userset is not available
                 pass
-
+            #Setting exposure time
+            
+            min_exposure_time = 0
+            max_exposure_time = 0
+            exposure_time_value = 50000.0 #us
+ 
+            # Get exposure range. All values in microseconds
+            min_exposure_time = self.__nodemap_remote_device.FindNode("ExposureTime").Minimum()
+            max_exposure_time = self.__nodemap_remote_device.FindNode("ExposureTime").Maximum()
+            #print("Min_exposure_time: ", min_exposure_time, "us.") #Min_exposure_time:  28.527027027027028 us
+            #print("Max exposure time: ", max_exposure_time, "us.") # Max exposure time:  2000001.6351351351 us = 2000 ms = 2 s
+            # if self.__nodemap_remote_device.FindNode("ExposureTime").HasConstantIncrement():
+            #      inc_exposure_time = self.__nodemap_remote_device.FindNode("ExposureTime").Increment()
+            # else:
+            #     # If there is no increment, it might be useful to choose a suitable increment for a GUI control element (e.g. a slider)
+            #      inc_exposure_time = 1000
+ 
+            # Get the current exposure time
+            exposure_time = self.__nodemap_remote_device.FindNode("ExposureTime").Value() #This is a default value
+            #print("Current exposure time: ", exposure_time, "us.", type(exposure_time)) #Current exposure time:  14998.45945945946 us = 15ms
+            # Set exposure time to exposure_time_value
+            self.__nodemap_remote_device.FindNode("ExposureTime").SetValue(exposure_time_value)
+            exposure_time = self.__nodemap_remote_device.FindNode("ExposureTime").Value() #This is a default value
+            print("NEW Current exposure time: ", exposure_time/1000.0, "ms.")
             return True
         
         except ids_peak.Exception as e:
@@ -331,7 +354,7 @@ if __name__ == '__main__':
     image= device.on_acquisition_timer()
     end=time.perf_counter()
     print("Time on_acquisition_timer execution: ", end-start) #time show_image() execution:  0.05100199999999866
-    print(type(image)) #<class 'numpy.ndarray'>
+    #print(type(image)) #<class 'numpy.ndarray'>
     plt.imshow(image)
     sys.exit(0)
 
