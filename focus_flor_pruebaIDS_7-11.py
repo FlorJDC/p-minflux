@@ -106,7 +106,6 @@ class Frontend(QtGui.QFrame):
             print("Inside emit_param")
         params = dict() #Se crea diccionario vacío FC
         params['pxSize'] = float(self.pxSizeEdit.text())
-        print("params:", params, "type param:", type(params))
         
         self.paramSignal.emit(params)
 
@@ -208,16 +207,16 @@ class Frontend(QtGui.QFrame):
             
             self.saveDataSignal.emit(False)
             
-#    def toggle_stats(self):
-#        
-#        if self.feedbackLoopBox.isChecked():
-#        
-#            self.focusMean = self.focusGraph.plot.addLine(y=self.setPoint,
-#                                                          pen='c')
-#        
-#        else:
-#            
-#            self.focusGraph.removeItem(self.focusMean)
+    def toggle_stats(self):
+        
+        if self.feedbackLoopBox.isChecked():
+        
+            self.focusMean = self.focusGraph.plot.addLine(y=self.setPoint,
+                                                          pen='c')
+        
+        else:
+            
+            self.focusGraph.removeItem(self.focusMean)
         
     @pyqtSlot(np.ndarray)
     def get_image(self, img):
@@ -239,7 +238,7 @@ class Frontend(QtGui.QFrame):
             if DEBUG:
                 print("self.feedbackLoopBox.isChecked() in get_data")
             if len(position) > 2:
-                print("len(position) is higher than 2")
+                #print("len(position) is higher than 2")
         
                 zMean = np.mean(position)
                 zStDev = np.std(position)
@@ -307,7 +306,6 @@ class Frontend(QtGui.QFrame):
         backend.changedSetPoint.connect(self.get_setpoint)
         backend.shuttermodeSignal.connect(self.update_shutter)
         backend.liveviewSignal.connect(self.toggle_liveview)
-        print("liveviewSignal connected to toggle liveview - line 318")
 
 
     def setup_gui(self):
@@ -455,7 +453,6 @@ class Frontend(QtGui.QFrame):
         
         #didnt want to work when being put at earlier point in this function
         self.liveviewButton.clicked.connect(lambda: self.toggle_liveview(self.liveviewButton.isChecked()))
-        print("liveviewbutton & toogle liveview connected - line 453")
 
     def closeEvent(self, *args, **kwargs):
         if DEBUG:
@@ -566,8 +563,8 @@ class Backend(QtCore.QObject):
         print(datetime.now(), ' [focus] got px size', self.pxSize, ' nm')
         
     def set_actuator_param(self, pixeltime=1000):
-        if DEBUG:
-            print("Inside set_actuator_param")
+
+        print("Inside set_actuator_param")
 
         self.adw.Set_FPar(36, tools.timeToADwin(pixeltime))
         
@@ -576,14 +573,16 @@ class Backend(QtCore.QObject):
         z_f = tools.convert(10, 'XtoU') # TO DO: make this more robust #Cómo es esto de 10um para que convierta a bits
         self.adw.Set_FPar(32, z_f)
         self.adw.Set_Par(30, 1)
-        print("z_f in set_actuator_param", z_f, "nm")
+        print("z_f in set_actuator_param", z_f, "bits")
         
     def actuator_z(self, z_f):
         if DEBUG:
             print("Inside actuator_z")
         
         z_f = tools.convert(z_f, 'XtoU') # XtoU' lenght  (um) to bits
-        print("z_f is self.target_z in actuator_z: ",z_f, "bits")
+        print("target_z es z_f in actuator z: ", z_f," bits")
+        if DEBUG:
+            print("z_f is self.target_z in actuator_z: ",z_f, "bits")
           
         self.adw.Set_FPar(32, z_f) # Index = 32 (to choose process 3), Value = z_f, le asigna a setpointz (en process 3) el valor z_f
         #Luego se asigna setpointz a currentz y ese valor se pasa al borne 6 de la ADwin
@@ -622,7 +621,7 @@ class Backend(QtCore.QObject):
         y1 = 1920
             
         val = np.array([x0, y0, x1, y1])
-        print("val en liveview_stop:", val)
+
         self.get_new_roi(val)
     
     @pyqtSlot(int, bool)
@@ -724,19 +723,19 @@ class Backend(QtCore.QObject):
         ''' set up on/off feedback loop'''
         #Creo que podría anular la siguiente linea si va en toggle_feedback
         
-        self.center_of_mass() #Esto se ejecuta para sacar self.focusSignal y configurar por primera vez el setpoint
+        #self.center_of_mass() #Esto se ejecuta para sacar self.focusSignal y configurar por primera vez el setpoint
         self.setPoint = self.focusSignal * self.pxSize # define setpoint 
         # [self.focusSignal]= px que se mueve el reflejo en z
         # [pxSize] = nm/px en z (entra desde interfaz, sale de la calibración)
         # [self.setPoint] = nm
         
-        initial_z = tools.convert(self.adw.Get_FPar(72), 'UtoX') # current z position of the piezo
+        self.initial_z = tools.convert(self.adw.Get_FPar(72), 'UtoX') # current z position of the piezo
         # self.adw.Get_FPar(72) toma la posicion en bits de la ADwin, luego la convierte a unidades de longitud (µm)
-        self.target_z = initial_z # set initial_z as target_z, µm
-        print("Valor de focus signal en setup_feedback:", self.focusSignal, " y setPoint: ", self.setPoint, "nm")
-        print("initial_z es target_z: ", initial_z, "µm")
-        print("esto salió de tomar la posicion del piezo en bits y convertir a um")
-        self.changedSetPoint.emit(self.setPoint) #Es posible que esta línea no afecte a update_feedback
+        self.target_z = self.initial_z # set initial_z as target_z, µm
+        #print("Valor de focus signal en setup_feedback:", self.focusSignal," px. SetPoint: ", self.setPoint, "nm")
+        #print("initial_z es target_z: ", self.initial_z, "µm")
+        #print("esto salió de tomar la posicion del piezo en bits y convertir a um")
+        self.changedSetPoint.emit(self.focusSignal) #Es posible que esta línea no afecte a update_feedback
         # antes de enviaba self.focusSignal en lugar de setPoint FC
         # TO DO: implement calibrated version of this
     
@@ -744,11 +743,11 @@ class Backend(QtCore.QObject):
         if DEBUG:
                 print("Inside update_feedback")
             
-        self.center_of_mass() #Esto se ejecuta para sacar self.focusSignal activamente
+        #self.center_of_mass() #Esto se ejecuta para sacar self.focusSignal activamente
          
         dz = self.focusSignal * self.pxSize - self.setPoint
         #[dz] = px*(nm/px) - nm =nm
-        print("dz: ", dz, "nm")
+        #print("dz: ", dz, "nm")
         
         threshold = 7 # in nm
         far_threshold = 20 # in nm
@@ -767,9 +766,9 @@ class Backend(QtCore.QObject):
             
         else:
             
-            self.target_z = self.target_z + dz/1000  # conversion to µm
+            self.target_z = self.initial_z + dz/1000  # conversion to µm
             # [self.target_z] = µm + nm/1000 = µm
-            print("self.target_z en update_feedback: ", self.target_z, "µm. Se envía a actuator_z")
+            print("self.target_z en update_feedback: ", self.target_z, "µm.")
                         
             if mode == 'continous':
                 
@@ -788,7 +787,6 @@ class Backend(QtCore.QObject):
         if self.ptr < self.npoints:
             self.data[self.ptr] = self.focusSignal #Ahora se supone que focusSiganl no es cero
             #print("focusSignal in update_graph_data: ", self.focusSignal)
-            #print("Ya no es cero")
             self.time[self.ptr] = self.currentTime
             
             self.changedData.emit(self.time[0:self.ptr + 1], #Esta señal va a get_data
@@ -866,6 +864,7 @@ class Backend(QtCore.QObject):
         self.changedImage.emit(self.image) # This signal goes to get_image
         #image sent to get_image. Type:  <class 'numpy.ndarray'>
         self.currentTime = ptime.time() - self.startTime
+        self.center_of_mass() #Esto da focusSignal
         
     def center_of_mass(self):
         
@@ -883,8 +882,8 @@ class Backend(QtCore.QObject):
         
         # calculate z estimator
         
-        self.focusSignal = -np.sqrt(self.masscenter[0]**2 + self.masscenter[1]**2) #OJO aquí, le puse signo menos
-        print("FocusSignal in center of mass:", self.focusSignal)       
+        self.focusSignal = np.sqrt(self.masscenter[0]**2 + self.masscenter[1]**2) #OJO aquí, le puse signo menos
+        #print("FocusSignal in center of mass:", self.focusSignal)       
         self.currentTime = ptime.time() - self.startTime
         
     @pyqtSlot(bool, bool)
@@ -977,7 +976,7 @@ class Backend(QtCore.QObject):
 
         self.max_dev = 0
         self.mean = self.focusSignal
-        print("focusSignal in reset: ", self.mean)
+        #print("focusSignal in reset: ", self.mean)
         self.std = 0
         self.n = 1
         
@@ -1064,8 +1063,8 @@ class Backend(QtCore.QObject):
         '''
                 
         self.ROIcoordinates = val.astype(int)
-        print("self.ROIcoordinates", self.ROIcoordinates)
-        print("TYPE self.ROIcoordinates", type(self.ROIcoordinates))
+        #print("self.ROIcoordinates", self.ROIcoordinates)
+        #print("TYPE self.ROIcoordinates", type(self.ROIcoordinates))
         if DEBUG:
             print(datetime.now(), '[focus] got ROI coordinates')
             
@@ -1150,7 +1149,7 @@ class Backend(QtCore.QObject):
         if self.camON:
             self.focusTimer.stop()
             self.liveviewSignal.emit(False)
-            print("self.liveviewSignal.emit(False) executed in get end measurement")
+            #print("self.liveviewSignal.emit(False) executed in get end measurement")
         
     def set_moveTo_param(self, x_f, y_f, z_f, n_pixels_x=128, n_pixels_y=128,
                          n_pixels_z=128, pixeltime=2000):
@@ -1180,7 +1179,7 @@ class Backend(QtCore.QObject):
     def moveTo(self, x_f, y_f, z_f):
         if DEBUG:
                 print("Inside moveTo - line 1173")
-        print("x_f, y_f, z_f: ", x_f, y_f, z_f)
+        #print("x_f, y_f, z_f: ", x_f, y_f, z_f)
         self.set_moveTo_param(x_f, y_f, z_f)
         self.adw.Start_Process(2)
         
@@ -1355,7 +1354,6 @@ class Backend(QtCore.QObject):
         frontend.shutterCheckbox.stateChanged.connect(lambda: self.toggle_ir_shutter(8, frontend.shutterCheckbox.isChecked()))
         frontend.paramSignal.connect(self.get_frontend_param)
         frontend.liveviewButton.clicked.connect(self.liveview)
-        print("liveview & liviewbutton connected in backend- line 1350")
 
 
 if __name__ == '__main__':

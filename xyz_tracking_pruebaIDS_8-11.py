@@ -41,7 +41,7 @@ DEBUG1 = True
 VIDEO = False
 #to commit
 PX_SIZE = 33.5 #px size of camera in nm #antes 80.0 para Andor
-PX_Z = 202 # px size for z in nm //Thorcam px size 25nm // IDS px size 50nm 
+PX_Z = 202 # 202 nm/px for z in nm //Thorcam px size 25nm // IDS px size 50nm 
 
 def actuatorParameters(adwin, z_f, n_pixels_z=50, pixeltime=1000): #funciones necesarias para calibrate
 
@@ -240,12 +240,12 @@ class Frontend(QtGui.QFrame):
     @pyqtSlot(np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray) #Cambió la señal changed_data 
     def get_data(self, tData, xData, yData, zData, avgIntData): #cambiaron los parámetros del slot get_data
         
-        print("xData: ",xData)
-        print("yData: ",yData)
-        print("zData: ",zData)
+        #print("xData: ",xData)
+        #print("yData: ",yData)
+        #print("zData: ",zData)
 
         N_NP = np.shape(xData)[1]
-        print("N_NP: ",N_NP)
+        #print("N_NP: ",N_NP)
         
         # x data
         
@@ -283,18 +283,18 @@ class Frontend(QtGui.QFrame):
             self.zHist.setOpts(x=bin_edges[:-1], height=hist)
              
             xstd = np.std(np.mean(xData, axis=1))
-            print("mean x", np.mean(xData, axis=1))
-            print("size xData", np.size(xData))
+            # print("mean x", np.mean(xData, axis=1))
+            # print("size xData", np.size(xData))
             self.xstd_value.setText(str(np.around(xstd, 2)))
             
             ystd = np.std(np.mean(yData, axis=1))
-            print("mean y", np.mean(yData, axis=1))
-            print("size yData", np.size(yData))
+            # print("mean y", np.mean(yData, axis=1))
+            # print("size yData", np.size(yData))
             self.ystd_value.setText(str(np.around(ystd, 2)))
             
             zstd = np.std(zData)
-            print("size zData", np.size(zData))
-            print("std values x y z",xstd," ",ystd," ",zstd)
+            # print("size zData", np.size(zData))
+            # print("std values x y z",xstd," ",ystd," ",zstd)
             self.zstd_value.setText(str(np.around(zstd, 2)))
         
     def plot_ellipse(self, x_array, y_array):
@@ -878,7 +878,7 @@ class Backend(QtCore.QObject):
         self.image = self.camera.on_acquisition_timer() #This is a 2D array, (only R channel)
 
         # WARNING: fix to match camera orientation with piezo orientation
-        #self.image = np.rot90(self.image, k=3) #Comment by FC
+        self.image = np.rot90(self.image, k=3) #Comment by FC
         
         if np.all(self.previous_image == self.image):
             
@@ -1038,7 +1038,7 @@ class Backend(QtCore.QObject):
         
         # calculate z estimator
         
-        self.currentz = np.sqrt(self.m_center[0]**2 + self.m_center[1]**2) #Chequear si aquí conviene poner signo menos
+        self.currentz = -np.sqrt(self.m_center[0]**2 + self.m_center[1]**2) #Chequear si aquí conviene poner signo menos
         
     def gaussian_fit(self,roi_coordinates): #Le estoy agregando un parámetro (roi_coordinates) para que sea como en xyz_tracking
         
@@ -1270,7 +1270,7 @@ class Backend(QtCore.QObject):
                 
                 dx = correct_factor * dx #TODO: double check this conditions (do they work?)
             
-            #  print('dx', dx)
+              # print('TEST','dx', dx)
             
         if np.abs(ymean) > threshold:
             
@@ -1280,7 +1280,7 @@ class Backend(QtCore.QObject):
                 
                 dy = correct_factor * dy
             
-#                print('dy', dy)
+                # print('TEST','dy', dy)
     
         if np.abs(self.z) > z_threshold:
                             
@@ -1854,7 +1854,7 @@ class Backend(QtCore.QObject):
         self.moveTo(x_0, y_0, z_0)
         
         self.camera.destroy_all()
-        print(datetime.now(), '[xyz_tracking] Thorlabs camera shut down')
+        print(datetime.now(), '[xyz_tracking] IDS camera shut down')
         
 
 if __name__ == '__main__':
