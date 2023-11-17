@@ -18,7 +18,7 @@ import pyqtgraph.ptime as ptime
 import qdarkstyle # see https://stackoverflow.com/questions/48256772/dark-theme-for-in-qt-widgets
 
 from PyQt5.QtCore import Qt, pyqtSignal, pyqtSlot
-
+from PyQt5.QtWidgets import QGroupBox
 import sys
 sys.path.append('C:\Program Files\Thorlabs\Scientific Imaging\ThorCam') #Ver si puedo quitar esto
 # install from https://instrumental-lib.readthedocs.io/en/stable/install.html
@@ -357,6 +357,19 @@ class Frontend(QtGui.QFrame):
 #        self.deleteROIbutton.setEnabled(False)
 #        self.selectROIbutton.setEnabled(False)
 
+        #################################
+        # stats widget
+        
+        self.statWidget = QGroupBox('Live statistics')   
+        self.statWidget.setFixedHeight(300)
+        # self.statWidget.setFixedWidth(240)
+        self.statWidget.setFixedWidth(350)
+
+        self.zstd_label = QtGui.QLabel('Z std (nm)')
+        
+        self.zstd_value = QtGui.QLabel('0')
+        ################################
+
         
         # gui connections
         
@@ -401,7 +414,7 @@ class Frontend(QtGui.QFrame):
         
         self.focusGraph.zPlot = self.focusGraph.addPlot(row=0, col=0)
         self.focusGraph.zPlot.setLabels(bottom=('Time', 's'),
-                                        left=('CM x position', 'px'))
+                                        left=('Z position', 'nm')) #('CM x position', 'px')
         self.focusGraph.zPlot.showGrid(x=True, y=True)
         self.focusCurve = self.focusGraph.zPlot.plot(pen='r')
  
@@ -447,9 +460,9 @@ class Frontend(QtGui.QFrame):
         subgrid.addWidget(self.shutterLabel, 11, 0)
         subgrid.addWidget(self.shutterCheckbox, 12, 0)
         
-        grid.addWidget(self.paramWidget, 0, 0)
-        grid.addWidget(self.focusGraph, 0, 2)
-        grid.addWidget(self.camDisplay, 0, 1)
+        grid.addWidget(self.paramWidget, 0, 1)
+        grid.addWidget(self.focusGraph, 1, 0)
+        grid.addWidget(self.camDisplay, 0, 0)
         
         #didnt want to work when being put at earlier point in this function
         self.liveviewButton.clicked.connect(lambda: self.toggle_liveview(self.liveviewButton.isChecked()))
@@ -532,6 +545,7 @@ class Backend(QtCore.QObject):
         
         #self.sensorSize = np.array(image.shape) #Creo que esta linea no sirve para nada
         self.focusSignal = 0
+        self.setPoint = 0
         
         # set focus update rate
         
@@ -723,12 +737,14 @@ class Backend(QtCore.QObject):
         ''' set up on/off feedback loop'''
         #Creo que podría anular la siguiente linea si va en toggle_feedback
         
-        #self.center_of_mass() #Esto se ejecuta para sacar self.focusSignal y configurar por primera vez el setpoint
+        self.center_of_mass() #Esto se ejecuta para sacar self.focusSignal y configurar por primera vez el setpoint
+        #Esto es imagen
         self.setPoint = self.focusSignal * self.pxSize # define setpoint 
         # [self.focusSignal]= px que se mueve el reflejo en z
         # [pxSize] = nm/px en z (entra desde interfaz, sale de la calibración)
         # [self.setPoint] = nm
         
+        #Esto es platina
         self.initial_z = tools.convert(self.adw.Get_FPar(72), 'UtoX') # current z position of the piezo
         # self.adw.Get_FPar(72) toma la posicion en bits de la ADwin, luego la convierte a unidades de longitud (µm)
         self.target_z = self.initial_z # set initial_z as target_z, µm
@@ -743,30 +759,32 @@ class Backend(QtCore.QObject):
         if DEBUG:
                 print("Inside update_feedback")
             
-        #self.center_of_mass() #Esto se ejecuta para sacar self.focusSignal activamente
-         
-        dz = self.focusSignal * self.pxSize - self.setPoint
+        self.center_of_mass() #Esto se ejecuta para sacar self.focusSignal activamente
+        #Esto es imagen 
+        print("New value", self.focusSignal*self.pxSize, "setpoint: ", self.setPoint)
+        dz = self.focusSignal * self.pxSize - self.setPoint #Este valor da positivo a veces y a veces negativo
         #[dz] = px*(nm/px) - nm =nm
-        #print("dz: ", dz, "nm")
+        print("dz: ", dz, "nm")
         
         threshold = 7 # in nm
         far_threshold = 20 # in nm
         correct_factor = 1
         security_thr = 200 # in nm
+        correction = 0.1
         
-        if np.abs(dz) > threshold:
+        # if np.abs(dz) > threshold:
             
-            if np.abs(dz) < far_threshold:
+        #     if np.abs(dz) < far_threshold:
                 
-                dz = correct_factor * dz
+        #         dz = correct_factor * dz
     
         if np.abs(dz) > security_thr:
             
             print(datetime.now(), '[focus] Correction movement larger than 200 nm, active correction turned OFF')
             
         else:
-            
-            self.target_z = self.initial_z + dz/1000  # conversion to µm
+            #Esto es cuanto es el movimiento real de la platina
+            self.target_z = self.initial_z + correction*dz/1000  # conversion to µm
             # [self.target_z] = µm + nm/1000 = µm
             print("self.target_z en update_feedback: ", self.target_z, "µm.")
                         
@@ -783,10 +801,10 @@ class Backend(QtCore.QObject):
         if DEBUG:
                 print("Inside update_graph_data")
         ''' update of the data displayed in the gui graph '''
-
+        
         if self.ptr < self.npoints:
-            self.data[self.ptr] = self.focusSignal #Ahora se supone que focusSiganl no es cero
-            #print("focusSignal in update_graph_data: ", self.focusSignal)
+            self.data[self.ptr] = self.focusSignal#* self.pxSize - self.setPoint  #Ahora se supone que focusSiganl no es cero
+            #print("self.data[self.ptr]: ", self.data[self.ptr])
             self.time[self.ptr] = self.currentTime
             
             self.changedData.emit(self.time[0:self.ptr + 1], #Esta señal va a get_data
@@ -800,7 +818,7 @@ class Backend(QtCore.QObject):
             self.time[-1] = self.currentTime
 
             self.changedData.emit(self.time, self.data)
-
+            
         self.ptr += 1
             
     def update_stats(self):
@@ -860,6 +878,8 @@ class Backend(QtCore.QObject):
 
         # WARNING: check if it is necessary to fix to match camera orientation with piezo orientation
         #find command for IDS, maybe in user manual
+        # WARNING: fix to match camera orientation with piezo orientation
+        self.image = np.rot90(self.image, k=3) #Added by FC
         # Send image to gui
         self.changedImage.emit(self.image) # This signal goes to get_image
         #image sent to get_image. Type:  <class 'numpy.ndarray'>
@@ -879,6 +899,7 @@ class Backend(QtCore.QObject):
         # calculate center of mass
         
         self.masscenter = np.array(ndi.measurements.center_of_mass(zimage))
+        #print("center of mass: ", self.masscenter)
         
         # calculate z estimator
         
