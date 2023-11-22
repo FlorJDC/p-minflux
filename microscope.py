@@ -19,7 +19,8 @@ from pyqtgraph.dockarea import Dock, DockArea
 import qdarkstyle
 
 from instrumental.drivers.cameras import uc480
-import lantz.drivers.andor.ccd as ccd
+#import lantz.drivers.andor.ccd as ccd
+import ccd
 import drivers.picoharp as picoharp
 from drivers.minilasevo import MiniLasEvo
 
