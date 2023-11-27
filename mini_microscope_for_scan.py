@@ -19,8 +19,6 @@ from pyqtgraph.Qt import QtCore, QtGui
 from pyqtgraph.dockarea import Dock, DockArea
 import qdarkstyle
 
-from instrumental.drivers.cameras import uc480
-
 from PyQt5.QtCore import Qt, pyqtSignal, pyqtSlot
 from PyQt5.QtWidgets import QDockWidget
 from tkinter import Tk, filedialog
@@ -166,6 +164,7 @@ if __name__ == '__main__':
 #    port = 'COM5'
     print('[scan] MiniLasEvo diode laser port:', port)
     diodelaser = MiniLasEvo(port)
+    print("Success with minilas")
     
     #if camera wasnt closed properly just keep using it without opening new one
     try:

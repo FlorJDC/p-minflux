@@ -1,0 +1,13 @@
+[Camera]
+shape name = Two-colors 128px
+em gain = 40
+horizontal readout rate = 5.0 megahertz
+pre-amp gain = 5.1
+cropped sensor mode = None
+vertical shift speed = 0.9 microsecond
+set exposure time = 0.05
+frame transfer mode = True
+shape = (266, 266)
+frame start = (128, 54)
+clock voltage amplitude = Normal
+

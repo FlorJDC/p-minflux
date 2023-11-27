@@ -4,6 +4,7 @@ Created on Fri Jun  1 14:18:19 2018
 
 @author: Luciano A. Masullo
 """
+%gui qt
 
 import numpy as np
 import time
@@ -19,8 +20,8 @@ from pyqtgraph.dockarea import Dock, DockArea
 import qdarkstyle
 
 from instrumental.drivers.cameras import uc480
-#import lantz.drivers.andor.ccd as ccd
-import ccd
+import lantz.drivers.andor.ccd as ccd
+#import ccd
 import drivers.picoharp as picoharp
 from drivers.minilasevo import MiniLasEvo
 

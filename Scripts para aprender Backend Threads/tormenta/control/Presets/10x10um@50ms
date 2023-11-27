@@ -1,0 +1,13 @@
+[Camera]
+shape name = Full chip
+vertical shift speed = 0.9 microsecond
+shape = (512, 512)
+em gain = 1
+cropped sensor mode = None
+set exposure time = 0.05
+frame start = (1, 1)
+horizontal readout rate = 1.0 megahertz
+pre-amp gain = 5.1
+frame transfer mode = True
+clock voltage amplitude = Normal
+

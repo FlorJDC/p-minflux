@@ -1,0 +1,13 @@
+[Camera]
+frame transfer mode = True
+shape name = 128x128
+set exposure time = 0.015
+cropped sensor mode = None
+frame start = (193, 193)
+pre-amp gain = 5.1
+em gain = 15
+horizontal readout rate = 5.0 megahertz
+clock voltage amplitude = Normal
+vertical shift speed = 0.9 microsecond
+shape = (128, 128)
+
