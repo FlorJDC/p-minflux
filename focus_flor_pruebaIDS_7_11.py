@@ -36,7 +36,7 @@ import drivers.ids_cam as ids_cam
 
 FPS_LIMIT = 30
 
-DEBUG = False
+DEBUG = True
 
 def actuatorParameters(adwin, z_f, n_pixels_z=50, pixeltime=1000):
 
@@ -416,7 +416,7 @@ class Frontend(QtGui.QFrame):
         self.focusGraph.zPlot.setLabels(bottom=('Time', 's'),
                                         left=('Z position', 'nm')) #('CM x position', 'px')
         self.focusGraph.zPlot.showGrid(x=True, y=True)
-        self.focusCurve = self.focusGraph.zPlot.plot(pen='r')
+        self.focusCurve = self.focusGraph.zPlot.plot(pen='y')
  
 #        self.focusSetPoint = self.focusGraph.plot.addLine(y=self.setPoint, pen='r')
 

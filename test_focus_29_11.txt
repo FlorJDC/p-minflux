@@ -1,0 +1,203 @@
+Inside get_data 
+Inside update
+Inside acquire_data
+Inside update_graph_data Inside get_image 
+
+Inside get_data 
+Inside update
+Inside acquire_data
+Inside update_graph_data Inside get_image 
+
+Inside get_data 
+Inside toggle_feedback in val is True
+Inside reset
+Inside setup_feedback
+Inside get_setpoint
+2023-11-29 20:02:16.198594 [focus] set point 43.32553479978023 nm
+Inside update
+Inside acquire_data
+Inside update
+Inside acquire_data
+ Inside get_image 
+Inside update_graph_data
+Inside get_data 
+self.feedbackLoopBox.isChecked() in get_data
+Inside toggle_feedback in mode continuous
+Inside set_actuator_param
+z_f in set_actuator_param 44051.0 bits
+2023-11-29 20:02:16.215461 [focus] Process 3 started
+2023-11-29 20:02:16.215461  [focus] Feedback loop ON
+Inside update_graph_data
+Inside update_feedback
+New value 2165.099207742318 setpoint:  2166.2767399890113
+dz:  -1.1775322466933176 nm
+self.target_z en update_feedback:  9.999880415720643 µm.
+Inside actuator_z
+target_z es z_f in actuator z:  44051.0  bits
+z_f is self.target_z in actuator_z:  44051.0 bits
+ Inside get_image 
+Inside get_data 
+self.feedbackLoopBox.isChecked() in get_data
+Inside update
+Inside acquire_data
+Inside update_graph_data
+Inside update_feedback
+New value 2164.779935309254 setpoint:  2166.2767399890113
+dz:  -1.4968046797571333 nm
+self.target_z en update_feedback:  9.999848488477337 µm.
+Inside actuator_z
+target_z es z_f in actuator z:  44051.0  bits
+z_f is self.target_z in actuator_z:  44051.0 bits
+ Inside get_image 
+Inside get_data 
+self.feedbackLoopBox.isChecked() in get_data
+Inside update
+Inside acquire_data
+Inside update_graph_data
+Inside update_feedback
+New value 2164.8245033361613 setpoint:  2166.2767399890113
+dz:  -1.4522366528499333 nm
+self.target_z en update_feedback:  9.999852945280027 µm.
+Inside actuator_z
+target_z es z_f in actuator z:  44051.0  bits
+z_f is self.target_z in actuator_z:  44051.0 bits
+ Inside get_image 
+Inside get_data 
+self.feedbackLoopBox.isChecked() in get_data
+Inside update
+Inside acquire_data
+ Inside get_image Inside update_graph_data
+
+Inside update_feedback
+New value 2164.7882005816336 setpoint:  2166.2767399890113
+dz:  -1.4885394073776297 nm
+self.target_z en update_feedback:  9.999849315004575 µm.
+Inside actuator_z
+target_z es z_f in actuator z:  44051.0  bits
+z_f is self.target_z in actuator_z:  44051.0 bits
+Inside get_data 
+self.feedbackLoopBox.isChecked() in get_data
+Inside update
+Inside acquire_data
+ Inside get_image Inside update_graph_data
+
+Inside update_feedback
+New value 2165.171956289092 setpoint:  2166.2767399890113
+dz:  -1.1047836999191532 nm
+self.target_z en update_feedback:  9.99988769057532 µm.
+Inside actuator_z
+target_z es z_f in actuator z:  44051.0  bits
+z_f is self.target_z in actuator_z:  44051.0 bits
+Inside get_data 
+self.feedbackLoopBox.isChecked() in get_data
+Inside update
+Inside acquire_data
+Inside update_graph_data Inside get_image 
+
+Inside update_feedback
+New value 2165.0588548501337 setpoint:  2166.2767399890113
+dz:  -1.217885138877591 nm
+self.target_z en update_feedback:  9.999876380431425 µm.
+Inside actuator_z
+target_z es z_f in actuator z:  44051.0  bits
+z_f is self.target_z in actuator_z:  44051.0 bits
+Inside get_data 
+self.feedbackLoopBox.isChecked() in get_data
+Inside toggle_feedback in val is False
+2023-11-29 20:02:16.846034 [focus] Process 3 stopped
+2023-11-29 20:02:16.846034  [focus] Feedback loop OFF
+Inside update
+Inside acquire_data
+ Inside get_image Inside update_graph_data
+
+Inside get_data 
+Inside update
+Inside acquire_data
+ Inside get_image Inside update_graph_data
+
+Inside get_data 
+Inside update
+Inside acquire_data
+Inside update_graph_data Inside get_image 
+
+Inside get_data 
+Inside update
+Inside acquire_data
+Inside update_graph_data Inside get_image 
+
+Inside get_data 
+Inside update
+Inside acquire_data
+Inside update_graph_data Inside get_image 
+
+Inside get_data 
+Inside update
+Inside acquire_data
+Inside update_graph_data Inside get_image 
+
+Inside get_data 
+Inside update
+Inside acquire_data
+ Inside get_image Inside update_graph_data
+
+Inside get_data 
+Inside update
+Inside acquire_data
+ Inside get_image Inside update_graph_data
+
+Inside get_data 
+Inside update
+Inside acquire_data
+Inside update_graph_data Inside get_image 
+
+Inside get_data 
+Inside update
+Inside acquire_data
+Inside update_graph_data Inside get_image 
+
+Inside get_data 
+Inside update
+Inside acquire_data
+Inside update_graph_data Inside get_image 
+
+Inside get_data 
+Inside update
+Inside acquire_data
+Inside update_graph_data Inside get_image 
+
+Inside get_data 
+Inside update
+Inside acquire_data
+ Inside get_image Inside update_graph_data
+
+Inside get_data 
+Inside update
+Inside acquire_data
+Inside update_graph_data Inside get_image 
+
+Inside get_data 
+Inside update
+Inside acquire_data
+Inside update_graph_data Inside get_image 
+
+Inside get_data 
+Inside update
+Inside acquire_data
+Inside update_graph_data Inside get_image 
+
+Inside get_data 
+Inside update
+Inside acquire_data
+Inside update_graph_data Inside get_image 
+
+Inside get_data 
+Inside toggle_liveview
+Inside select_roi
+Coordinates of the selected roi:  [1525. 1587.  596.  658.]
+Inside get_new_roi
+2023-11-29 20:02:18.708155 [focus] got ROI coordinates
+2023-11-29 20:02:18.712169 [focus] focus live view stopped - line 202
+Inside Liveview-stop
+cameraTimer: stopped
+Inside get_new_roi
+2023-11-29 20:02:18.714140 [focus] got ROI coordinates
