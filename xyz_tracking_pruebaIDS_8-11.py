@@ -41,7 +41,7 @@ DEBUG1 = True
 VIDEO = False
 #to commit
 PX_SIZE = 33.5 #px size of camera in nm #antes 80.0 para Andor
-PX_Z = 202 # 202 nm/px for z in nm //Thorcam px size 25nm // IDS px size 50nm 
+PX_Z = 100 # 202 nm/px for z in nm //Thorcam px size 25nm // IDS px size 50nm 
 
 def actuatorParameters(adwin, z_f, n_pixels_z=50, pixeltime=1000): #funciones necesarias para calibrate
 

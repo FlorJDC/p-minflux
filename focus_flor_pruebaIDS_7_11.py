@@ -36,7 +36,7 @@ import drivers.ids_cam as ids_cam
 
 FPS_LIMIT = 30
 
-DEBUG = True
+DEBUG = False
 
 def actuatorParameters(adwin, z_f, n_pixels_z=50, pixeltime=1000):
 
@@ -784,7 +784,7 @@ class Backend(QtCore.QObject):
             
         else:
             #Esto es cuanto es el movimiento real de la platina
-            self.target_z = self.initial_z + correction*dz/1000  # conversion to µm
+            self.target_z = self.initial_z + dz/1000  # conversion to µm
             # [self.target_z] = µm + nm/1000 = µm
             print("self.target_z en update_feedback: ", self.target_z, "µm.")
                         
