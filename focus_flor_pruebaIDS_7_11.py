@@ -594,7 +594,7 @@ class Backend(QtCore.QObject):
             print("Inside actuator_z")
         
         z_f = tools.convert(z_f, 'XtoU') # XtoU' lenght  (um) to bits
-        print("target_z es z_f in actuator z: ", z_f," bits")
+        #print("target_z es z_f in actuator z: ", z_f," bits")
         if DEBUG:
             print("z_f is self.target_z in actuator_z: ",z_f, "bits")
           
@@ -602,7 +602,10 @@ class Backend(QtCore.QObject):
         #Luego se asigna setpointz a currentz y ese valor se pasa al borne 6 de la ADwin
         #Luego ese valor currentz se asigna a fpar_72 y es el nuevo valor actual de z
         self.adw.Set_Par(30, 1)
-    
+        actual_z = tools.convert(self.adw.Get_FPar(72), 'UtoX')
+        print("actual_z: ", actual_z, "um. Espero que este valor sea: ", self.initial_z, "um")
+        #Si en esta linea son iguales, listo, sino probar restando dz/1000 en self.target_z
+        #En base a esto recién se puede cambiar o no el signo en dz en xyz_tracking
     @pyqtSlot(bool)
     def liveview(self, value):
 
@@ -759,12 +762,16 @@ class Backend(QtCore.QObject):
         if DEBUG:
                 print("Inside update_feedback")
             
-        self.center_of_mass() #Esto se ejecuta para sacar self.focusSignal activamente
+        #self.center_of_mass() #Esto se ejecuta para sacar self.focusSignal activamente
+        #comento la linea anterior, ver qué cambia
         #Esto es imagen 
-        print("New value", self.focusSignal*self.pxSize, "setpoint: ", self.setPoint)
+        
         dz = self.focusSignal * self.pxSize - self.setPoint #Este valor da positivo a veces y a veces negativo
         #[dz] = px*(nm/px) - nm =nm
+        print ("Image setpoint: ", self.setPoint, "nm")
+        print("New value in image", self.focusSignal*self.pxSize, "nm")
         print("dz: ", dz, "nm")
+        print("self.initial_z in piezo: ", self.initial_z, "um")
         
         threshold = 7 # in nm
         far_threshold = 20 # in nm
@@ -786,7 +793,7 @@ class Backend(QtCore.QObject):
             #Esto es cuanto es el movimiento real de la platina
             self.target_z = self.initial_z + dz/1000  # conversion to µm
             # [self.target_z] = µm + nm/1000 = µm
-            print("self.target_z en update_feedback: ", self.target_z, "µm.")
+            print("self.target_z in piezo: ", self.target_z, "µm.")
                         
             if mode == 'continous':
                 

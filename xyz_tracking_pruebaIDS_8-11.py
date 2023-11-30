@@ -1244,7 +1244,8 @@ class Backend(QtCore.QObject):
                 
                 self.initial_focus = False
             
-            self.z = (self.currentz - self.initialz) * PX_Z
+            self.z = (self.currentz - self.initialz) * PX_Z #self.z in nm
+            print("self.z in track: ", self.z, " nm")
                 
     def correct(self, mode='continous'):
 
@@ -1313,7 +1314,8 @@ class Backend(QtCore.QObject):
             currentYposition = tools.convert(self.adw.Get_FPar(71), 'UtoX')
             currentZposition = tools.convert(self.adw.Get_FPar(72), 'UtoX') #¿Está bien que sea key='UtoX'? FPar keeps track of z position of the piezo
             
-
+            #print("self.z: ",self.z, " nm.")
+            #print("dz: ",dz, " µm.")
             targetXposition = currentXposition + dx  
             targetYposition = currentYposition + dy
             targetZposition = currentZposition + dz  # in µm
