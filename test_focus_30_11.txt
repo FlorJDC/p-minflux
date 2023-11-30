@@ -1,0 +1,497 @@
+Image setpoint:  10134.268674772999 nm
+New value in image 10148.650127466557 nm
+dz:  14.381452693558458 nm
+self.initial_z in piezo:  9.999998168945313 um
+self.target_z in piezo:  10.014379621638872 µm.
+actual_z:  10.008878784179688 um. Espero que este valor sea:  9.999998168945313 um
+Image setpoint:  10134.268674772999 nm
+New value in image 10141.227879250433 nm
+dz:  6.959204477434469 nm
+self.initial_z in piezo:  9.999998168945313 um
+self.target_z in piezo:  10.006957373422747 µm.
+actual_z:  10.007102661132814 um. Espero que este valor sea:  9.999998168945313 um
+Image setpoint:  10134.268674772999 nm
+New value in image 10128.019236744778 nm
+dz:  -6.249438028220538 nm
+self.initial_z in piezo:  9.999998168945313 um
+self.target_z in piezo:  9.993748730917092 µm.
+actual_z:  9.993781738281251 um. Espero que este valor sea:  9.999998168945313 um
+Image setpoint:  10134.268674772999 nm
+New value in image 10124.497702957871 nm
+dz:  -9.770971815127268 nm
+self.initial_z in piezo:  9.999998168945313 um
+self.target_z in piezo:  9.990227197130185 µm.
+actual_z:  9.9902294921875 um. Espero que este valor sea:  9.999998168945313 um
+Image setpoint:  10134.268674772999 nm
+New value in image 10134.689067770396 nm
+dz:  0.42039299739735725 nm
+self.initial_z in piezo:  9.999998168945313 um
+self.target_z in piezo:  10.000418561942709 µm.
+actual_z:  9.999998168945313 um. Espero que este valor sea:  9.999998168945313 um
+Image setpoint:  10134.268674772999 nm
+New value in image 10141.345388310183 nm
+dz:  7.076713537184332 nm
+self.initial_z in piezo:  9.999998168945313 um
+self.target_z in piezo:  10.007074882482497 µm.
+actual_z:  10.007102661132814 um. Espero que este valor sea:  9.999998168945313 um
+Image setpoint:  10134.268674772999 nm
+New value in image 10145.293375997555 nm
+dz:  11.024701224556338 nm
+self.initial_z in piezo:  9.999998168945313 um
+self.target_z in piezo:  10.01102287016987 µm.
+actual_z:  10.010654907226563 um. Espero que este valor sea:  9.999998168945313 um
+Image setpoint:  10134.268674772999 nm
+New value in image 10131.964862685252 nm
+dz:  -2.303812087746337 nm
+self.initial_z in piezo:  9.999998168945313 um
+self.target_z in piezo:  9.997694356857567 µm.
+actual_z:  9.997333984375 um. Espero que este valor sea:  9.999998168945313 um
+Image setpoint:  10134.268674772999 nm
+New value in image 10122.602274248291 nm
+dz:  -11.66640052470757 nm
+self.initial_z in piezo:  9.999998168945313 um
+self.target_z in piezo:  9.988331768420606 µm.
+actual_z:  9.988453369140625 um. Espero que este valor sea:  9.999998168945313 um
+Image setpoint:  10134.268674772999 nm
+New value in image 10122.535887060196 nm
+dz:  -11.732787712802747 nm
+self.initial_z in piezo:  9.999998168945313 um
+self.target_z in piezo:  9.98826538123251 µm.
+actual_z:  9.988453369140625 um. Espero que este valor sea:  9.999998168945313 um
+Image setpoint:  10134.268674772999 nm
+New value in image 10135.173306131499 nm
+dz:  0.90463135850041 nm
+self.initial_z in piezo:  9.999998168945313 um
+self.target_z in piezo:  10.000902800303813 µm.
+actual_z:  10.000886230468751 um. Espero que este valor sea:  9.999998168945313 um
+Image setpoint:  10134.268674772999 nm
+New value in image 10139.743999568622 nm
+dz:  5.475324795623237 nm
+self.initial_z in piezo:  9.999998168945313 um
+self.target_z in piezo:  10.005473493740936 µm.
+actual_z:  10.005326538085939 um. Espero que este valor sea:  9.999998168945313 um
+Image setpoint:  10134.268674772999 nm
+New value in image 10137.632875047546 nm
+dz:  3.364200274547329 nm
+self.initial_z in piezo:  9.999998168945313 um
+self.target_z in piezo:  10.00336236921986 µm.
+actual_z:  10.003550415039063 um. Espero que este valor sea:  9.999998168945313 um
+Image setpoint:  10134.268674772999 nm
+New value in image 10125.61329606107 nm
+dz:  -8.655378711928279 nm
+self.initial_z in piezo:  9.999998168945313 um
+self.target_z in piezo:  9.991342790233384 µm.
+actual_z:  9.991117553710938 um. Espero que este valor sea:  9.999998168945313 um
+Image setpoint:  10134.268674772999 nm
+New value in image 10118.23479762444 nm
+dz:  -16.03387714855853 nm
+self.initial_z in piezo:  9.999998168945313 um
+self.target_z in piezo:  9.983964291796754 µm.
+actual_z:  9.984013061523438 um. Espero que este valor sea:  9.999998168945313 um
+Image setpoint:  10134.268674772999 nm
+New value in image 10123.190380881282 nm
+dz:  -11.078293891716385 nm
+self.initial_z in piezo:  9.999998168945313 um
+self.target_z in piezo:  9.988919875053597 µm.
+actual_z:  9.989341430664064 um. Espero que este valor sea:  9.999998168945313 um
+Image setpoint:  10134.268674772999 nm
+New value in image 10133.76972408467 nm
+dz:  -0.49895068832847755 nm
+self.initial_z in piezo:  9.999998168945313 um
+self.target_z in piezo:  9.999499218256984 µm.
+actual_z:  9.999110107421876 um. Espero que este valor sea:  9.999998168945313 um
+Image setpoint:  10134.268674772999 nm
+New value in image 10138.046309932257 nm
+dz:  3.7776351592583524 nm
+self.initial_z in piezo:  9.999998168945313 um
+self.target_z in piezo:  10.00377580410457 µm.
+actual_z:  10.003550415039063 um. Espero que este valor sea:  9.999998168945313 um
+Image setpoint:  10134.268674772999 nm
+New value in image 10133.51775783653 nm
+dz:  -0.7509169364693662 nm
+self.initial_z in piezo:  9.999998168945313 um
+self.target_z in piezo:  9.999247252008843 µm.
+actual_z:  9.999110107421876 um. Espero que este valor sea:  9.999998168945313 um
+Image setpoint:  10134.268674772999 nm
+New value in image 10122.223429322174 nm
+dz:  -12.04524545082495 nm
+self.initial_z in piezo:  9.999998168945313 um
+self.target_z in piezo:  9.987952923494488 µm.
+actual_z:  9.987565307617189 um. Espero que este valor sea:  9.999998168945313 um
+Image setpoint:  10134.268674772999 nm
+New value in image 10117.050825678407 nm
+dz:  -17.217849094591656 nm
+self.initial_z in piezo:  9.999998168945313 um
+self.target_z in piezo:  9.98278031985072 µm.
+actual_z:  9.983125000000001 um. Espero que este valor sea:  9.999998168945313 um
+Image setpoint:  10134.268674772999 nm
+New value in image 10122.56153762692 nm
+dz:  -11.707137146078821 nm
+self.initial_z in piezo:  9.999998168945313 um
+self.target_z in piezo:  9.988291031799234 µm.
+actual_z:  9.988453369140625 um. Espero que este valor sea:  9.999998168945313 um
+Image setpoint:  10134.268674772999 nm
+New value in image 10136.164099034542 nm
+dz:  1.895424261543667 nm
+self.initial_z in piezo:  9.999998168945313 um
+self.target_z in piezo:  10.001893593206857 µm.
+actual_z:  10.001774291992188 um. Espero que este valor sea:  9.999998168945313 um
+Image setpoint:  10134.268674772999 nm
+New value in image 10142.866489736949 nm
+dz:  8.59781496395044 nm
+self.initial_z in piezo:  9.999998168945313 um
+self.target_z in piezo:  10.008595983909263 µm.
+actual_z:  10.001774291992188 um. Espero que este valor sea:  9.999998168945313 um
+Image setpoint:  10134.268674772999 nm
+New value in image 10135.232585283848 nm
+dz:  0.9639105108490185 nm
+self.initial_z in piezo:  9.999998168945313 um
+self.target_z in piezo:  10.000962079456162 µm.
+actual_z:  10.000886230468751 um. Espero que este valor sea:  9.999998168945313 um
+Image setpoint:  10134.268674772999 nm
+New value in image 10118.467324777173 nm
+dz:  -15.801349995825149 nm
+self.initial_z in piezo:  9.999998168945313 um
+self.target_z in piezo:  9.984196818949487 µm.
+actual_z:  9.984013061523438 um. Espero que este valor sea:  9.999998168945313 um
+Image setpoint:  10134.268674772999 nm
+New value in image 10107.98821946048 nm
+dz:  -26.280455312518825 nm
+self.initial_z in piezo:  9.999998168945313 um
+self.target_z in piezo:  9.973717713632794 µm.
+actual_z:  9.973356323242188 um. Espero que este valor sea:  9.999998168945313 um
+Image setpoint:  10134.268674772999 nm
+New value in image 10117.808557670089 nm
+dz:  -16.460117102909862 nm
+self.initial_z in piezo:  9.999998168945313 um
+self.target_z in piezo:  9.983538051842404 µm.
+actual_z:  9.983125000000001 um. Espero que este valor sea:  9.999998168945313 um
+Image setpoint:  10134.268674772999 nm
+New value in image 10129.335887330408 nm
+dz:  -4.932787442590779 nm
+self.initial_z in piezo:  9.999998168945313 um
+self.target_z in piezo:  9.995065381502721 µm.
+actual_z:  9.994669799804688 um. Espero que este valor sea:  9.999998168945313 um
+Image setpoint:  10134.268674772999 nm
+New value in image 10138.604522278478 nm
+dz:  4.335847505479251 nm
+self.initial_z in piezo:  9.999998168945313 um
+self.target_z in piezo:  10.004334016450791 µm.
+actual_z:  10.0044384765625 um. Espero que este valor sea:  9.999998168945313 um
+Image setpoint:  10134.268674772999 nm
+New value in image 10126.546412088383 nm
+dz:  -7.722262684615998 nm
+self.initial_z in piezo:  9.999998168945313 um
+self.target_z in piezo:  9.992275906260696 µm.
+actual_z:  9.992005615234376 um. Espero que este valor sea:  9.999998168945313 um
+Image setpoint:  10134.268674772999 nm
+New value in image 10105.591966645106 nm
+dz:  -28.676708127892198 nm
+self.initial_z in piezo:  9.999998168945313 um
+self.target_z in piezo:  9.971321460817421 µm.
+actual_z:  9.992005615234376 um. Espero que este valor sea:  9.999998168945313 um
+Image setpoint:  10134.268674772999 nm
+New value in image 10099.736478206081 nm
+dz:  -34.532196566917264 nm
+self.initial_z in piezo:  9.999998168945313 um
+self.target_z in piezo:  9.965465972378395 µm.
+actual_z:  9.965363769531251 um. Espero que este valor sea:  9.999998168945313 um
+Image setpoint:  10134.268674772999 nm
+New value in image 10118.327996607268 nm
+dz:  -15.940678165730787 nm
+self.initial_z in piezo:  9.999998168945313 um
+self.target_z in piezo:  9.984057490779582 µm.
+actual_z:  9.984013061523438 um. Espero que este valor sea:  9.999998168945313 um
+Image setpoint:  10134.268674772999 nm
+New value in image 10142.769161777478 nm
+dz:  8.50048700447951 nm
+self.initial_z in piezo:  9.999998168945313 um
+self.target_z in piezo:  10.008498655949792 µm.
+actual_z:  10.008878784179688 um. Espero que este valor sea:  9.999998168945313 um
+Image setpoint:  10134.268674772999 nm
+New value in image 10156.846866905566 nm
+dz:  22.578192132566983 nm
+self.initial_z in piezo:  9.999998168945313 um
+self.target_z in piezo:  10.02257636107788 µm.
+actual_z:  10.02219970703125 um. Espero que este valor sea:  9.999998168945313 um
+Image setpoint:  10134.268674772999 nm
+New value in image 10141.09483311033 nm
+dz:  6.826158337331435 nm
+self.initial_z in piezo:  9.999998168945313 um
+self.target_z in piezo:  10.006824327282644 µm.
+actual_z:  10.007102661132814 um. Espero que este valor sea:  9.999998168945313 um
+Image setpoint:  10134.268674772999 nm
+New value in image 10122.865300562926 nm
+dz:  -11.403374210072798 nm
+self.initial_z in piezo:  9.999998168945313 um
+self.target_z in piezo:  9.98859479473524 µm.
+actual_z:  9.988453369140625 um. Espero que este valor sea:  9.999998168945313 um
+Image setpoint:  10134.268674772999 nm
+New value in image 10121.628994160197 nm
+dz:  -12.639680612801385 nm
+self.initial_z in piezo:  9.999998168945313 um
+self.target_z in piezo:  9.98735848833251 µm.
+actual_z:  9.987565307617189 um. Espero que este valor sea:  9.999998168945313 um
+Image setpoint:  10134.268674772999 nm
+New value in image 10141.33379622061 nm
+dz:  7.065121447611091 nm
+self.initial_z in piezo:  9.999998168945313 um
+self.target_z in piezo:  10.007063290392924 µm.
+actual_z:  10.007102661132814 um. Espero que este valor sea:  9.999998168945313 um
+Image setpoint:  10134.268674772999 nm
+New value in image 10168.54124380946 nm
+dz:  34.2725690364623 nm
+self.initial_z in piezo:  9.999998168945313 um
+self.target_z in piezo:  10.034270737981775 µm.
+actual_z:  10.034632568359376 um. Espero que este valor sea:  9.999998168945313 um
+Image setpoint:  10134.268674772999 nm
+New value in image 10177.322615094372 nm
+dz:  43.053940321373375 nm
+self.initial_z in piezo:  9.999998168945313 um
+self.target_z in piezo:  10.043052109266686 µm.
+actual_z:  10.042625122070314 um. Espero que este valor sea:  9.999998168945313 um
+Image setpoint:  10134.268674772999 nm
+New value in image 10156.196988138863 nm
+dz:  21.928313365864597 nm
+self.initial_z in piezo:  9.999998168945313 um
+self.target_z in piezo:  10.021926482311176 µm.
+actual_z:  10.02219970703125 um. Espero que este valor sea:  9.999998168945313 um
+Image setpoint:  10134.268674772999 nm
+New value in image 10137.752121504007 nm
+dz:  3.483446731008371 nm
+self.initial_z in piezo:  9.999998168945313 um
+self.target_z in piezo:  10.003481615676321 µm.
+actual_z:  10.003550415039063 um. Espero que este valor sea:  9.999998168945313 um
+Image setpoint:  10134.268674772999 nm
+New value in image 10136.323740223617 nm
+dz:  2.055065450618713 nm
+self.initial_z in piezo:  9.999998168945313 um
+self.target_z in piezo:  10.002053234395932 µm.
+actual_z:  10.001774291992188 um. Espero que este valor sea:  9.999998168945313 um
+Image setpoint:  10134.268674772999 nm
+New value in image 10154.933759370213 nm
+dz:  20.665084597214445 nm
+self.initial_z in piezo:  9.999998168945313 um
+self.target_z in piezo:  10.020663253542526 µm.
+actual_z:  10.020423583984376 um. Espero que este valor sea:  9.999998168945313 um
+Image setpoint:  10134.268674772999 nm
+New value in image 10169.759141277285 nm
+dz:  35.490466504286815 nm
+self.initial_z in piezo:  9.999998168945313 um
+self.target_z in piezo:  10.0354886354496 µm.
+actual_z:  10.035520629882813 um. Espero que este valor sea:  9.999998168945313 um
+Image setpoint:  10134.268674772999 nm
+New value in image 10164.519066226418 nm
+dz:  30.25039145341907 nm
+self.initial_z in piezo:  9.999998168945313 um
+self.target_z in piezo:  10.030248560398732 µm.
+actual_z:  10.035520629882813 um. Espero que este valor sea:  9.999998168945313 um
+Image setpoint:  10134.268674772999 nm
+New value in image 10148.661566209028 nm
+dz:  14.392891436029458 nm
+self.initial_z in piezo:  9.999998168945313 um
+self.target_z in piezo:  10.014391060381342 µm.
+actual_z:  10.014207153320314 um. Espero que este valor sea:  9.999998168945313 um
+Image setpoint:  10134.268674772999 nm
+New value in image 10139.382616395626 nm
+dz:  5.113941622626953 nm
+self.initial_z in piezo:  9.999998168945313 um
+self.target_z in piezo:  10.00511211056794 µm.
+actual_z:  10.014207153320314 um. Espero que este valor sea:  9.999998168945313 um
+Image setpoint:  10134.268674772999 nm
+New value in image 10144.31505270573 nm
+dz:  10.046377932731048 nm
+self.initial_z in piezo:  9.999998168945313 um
+self.target_z in piezo:  10.010044546878044 µm.
+actual_z:  10.009766845703126 um. Espero que este valor sea:  9.999998168945313 um
+Image setpoint:  10134.268674772999 nm
+New value in image 10160.784365865165 nm
+dz:  26.51569109216689 nm
+self.initial_z in piezo:  9.999998168945313 um
+self.target_z in piezo:  10.026513860037479 µm.
+actual_z:  10.026640014648438 um. Espero que este valor sea:  9.999998168945313 um
+Image setpoint:  10134.268674772999 nm
+New value in image 10173.43938106467 nm
+dz:  39.170706291672104 nm
+self.initial_z in piezo:  9.999998168945313 um
+self.target_z in piezo:  10.039168875236985 µm.
+actual_z:  10.039072875976563 um. Espero que este valor sea:  9.999998168945313 um
+Image setpoint:  10134.268674772999 nm
+New value in image 10160.554948355473 nm
+dz:  26.286273582474678 nm
+self.initial_z in piezo:  9.999998168945313 um
+self.target_z in piezo:  10.026284442527787 µm.
+actual_z:  10.026640014648438 um. Espero que este valor sea:  9.999998168945313 um
+Image setpoint:  10134.268674772999 nm
+New value in image 10142.460861961763 nm
+dz:  8.192187188764365 nm
+self.initial_z in piezo:  9.999998168945313 um
+self.target_z in piezo:  10.008190356134078 µm.
+actual_z:  10.00799072265625 um. Espero que este valor sea:  9.999998168945313 um
+Image setpoint:  10134.268674772999 nm
+New value in image 10131.452748416414 nm
+dz:  -2.815926356584896 nm
+self.initial_z in piezo:  9.999998168945313 um
+self.target_z in piezo:  9.997182242588728 µm.
+actual_z:  9.997333984375 um. Espero que este valor sea:  9.999998168945313 um
+Image setpoint:  10134.268674772999 nm
+New value in image 10138.642307216465 nm
+dz:  4.373632443466704 nm
+self.initial_z in piezo:  9.999998168945313 um
+self.target_z in piezo:  10.00437180138878 µm.
+actual_z:  10.0044384765625 um. Espero que este valor sea:  9.999998168945313 um
+Image setpoint:  10134.268674772999 nm
+New value in image 10153.190643746457 nm
+dz:  18.921968973458206 nm
+self.initial_z in piezo:  9.999998168945313 um
+self.target_z in piezo:  10.018920137918771 µm.
+actual_z:  10.018647460937501 um. Espero que este valor sea:  9.999998168945313 um
+Image setpoint:  10134.268674772999 nm
+New value in image 10159.020285003922 nm
+dz:  24.75161023092369 nm
+self.initial_z in piezo:  9.999998168945313 um
+self.target_z in piezo:  10.024749779176236 µm.
+actual_z:  10.024863891601564 um. Espero que este valor sea:  9.999998168945313 um
+Image setpoint:  10134.268674772999 nm
+New value in image 10148.632539118014 nm
+dz:  14.363864345015827 nm
+self.initial_z in piezo:  9.999998168945313 um
+self.target_z in piezo:  10.014362033290329 µm.
+actual_z:  10.024863891601564 um. Espero que este valor sea:  9.999998168945313 um
+Image setpoint:  10134.268674772999 nm
+New value in image 10134.964341500181 nm
+dz:  0.6956667271824699 nm
+self.initial_z in piezo:  9.999998168945313 um
+self.target_z in piezo:  10.000693835672495 µm.
+actual_z:  10.000886230468751 um. Espero que este valor sea:  9.999998168945313 um
+Image setpoint:  10134.268674772999 nm
+New value in image 10126.577146110323 nm
+dz:  -7.69152866267541 nm
+self.initial_z in piezo:  9.999998168945313 um
+self.target_z in piezo:  9.992306640282637 µm.
+actual_z:  9.992005615234376 um. Espero que este valor sea:  9.999998168945313 um
+Image setpoint:  10134.268674772999 nm
+New value in image 10133.192590941135 nm
+dz:  -1.076083831863798 nm
+self.initial_z in piezo:  9.999998168945313 um
+self.target_z in piezo:  9.998922085113449 µm.
+actual_z:  9.999110107421876 um. Espero que este valor sea:  9.999998168945313 um
+Image setpoint:  10134.268674772999 nm
+New value in image 10143.498745917379 nm
+dz:  9.230071144380418 nm
+self.initial_z in piezo:  9.999998168945313 um
+self.target_z in piezo:  10.009228240089692 µm.
+actual_z:  10.008878784179688 um. Espero que este valor sea:  9.999998168945313 um
+Image setpoint:  10134.268674772999 nm
+New value in image 10146.441034585789 nm
+dz:  12.172359812790091 nm
+self.initial_z in piezo:  9.999998168945313 um
+self.target_z in piezo:  10.012170528758103 µm.
+actual_z:  10.012431030273438 um. Espero que este valor sea:  9.999998168945313 um
+Image setpoint:  10134.268674772999 nm
+New value in image 10137.639185662209 nm
+dz:  3.3705108892099815 nm
+self.initial_z in piezo:  9.999998168945313 um
+self.target_z in piezo:  10.003368679834523 µm.
+actual_z:  10.003550415039063 um. Espero que este valor sea:  9.999998168945313 um
+Image setpoint:  10134.268674772999 nm
+New value in image 10126.295804767688 nm
+dz:  -7.9728700053110515 nm
+self.initial_z in piezo:  9.999998168945313 um
+self.target_z in piezo:  9.992025298940002 µm.
+actual_z:  9.992005615234376 um. Espero que este valor sea:  9.999998168945313 um
+Image setpoint:  10134.268674772999 nm
+New value in image 10121.147376410867 nm
+dz:  -13.12129836213171 nm
+self.initial_z in piezo:  9.999998168945313 um
+self.target_z in piezo:  9.986876870583181 µm.
+actual_z:  9.98667724609375 um. Espero que este valor sea:  9.999998168945313 um
+Image setpoint:  10134.268674772999 nm
+New value in image 10124.74954977348 nm
+dz:  -9.51912499951868 nm
+self.initial_z in piezo:  9.999998168945313 um
+self.target_z in piezo:  9.990479043945793 µm.
+actual_z:  9.9902294921875 um. Espero que este valor sea:  9.999998168945313 um
+Image setpoint:  10134.268674772999 nm
+New value in image 10141.041031677241 nm
+dz:  6.77235690424277 nm
+self.initial_z in piezo:  9.999998168945313 um
+self.target_z in piezo:  10.006770525849555 µm.
+actual_z:  10.007102661132814 um. Espero que este valor sea:  9.999998168945313 um
+Image setpoint:  10134.268674772999 nm
+New value in image 10140.4936824134 nm
+dz:  6.2250076404016 nm
+self.initial_z in piezo:  9.999998168945313 um
+self.target_z in piezo:  10.006223176585713 µm.
+actual_z:  10.006214599609375 um. Espero que este valor sea:  9.999998168945313 um
+Image setpoint:  10134.268674772999 nm
+New value in image 10135.827766088076 nm
+dz:  1.5590913150772394 nm
+self.initial_z in piezo:  9.999998168945313 um
+self.target_z in piezo:  10.00155726026039 µm.
+actual_z:  10.001774291992188 um. Espero que este valor sea:  9.999998168945313 um
+Image setpoint:  10134.268674772999 nm
+New value in image 10117.720321481407 nm
+dz:  -16.54835329159141 nm
+self.initial_z in piezo:  9.999998168945313 um
+self.target_z in piezo:  9.98344981565372 µm.
+actual_z:  9.983125000000001 um. Espero que este valor sea:  9.999998168945313 um
+Image setpoint:  10134.268674772999 nm
+New value in image 10117.420889226854 nm
+dz:  -16.847785546144223 nm
+self.initial_z in piezo:  9.999998168945313 um
+self.target_z in piezo:  9.983150383399169 µm.
+actual_z:  9.983125000000001 um. Espero que este valor sea:  9.999998168945313 um
+Image setpoint:  10134.268674772999 nm
+New value in image 10127.227664918224 nm
+dz:  -7.041009854774529 nm
+self.initial_z in piezo:  9.999998168945313 um
+self.target_z in piezo:  9.992957159090539 µm.
+actual_z:  9.992893676757813 um. Espero que este valor sea:  9.999998168945313 um
+Image setpoint:  10134.268674772999 nm
+New value in image 10139.84919406209 nm
+dz:  5.580519289091171 nm
+self.initial_z in piezo:  9.999998168945313 um
+self.target_z in piezo:  10.005578688234404 µm.
+actual_z:  10.005326538085939 um. Espero que este valor sea:  9.999998168945313 um
+Image setpoint:  10134.268674772999 nm
+New value in image 10135.691657264557 nm
+dz:  1.4229824915582867 nm
+self.initial_z in piezo:  9.999998168945313 um
+self.target_z in piezo:  10.00142115143687 µm.
+actual_z:  10.001774291992188 um. Espero que este valor sea:  9.999998168945313 um
+Image setpoint:  10134.268674772999 nm
+New value in image 10126.429409552547 nm
+dz:  -7.839265220451125 nm
+self.initial_z in piezo:  9.999998168945313 um
+self.target_z in piezo:  9.992158903724862 µm.
+actual_z:  9.992005615234376 um. Espero que este valor sea:  9.999998168945313 um
+Image setpoint:  10134.268674772999 nm
+New value in image 10113.75806507989 nm
+dz:  -20.510609693108563 nm
+self.initial_z in piezo:  9.999998168945313 um
+self.target_z in piezo:  9.979487559252204 µm.
+actual_z:  9.97957275390625 um. Espero que este valor sea:  9.999998168945313 um
+Image setpoint:  10134.268674772999 nm
+New value in image 10119.377285741271 nm
+dz:  -14.891389031727158 nm
+self.initial_z in piezo:  9.999998168945313 um
+self.target_z in piezo:  9.985106779913586 µm.
+actual_z:  9.984901123046876 um. Espero que este valor sea:  9.999998168945313 um
+Image setpoint:  10134.268674772999 nm
+New value in image 10131.579081282933 nm
+dz:  -2.6895934900658176 nm
+self.initial_z in piezo:  9.999998168945313 um
+self.target_z in piezo:  9.997308575455246 µm.
+actual_z:  9.997333984375 um. Espero que este valor sea:  9.999998168945313 um
+Image setpoint:  10134.268674772999 nm
+New value in image 10141.95904275519 nm
+dz:  7.690367982191674 nm
+self.initial_z in piezo:  9.999998168945313 um
+self.target_z in piezo:  10.007688536927505 µm.
+actual_z:  10.00799072265625 um. Espero que este valor sea:  9.999998168945313 um
+2023-11-30 19:24:53.792084 [focus] Process 3 stopped
+2023-11-30 19:24:53.792084  [focus] Feedback loop OFF
+Coordinates of the selected roi:  [ 926. 1066.  800.  940.]
+2023-11-30 19:25:00.052908 [focus] focus live view stopped - line 202
+cameraTimer: stopped

@@ -791,7 +791,7 @@ class Backend(QtCore.QObject):
             
         else:
             #Esto es cuanto es el movimiento real de la platina
-            self.target_z = self.initial_z + dz/1000  # conversion to µm
+            self.target_z = self.initial_z - dz/1000  # conversion to µm #Creo que aquí está corrigiendo bien, le puse el signo menos 
             # [self.target_z] = µm + nm/1000 = µm
             print("self.target_z in piezo: ", self.target_z, "µm.")
                         
@@ -810,7 +810,7 @@ class Backend(QtCore.QObject):
         ''' update of the data displayed in the gui graph '''
         
         if self.ptr < self.npoints:
-            self.data[self.ptr] = self.focusSignal#* self.pxSize - self.setPoint  #Ahora se supone que focusSiganl no es cero
+            self.data[self.ptr] = self.focusSignal* self.pxSize - self.setPoint  #Ahora se supone que focusSiganl no es cero
             #print("self.data[self.ptr]: ", self.data[self.ptr])
             self.time[self.ptr] = self.currentTime
             
@@ -910,7 +910,7 @@ class Backend(QtCore.QObject):
         
         # calculate z estimator
         
-        self.focusSignal = np.sqrt(self.masscenter[0]**2 + self.masscenter[1]**2) #OJO aquí, le puse signo menos
+        self.focusSignal = np.sqrt(self.masscenter[0]**2 + self.masscenter[1]**2) #OJO aquí, a veces puede ser que vaya el signo menos, pero el original es signo mas
         #print("FocusSignal in center of mass:", self.focusSignal)       
         self.currentTime = ptime.time() - self.startTime
         
