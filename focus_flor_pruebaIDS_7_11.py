@@ -414,7 +414,7 @@ class Frontend(QtGui.QFrame):
         
         self.focusGraph.zPlot = self.focusGraph.addPlot(row=0, col=0)
         self.focusGraph.zPlot.setLabels(bottom=('Time', 's'),
-                                        left=('Z position', 'nm')) #('CM x position', 'px')
+                                        left= ('CM x position', 'px')) #('Z position', 'nm')
         self.focusGraph.zPlot.showGrid(x=True, y=True)
         self.focusCurve = self.focusGraph.zPlot.plot(pen='y')
  
@@ -810,7 +810,7 @@ class Backend(QtCore.QObject):
         ''' update of the data displayed in the gui graph '''
         
         if self.ptr < self.npoints:
-            self.data[self.ptr] = self.focusSignal* self.pxSize - self.setPoint  #Ahora se supone que focusSiganl no es cero
+            self.data[self.ptr] = self.focusSignal#* self.pxSize - self.setPoint  #Ahora se supone que focusSiganl no es cero
             #print("self.data[self.ptr]: ", self.data[self.ptr])
             self.time[self.ptr] = self.currentTime
             
