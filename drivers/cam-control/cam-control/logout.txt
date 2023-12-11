@@ -1,0 +1,51 @@
+
+
+--------------------------------------------------
+Starting detect.py on 2023/12/05 at 20:01:13
+
+Searching for Andor SDK2 cameras
+Found 1 Andor SDK2 camera
+Found Andor SDK2 camera idx=0
+	Model DU897_BV
+Adding camera under name andor_sdk2_0:
+	kind = 'AndorSDK2IXON'
+	params = '{'idx': 0}'
+	display_name = 'Andor DU897_BV 8290'
+
+Searching for Andor SDK3 cameras
+Found no Andor SDK3 cameras
+
+Searching for Basler cameras
+Error loading or running the Basler library: required software (Basler pylon) must be missing
+
+Searching for IMAQ Bonito cameras
+Error loading or running the IMAQ library: required software (NI Vision) must be missing
+
+Searching for DCAM cameras
+Error loading or running the DCAM library: required software (Hamamtsu HOKAWO or DCAM API) must be missing
+
+Searching for IMAQdx cameras
+Error loading or running the IMAQdx library: required software (NI IMAQdx) must be missing
+
+Searching for PCO cameras
+Error loading or running the PCO SC2 library: required software (PCO SDK) must be missing
+
+Searching for PhotonFocus cameras (might take several minutes)
+Error loading or running the PFCam library: required software (PhotonFocus PFRemote) must be missing
+
+Searching for Thorlabs TSI cameras
+Found no Thorlabs TLCam cameras
+
+Searching for Picam cameras
+Error loading or running the Picam library: required software (Princeton Instruments PICam) must be missing
+
+Searching for Pvcam cameras
+Error loading or running the Pvcam library: required software (Photometrics PVCAM) must be missing
+
+Searching for Throlabs uc480 cameras
+Found no uc480 cameras
+
+Searching for IDS uEye cameras
+Error loading or running ueye library: required software (IDS uEye) must be missing
+
+Successfully generated config file settings.cfg

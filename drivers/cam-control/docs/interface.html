@@ -1,0 +1,482 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html4" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Detailed interface description &mdash; pylablib cam-control 2.2.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Expanding and modifying" href="expanding.html" />
+    <link rel="prev" title="Advanced features" href="advanced.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> pylablib cam-control
+          
+
+          
+            
+            <img src="_static/logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pipeline.html">Basic data flow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced features</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Detailed interface description</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#tutorial">Tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#camera-control">Camera control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#camera-attributes">Camera attributes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#camera-status">Camera status</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#image-display">Image display</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#saving-control">Saving control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#saving-status">Saving status</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#activity-overview">Activity overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#settings-saving-and-extras">Settings saving and extras</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#extras">Extras</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#settings-and-preferences">Settings and preferences</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#processing-controls">Processing controls</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#time-plot">Time plot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#saving-trigger">Saving trigger</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#filter">Filter</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="expanding.html">Expanding and modifying</a></li>
+<li class="toctree-l1"><a class="reference internal" href="settings_file.html">Configuring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usecases.html">Use cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Release history</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">pylablib cam-control</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Detailed interface description</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/interface.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="detailed-interface-description">
+<span id="interface"></span><h1>Detailed interface description<a class="headerlink" href="#detailed-interface-description" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="tutorial">
+<span id="interface-tutorial"></span><h2>Tutorial<a class="headerlink" href="#tutorial" title="Permalink to this headline">¶</a></h2>
+<img alt="_images/interface_tutorial.png" src="_images/interface_tutorial.png" />
+<p>The first time you start the software, you are greeted with the tutorial. It walks you through the interface and the basic concepts. It is recommended that you take it at some point to get familiar with all of the software capabilities. If you want to revisit it, you can find it under the <a class="reference internal" href="#interface-extras"><span class="std std-ref">Extra button</span></a>.</p>
+</div>
+<div class="section" id="camera-control">
+<span id="interface-camera-settings"></span><h2>Camera control<a class="headerlink" href="#camera-control" title="Permalink to this headline">¶</a></h2>
+<img alt="_images/interface_camera_settings.png" src="_images/interface_camera_settings.png" />
+<p>The <code class="docutils literal notranslate"><span class="pre">Camera</span></code> tab controls and displays the camera parameters. To reduce the screen space, the settings are split into two categories: <code class="docutils literal notranslate"><span class="pre">Common</span></code> and <code class="docutils literal notranslate"><span class="pre">Advanced</span></code>. The separation is purely cosmetic, and all the settings are treated in exactly the same way.</p>
+<p>The settings are applied directly after changing the control. Sometimes (e.g., when using IMAQ frame grabbers at very high frame rates) applying settings might take several seconds, which makes this default behavior annoying. In this cases, one can uncheck <code class="docutils literal notranslate"><span class="pre">Apply</span> <span class="pre">automatically</span></code> checkbox, so the setting will apply only on pressing <code class="docutils literal notranslate"><span class="pre">Apply</span></code> button.</p>
+<p>Most parameters have an indicator next to the control, which shows the current parameter state. The state might be different from the entered control value, either when the parameter has not been applied, or if the entered value is out of range, and has to be coerced to the nearest valid value. For example while entering exposure value of 0 is allowed, it is never set exactly to zero, but rather to the lowest possible value given all other parameters.</p>
+<p>The settings and their exact behavior vary a bit between different cameras. Below are the most common:</p>
+<ul>
+<li><p class="first"><code class="docutils literal notranslate"><span class="pre">Exposure</span></code>: exposure time (in ms)</p>
+</li>
+<li><p class="first"><code class="docutils literal notranslate"><span class="pre">Frame</span> <span class="pre">period</span></code>: frame period (in ms). Ultimately determines the camera frame rate (as shown in the status table)</p>
+</li>
+<li><p class="first"><code class="docutils literal notranslate"><span class="pre">ROI</span></code>: region of interest and binning of the camera. <code class="docutils literal notranslate"><span class="pre">X</span></code> coordinate is horizontal from the left, <code class="docutils literal notranslate"><span class="pre">Y</span></code> coordinate is vertical from the top. For example, to get the bottom half of the 512x512 sensor, one needs to enter <code class="docutils literal notranslate"><span class="pre">Xmin=0,</span> <span class="pre">Xmax=512,</span> <span class="pre">Ymin=256,</span> <span class="pre">Ymax=512</span></code>. The coordinates are given in raw (un-binned) camera pixels, i.e., full ROI for 2048x2048 sensor with 4x binning corresponds to <code class="docutils literal notranslate"><span class="pre">Xmax=Ymax=2048</span></code>. Depending on the camera, binning can be independent for two axes, the same for two axes, applied to only one axis, or completely disabled. Hence, one or both of the <code class="docutils literal notranslate"><span class="pre">Bin</span></code> controls can be disabled.</p>
+<p><code class="docutils literal notranslate"><span class="pre">Select</span> <span class="pre">in</span> <span class="pre">image</span></code> button below tje ROI controls on the left lets you select the ROI in the image display by dragging the mouse to select a rectangular region. Note that it only works in <code class="docutils literal notranslate"><span class="pre">Standard</span></code> display and not, e.g., in <code class="docutils literal notranslate"><span class="pre">Filter</span></code> display. <code class="docutils literal notranslate"><span class="pre">Maximize</span></code> button sets the ROI to the full frame, while preserving the binning.</p>
+<p>The two checkboxes, <code class="docutils literal notranslate"><span class="pre">Show</span> <span class="pre">selected</span> <span class="pre">ROI</span></code> and <code class="docutils literal notranslate"><span class="pre">Show</span> <span class="pre">full</span> <span class="pre">frame</span></code>, display two rectangles in the main image view which show, correspondingly, the currently entered (but not applied) ROI and the whole camera sensor. <code class="docutils literal notranslate"><span class="pre">Show</span> <span class="pre">full</span> <span class="pre">frame</span></code> in combination with <code class="docutils literal notranslate"><span class="pre">Select</span> <span class="pre">by</span> <span class="pre">image</span></code> makes it especially convenient to select ROI relative to the full camera frame.</p>
+<p>In the bottom of ROI controls are two indicators. The first, <code class="docutils literal notranslate"><span class="pre">ROI</span></code>, shows the actually applied ROI parameters in raw (i.e., un-binned) camera pixels. These can be different from the specified, as cameras often have restrictions on the minimal and maximal size, or the ROI position. The second indicator, <code class="docutils literal notranslate"><span class="pre">Image</span> <span class="pre">size</span></code>, shows the resulting image size, taking binning into account.</p>
+</li>
+<li><p class="first"><code class="docutils literal notranslate"><span class="pre">Trigger</span> <span class="pre">mode</span></code> (on <code class="docutils literal notranslate"><span class="pre">Advanced</span></code> tab): allows to set internal/external frame trigger.</p>
+</li>
+</ul>
+<p>The acquisition process is controlled by <code class="docutils literal notranslate"><span class="pre">Start</span> <span class="pre">Acquisition</span></code> and <code class="docutils literal notranslate"><span class="pre">Stop</span> <span class="pre">Acquisition</span></code> buttons. At the start of the software, the camera is not acquiring frames.</p>
+<p>Finally, <code class="docutils literal notranslate"><span class="pre">Connect</span></code> and <code class="docutils literal notranslate"><span class="pre">Disconnect</span></code> button control the camera connection. By default, the camera is connected on startup. However, if it is temporarily required in some other software, it can be disconnected, and then re-connected again.</p>
+</div>
+<div class="section" id="camera-attributes">
+<span id="interface-camera-attributes"></span><h2>Camera attributes<a class="headerlink" href="#camera-attributes" title="Permalink to this headline">¶</a></h2>
+<img alt="_images/interface_camera_attributes.png" src="_images/interface_camera_attributes.png" />
+<p>Some cameras such as Andor SDK3, Hamamatsu, Photometrics and Princeton Instruments support camera attributes in their API. In principle, they provide almost complete control over camera’s hardware, but their selection, naming and meaning varies a lot between different manufacturers and event different camera models. Therefore, the software provides a generic interface to access these attributes, but does not guard about potential errors arising due to improper settings, which can include the software shutdown if, e.g., the settings interfere with the readout parameters. Hence, one needs to be somewhat careful when using these, and expect potential issues.</p>
+<p>Th attributes window is accessed via <code class="docutils literal notranslate"><span class="pre">Show</span> <span class="pre">attributes</span></code> button in the advanced camera settings. It has two tabs. The first one gives access to the attribute values. In it the first columns (<code class="docutils literal notranslate"><span class="pre">Attribute</span></code>) shows the attribute name, the next one (<code class="docutils literal notranslate"><span class="pre">To</span> <span class="pre">set</span></code>) lets you select a new attribute value (the control is absent if the attribute is read-only), which is followed by a <code class="docutils literal notranslate"><span class="pre">Set</span></code> button, which sets the attribute after entry, and the indicator showing the current attribute value. Finally, if setting the attribute resulted in an error, it will be indicated in the last column, with the explanation appearing when the mouse is hovered over.</p>
+<img alt="_images/interface_camera_attributes_settings.png" src="_images/interface_camera_attributes_settings.png" />
+<p>The second tab defines some of the attributes behavior. The first control, <code class="docutils literal notranslate"><span class="pre">On</span> <span class="pre">set</span></code>, describes how the acquisition is affected during the attribute settings. It can be <code class="docutils literal notranslate"><span class="pre">Clear</span></code>, which means that it is temporarily stopped and the frame buffer is cleared (the safest but also the slowest option), <code class="docutils literal notranslate"><span class="pre">Restart</span></code>, in which the acquisition is stopped but the buffer remains allocated (this is somewhat faster but, among other things, requires the frame size to remain constant), and <code class="docutils literal notranslate"><span class="pre">None</span></code>, meaning that the camera acquisition is not affected (the fastest, but not supported by all cameras).</p>
+<p>The second control, <code class="docutils literal notranslate"><span class="pre">Autoset</span></code>, defines when the attribute is set. It can be <code class="docutils literal notranslate"><span class="pre">None</span></code> (only set when the <code class="docutils literal notranslate"><span class="pre">Set</span></code> button is pressed), <code class="docutils literal notranslate"><span class="pre">Startup</span></code> (set on the software setup to, e.g., set up some basic parameters), or <code class="docutils literal notranslate"><span class="pre">Always</span></code> (set on startup and any time the entered value is changed).</p>
+<p>Finally, <code class="docutils literal notranslate"><span class="pre">Quick</span> <span class="pre">access</span></code> cna select whether the attribute should show up in the “quick access” mode. Since there are tens or even hundreds of attributes, and only a handful of them are usually relevant, there’s a “quick access” mode enabled by a checkbox in the lower left corner, which switches to showing only the marked attributes. This provides more convenience in dealing with the same recurring set of attributes.</p>
+</div>
+<div class="section" id="camera-status">
+<span id="interface-camera-status"></span><h2>Camera status<a class="headerlink" href="#camera-status" title="Permalink to this headline">¶</a></h2>
+<img alt="_images/interface_camera_status.png" src="_images/interface_camera_status.png" />
+<p>The top half of the status table deals with the camera status:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">Name</span></code>: camera name, as defined in the settings file</li>
+<li><code class="docutils literal notranslate"><span class="pre">Kind</span></code>: camera kind; usually, the camera interface kind, e.g., <code class="docutils literal notranslate"><span class="pre">Andor</span> <span class="pre">iXON</span></code> or <code class="docutils literal notranslate"><span class="pre">Thorlabs</span> <span class="pre">uc480</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">Connection</span></code>: shows whether camera is connected or not. Normally the camera should always be connected. It is only disconnected if it has been disconnected manually (by pressing <code class="docutils literal notranslate"><span class="pre">Disconnect</span></code> button on the camera control), or if the software couldn’t connect to the camera on the startup. The latter usually means that the camera is turned off, disconnected, or used by a different program</li>
+<li><code class="docutils literal notranslate"><span class="pre">Acquisition</span></code>: acquisition status</li>
+<li><code class="docutils literal notranslate"><span class="pre">Frames</span> <span class="pre">acquired</span></code>: number of frames acquired by the camera in the current acquisition session, i.e., since the last press of the <code class="docutils literal notranslate"><span class="pre">Start</span> <span class="pre">Acquisition</span></code> button or the last change of parameters</li>
+<li><code class="docutils literal notranslate"><span class="pre">Read</span> <span class="pre">/</span> <span class="pre">dropped</span></code>: number of frames which have been successfully read from the camera and, correspondingly, lost in transmission. Ideally the dropped frames counter is always zero, which means that the number of read and acquired frames is the same.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Buffer</span> <span class="pre">fill</span> <span class="pre">status</span></code>: status of the camera frame buffer; shows number of unread frames in the buffer and the total number of frames in the buffer</li>
+<li><code class="docutils literal notranslate"><span class="pre">FPS</span></code>: calculated camera frame generation rate</li>
+</ul>
+<p>Frames buffer, and the difference between acquired and read frames require some explanation.</p>
+<p>Typically, after the camera acquires a frame and sends it to the PC, the camera driver places it into RAM almost immediately. However, the software working with the frames can’t guarantee to react to each frame individually and quickly enough before the next frame arrive. To deal with that, the camera driver allocates a large area of RAM (called a buffer), where it places all the acquired frames in sequence. Afterwards, when the user software checks for new frames, it can read multiple frames acquired since the last check, and deal with all of them in one go. In other words, it can process acquired frames in “bursts”, keeping the required throughput (total number of processed frames per second), but reducing the required reaction time and frequency of checks for the new frames.</p>
+<p>However, this only works if the buffer doesn’t overflow between the checks, i.e., if the number of frames acquired since the last check doesn’t exceed the size of the buffer. If that happens, some of the acquired frames will be lost, which causes the difference between acquired frames (frames read by the camera and placed into the buffer), and the read frames (frames extracted from the buffer and sent further down the road). Hence, at high frame rates and high data rates it is important to monitor the buffer fill status and make sure that the buffer is not too full, and especially that the buffer fill level is not steadily rising.</p>
+</div>
+<div class="section" id="image-display">
+<span id="interface-image-view"></span><h2>Image display<a class="headerlink" href="#image-display" title="Permalink to this headline">¶</a></h2>
+<img alt="_images/interface_image_display.png" src="_images/interface_image_display.png" />
+<p>The image control is based on <a class="reference external" href="http://www.pyqtgraph.org/">pyqtgraph</a> <code class="docutils literal notranslate"><span class="pre">ImageView</span></code> control, which is used for displaying the image and the intensity histogram. In addition, there are some controls to change the image appearance and to enable additional features:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">Binning</span></code>, <code class="docutils literal notranslate"><span class="pre">Background</span> <span class="pre">subtraction</span></code>, <code class="docutils literal notranslate"><span class="pre">Filter</span></code> (above the image): quick overview of all processing steps for the displayed frame</li>
+<li><code class="docutils literal notranslate"><span class="pre">Image</span> <span class="pre">size</span></code>: displays image size in pixels</li>
+<li><code class="docutils literal notranslate"><span class="pre">Flip</span> <span class="pre">X</span></code>, <code class="docutils literal notranslate"><span class="pre">Flip</span> <span class="pre">Y</span></code>, <code class="docutils literal notranslate"><span class="pre">Transpose</span></code>: correspondingly, flips the image along the given axis, or transposes it (flips along the diagonal); note that these settings only affect display, and do not change the way images are saved</li>
+<li><code class="docutils literal notranslate"><span class="pre">Normalize</span></code>: controls whether the image levels are automatically normalized to cover the full image range, or if they stay fixed</li>
+<li><code class="docutils literal notranslate"><span class="pre">Min</span></code>, <code class="docutils literal notranslate"><span class="pre">Max</span></code>: minimal and maximal intensity levels, if <code class="docutils literal notranslate"><span class="pre">Normalize</span></code> is off</li>
+<li><code class="docutils literal notranslate"><span class="pre">Save</span> <span class="pre">preset</span></code>, <code class="docutils literal notranslate"><span class="pre">Load</span> <span class="pre">preset</span></code>: it is possible to store a single “preset” combination of intensity levels and recall them later; can be used to, e.g., temporarily switch to the <code class="docutils literal notranslate"><span class="pre">Normalize</span></code> mode to assess the whole image, but then quickly switch back to the previously used levels</li>
+<li><code class="docutils literal notranslate"><span class="pre">Show</span> <span class="pre">histogram</span></code>: controls whether the image value histogram on the right is shown; turning it off gives more space to the image and somewhat improves the update rate</li>
+<li><code class="docutils literal notranslate"><span class="pre">Auto</span> <span class="pre">histogram</span> <span class="pre">range</span></code>: controls whether the histogram plot is rescaled with every new frame; this is different from the <code class="docutils literal notranslate"><span class="pre">Normalize</span></code> option, which control whether the image level range (shown with a transparent box in the histogram) gets similarly rescaled</li>
+<li><code class="docutils literal notranslate"><span class="pre">Show</span> <span class="pre">lines</span></code>: controls whether the green cross is shown in the plot; it can be used to mark or extract positions of features in the image</li>
+<li><code class="docutils literal notranslate"><span class="pre">Use</span> <span class="pre">&lt;name&gt;</span> <span class="pre">coordinates</span></code>: controls the coordinate system used for the lines. By default the included systems are <code class="docutils literal notranslate"><span class="pre">Display</span></code> (display image coordinates after applying flipping and rotations), <code class="docutils literal notranslate"><span class="pre">Image</span></code> (image coordinates, before flipping and rotations), and <code class="docutils literal notranslate"><span class="pre">Frame</span></code> (camera frame coordinates, which account for ROI and binning settings; only available in the <code class="docutils literal notranslate"><span class="pre">Standard</span></code> image display).</li>
+<li><code class="docutils literal notranslate"><span class="pre">X</span></code>, <code class="docutils literal notranslate"><span class="pre">Y</span></code>: enable or disable individual lines and control their positions in the specified coordinate system. The lines can also be moved in the plot, or centered to a given position with a double-click.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Center</span> <span class="pre">lines</span></code>: move the cross to the center of the images</li>
+<li><code class="docutils literal notranslate"><span class="pre">Show</span> <span class="pre">line</span> <span class="pre">cuts</span></code>: when activated, shows a small additional plot with line cuts along the displayed lines</li>
+<li><code class="docutils literal notranslate"><span class="pre">Line</span> <span class="pre">cut</span> <span class="pre">width</span></code>: if more than 1, it specifies a band thickness to average for a single line cut; this might reduce noisiness of the cuts</li>
+<li><code class="docutils literal notranslate"><span class="pre">Updating</span></code>: controls whether the image view updates on the new frames, or simply shows the last frame; can be used to improve performance, or to closer inspect a single image</li>
+<li><code class="docutils literal notranslate"><span class="pre">Single</span></code>: when pressed, grabs a single image and stops updating</li>
+<li><code class="docutils literal notranslate"><span class="pre">Display</span> <span class="pre">update</span> <span class="pre">period</span></code>: maximal image update period. Can be increased if the software is to laggy, e.g., if large frames or large data rates are used.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Display</span> <span class="pre">FPS</span></code>: actual display update frame rate.</li>
+</ul>
+<p>The colored gradient bar in the intensity histogram shows the current color scheme and allows to change it. It can be done either by right-clicking on it and selecting one of the presets, or manually adding, dragging, and changing color of the markers.</p>
+</div>
+<div class="section" id="saving-control">
+<span id="interface-save-control"></span><h2>Saving control<a class="headerlink" href="#saving-control" title="Permalink to this headline">¶</a></h2>
+<img alt="_images/interface_save_control.png" src="_images/interface_save_control.png" />
+<p>Here the <a class="reference internal" href="pipeline.html#pipeline-saving"><span class="std std-ref">saving</span></a> parameters, such as path, format, and number of frames to save, are controlled:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">Path</span></code>: path for saving the frames. If the containing folder does not exist, it is created automatically; if the extension is not specified, it is added automatically. Note that if <code class="docutils literal notranslate"><span class="pre">Add</span> <span class="pre">date/time</span></code> is activated, the actual path will be somewhat different.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Separate</span> <span class="pre">folder</span></code>: if activated, then the supplied path is treated as a folder, and all of the data is stored inside under standard names (<code class="docutils literal notranslate"><span class="pre">frames.bin</span></code> or <code class="docutils literal notranslate"><span class="pre">frames.tiff</span></code> for main frames data, <code class="docutils literal notranslate"><span class="pre">settings.dat</span></code> for settings, etc.) This option allows for better data organizing when each dataset has multiple files (e.g., main data, settings, frame info, background, several split files).</li>
+<li><code class="docutils literal notranslate"><span class="pre">Add</span> <span class="pre">date/time</span></code>: if activated, create a unique name by appending current date and time to the specified path. By default, the date and time are added as a suffix, but this behavior can be changed in the <a class="reference internal" href="#interface-preferences"><span class="std std-ref">preferences</span></a>.</li>
+<li><code class="docutils literal notranslate"><span class="pre">On</span> <span class="pre">duplicate</span> <span class="pre">name</span></code>: determines what happens if the files with the specified name already exists; can be <code class="docutils literal notranslate"><span class="pre">Rename</span></code> (add a numeric suffix to make a new unique name), <code class="docutils literal notranslate"><span class="pre">Overwrite</span></code> (overwrite the existing data), or <code class="docutils literal notranslate"><span class="pre">Append</span></code> (append the existing data)</li>
+<li><code class="docutils literal notranslate"><span class="pre">Format</span></code>: saving format; so far, only raw binary, tiff, and big tiff (BTF) are supported</li>
+<li><code class="docutils literal notranslate"><span class="pre">Frames</span> <span class="pre">limit</span></code>: if activated, only save the given number of frames; otherwise, keep streaming data until saving is manually stopped</li>
+<li><code class="docutils literal notranslate"><span class="pre">Filesplit</span></code>: if activated, saved frames are split into separate files of the specified size instead of forming a single large file; this is useful when continuously acquiring very large amounts of data to avoid creating huge files</li>
+<li><code class="docutils literal notranslate"><span class="pre">Pretrigger</span></code>: set up the <a class="reference internal" href="pipeline.html#pipeline-saving-pretrigger"><span class="std std-ref">pretrigger</span></a> buffer size</li>
+<li><code class="docutils literal notranslate"><span class="pre">Clear</span> <span class="pre">pretrigger</span></code>: clear the accumulated pretrigger buffer</li>
+<li><code class="docutils literal notranslate"><span class="pre">Save</span> <span class="pre">settings</span></code>: if checked, then in addition to the frame saves a text file containing all of the related information: camera settings, GUI state, frame counters, frame shape and data format, etc. Highly recommended to use.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Disk</span> <span class="pre">streaming</span></code>: selects the way of data streaming to the disk. <code class="docutils literal notranslate"><span class="pre">Continuous</span></code> is as described in the <a class="reference internal" href="pipeline.html#pipeline-saving-buffer"><span class="std std-ref">saving buffer</span></a> explanation, with frames being constantly streamed to the disk as quickly as possible while the overhead is stored in the buffer. Alternatively, <code class="docutils literal notranslate"><span class="pre">Single-shot</span></code> mode does not write data during acquisition, but only starts streaming to the disk after the necessary number of frames has been accumulated (or the saving has been stopped manually). Unlike the <code class="docutils literal notranslate"><span class="pre">Continuous</span></code> mode, it can not work indefinitely, since its stores in RAM all the data to be saved. However, for very high-performance cameras working at &gt;1Gb/s (e.g., Photometrix Kinetix) this mode is more reliable and has lower chances of dropping frames during acquisition.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Saving</span></code>: the main button which initiates and stops data streaming; while streaming, changing of any other saving parameters is not allowed</li>
+<li><code class="docutils literal notranslate"><span class="pre">Record</span> <span class="pre">events...</span></code>: opens a small window which lets one record various events during data acquisition. The events are tagged by the global OS timestamp, time since the recording start, and the frame number. The event file is automatically created when the first message is added.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Snapshot</span></code>: <a class="reference internal" href="pipeline.html#pipeline-saving-snapshot"><span class="std std-ref">snapshot</span></a> saving parameters</li>
+<li><code class="docutils literal notranslate"><span class="pre">Use</span> <span class="pre">main</span> <span class="pre">path</span></code>: if checked, snapshot image path will be the same as the main image path, just with <code class="docutils literal notranslate"><span class="pre">_snapshot</span></code> appended to the end; all of the modifying parameters (<code class="docutils literal notranslate"><span class="pre">Separate</span> <span class="pre">folder</span></code> and <code class="docutils literal notranslate"><span class="pre">Add</span> <span class="pre">date/time</span></code>) are also the same</li>
+<li><code class="docutils literal notranslate"><span class="pre">Path</span></code>, <code class="docutils literal notranslate"><span class="pre">Separate</span> <span class="pre">folder</span></code>, <code class="docutils literal notranslate"><span class="pre">Add</span> <span class="pre">date/time</span></code>: same meaning as above, but applied to the snapshot saving; only active if <code class="docutils literal notranslate"><span class="pre">Use</span> <span class="pre">main</span> <span class="pre">path</span></code> is not checked.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Snap</span></code>: pressing it saves a single  image from the specified source (usually either <code class="docutils literal notranslate"><span class="pre">Standard</span></code> or <code class="docutils literal notranslate"><span class="pre">Filter</span></code>) in the specified image format</li>
+</ul>
+</div>
+<div class="section" id="saving-status">
+<span id="interface-save-status"></span><h2>Saving status<a class="headerlink" href="#saving-status" title="Permalink to this headline">¶</a></h2>
+<img alt="_images/interface_save_status.png" src="_images/interface_save_status.png" />
+<p>The bottom half of the status table deals with the saving status:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">Saving</span></code>: saving status; can be <code class="docutils literal notranslate"><span class="pre">Saving</span> <span class="pre">in</span> <span class="pre">progress</span></code> during the saving process, <code class="docutils literal notranslate"><span class="pre">Finishing</span> <span class="pre">saving</span></code> when finishing writing the data to the hard drive, or <code class="docutils literal notranslate"><span class="pre">Saving</span> <span class="pre">done</span></code> when done.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Frames</span> <span class="pre">received</span></code>: number of frames received for saving during the current saving session</li>
+<li><code class="docutils literal notranslate"><span class="pre">Frames</span> <span class="pre">scheduled</span></code>: number of frames which have been scheduled for saving to the drive</li>
+<li><code class="docutils literal notranslate"><span class="pre">Frames</span> <span class="pre">saved</span></code>: number of frames stored to the drive</li>
+<li><code class="docutils literal notranslate"><span class="pre">Frames</span> <span class="pre">missed</span></code>: number of frames which were missed in saving; this includes both frames that were received but not saved (e.g., due to save buffer overfill) and frames missed on camera readout</li>
+<li><code class="docutils literal notranslate"><span class="pre">Status</span> <span class="pre">line</span></code>: some cameras provide a status line within their frames (currently only PhotonFocus is supported). This status line allows one to do the last-minute check of the frames consistency, whose results are shown here.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Saving</span> <span class="pre">buffer</span></code>: fill status of the <a class="reference internal" href="pipeline.html#pipeline-saving-buffer"><span class="std std-ref">save buffer</span></a> and its maximal size in Mb. This maximal size can be changed in <a class="reference internal" href="#interface-preferences"><span class="std std-ref">preferences</span></a>.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Pretrigger</span> <span class="pre">frames</span></code>: fill status of the <a class="reference internal" href="pipeline.html#pipeline-saving-pretrigger"><span class="std std-ref">pre-trigger buffer</span></a></li>
+<li><code class="docutils literal notranslate"><span class="pre">Pretrigger</span> <span class="pre">RAM</span></code>: same as <code class="docutils literal notranslate"><span class="pre">Pretrigger</span> <span class="pre">frames</span></code>, but expressed in memory size; useful to keep an eye on it in case the requested pre-trigger buffer size gets too large</li>
+<li><code class="docutils literal notranslate"><span class="pre">Pretrigger</span> <span class="pre">skipped</span></code>: number of skipped frames in the pre-trigger buffer, which arose during the camera readout</li>
+</ul>
+</div>
+<div class="section" id="activity-overview">
+<span id="interface-activity"></span><h2>Activity overview<a class="headerlink" href="#activity-overview" title="Permalink to this headline">¶</a></h2>
+<img alt="_images/interface_activity.png" src="_images/interface_activity.png" />
+<p>In the upper right corner you can find indicators for the basic software activities: camera connection and acquisition, saving, background subtraction, filters, etc. These give a fast overview and help to, e.g., notices that some process is stopped (e.g., saving is done), or if it uses resources unnecessarily (e.g., running filters).</p>
+</div>
+<div class="section" id="settings-saving-and-extras">
+<span id="interface-footer"></span><h2>Settings saving and extras<a class="headerlink" href="#settings-saving-and-extras" title="Permalink to this headline">¶</a></h2>
+<img alt="_images/interface_footer.png" src="_images/interface_footer.png" />
+<p>The small box in the lower right corner allows to save the application settings to a file and subsequently load them. This lets you quickly switch between several working modes. <code class="docutils literal notranslate"><span class="pre">Loading</span> <span class="pre">scope</span></code> selects the loaded settings scope: only camera settings, everything except for the camera, or all settings.</p>
+<p>If you want to only load some of the settings, you can manually edit saved settings files. It is a human-readable table, and the parameter names are relatively straightforward to decipher. Note that you can also load settings from the <code class="docutils literal notranslate"><span class="pre">*_settings.dat</span></code> file accompanying the saved data, as long as it was obtained using the same version of the software. This may be useful to make sure that you save the data with exactly the same parameters as before.</p>
+</div>
+<div class="section" id="extras">
+<span id="interface-extras"></span><h2>Extras<a class="headerlink" href="#extras" title="Permalink to this headline">¶</a></h2>
+<img alt="_images/interface_extras.png" src="_images/interface_extras.png" />
+<p>The <code class="docutils literal notranslate"><span class="pre">Extra...</span></code> button in the <a class="reference internal" href="#interface-footer"><span class="std std-ref">footer</span></a> contains additional infrequently used features:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">Tutorial</span></code>: interface and operation <a class="reference internal" href="#interface-tutorial"><span class="std std-ref">tutorial</span></a>, which automatically shows up during the first run of the software</li>
+<li><code class="docutils literal notranslate"><span class="pre">Create</span> <span class="pre">camera</span> <span class="pre">shortcut</span></code>: if there are multiple cameras, this button allows to create a shortcut which connects to a particular camera. This skips the camera selection window on the application start and immediately runs the specific camera.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Preferences</span></code>: opens the <a class="reference internal" href="#interface-preferences"><span class="std std-ref">settings and preferences editor</span></a>.</li>
+<li><code class="docutils literal notranslate"><span class="pre">About</span></code>: opens the <code class="docutils literal notranslate"><span class="pre">About</span></code> window with the version information and useful links.</li>
+</ul>
+</div>
+<div class="section" id="settings-and-preferences">
+<span id="interface-preferences"></span><h2>Settings and preferences<a class="headerlink" href="#settings-and-preferences" title="Permalink to this headline">¶</a></h2>
+<img alt="_images/interface_preferences.png" src="_images/interface_preferences.png" />
+<p>The preferences window can be opened using the <a class="reference internal" href="#interface-extras"><span class="std std-ref">Extras</span></a> button. Here you can edit the general software settings. These cover all the same items as the <a class="reference internal" href="settings_file.html#settings-file"><span class="std std-ref">settings file</span></a>, but provides a user-friendly interface for editing these settings. This windows has several tabs. The first tab controls general settings, which affect all cameras by default. The other tabs (one per cameras) allow you override these settings for specific cameras (e.g., choose different color schemes for different cameras), as well as control some camera-specific settings. Here are the generic settings:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">Compact</span> <span class="pre">interface</span></code>: switche between the standard four-panel and the more compact three-panel layouts.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Color</span> <span class="pre">theme</span></code>: select different interface and color therems (based of <a class="reference external" href="https://github.com/ColinDuquesnoy/QDarkStyleSheet">qdarkstyle</a>).</li>
+<li><code class="docutils literal notranslate"><span class="pre">Expandable</span> <span class="pre">text</span> <span class="pre">boxes</span></code>: enable or disable expandable text boxes for paths and event logs.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Add</span> <span class="pre">date/time</span> <span class="pre">file</span> <span class="pre">method</span></code>: method to generate file names when <code class="docutils literal notranslate"><span class="pre">Add</span> <span class="pre">date/time</span></code> is selected but <code class="docutils literal notranslate"><span class="pre">Create</span> <span class="pre">separate</span> <span class="pre">folder</span></code> is not. Can be <code class="docutils literal notranslate"><span class="pre">Prefix</span></code> (add date as a prefix, e.g., <code class="docutils literal notranslate"><span class="pre">20210315_120530_video.bin</span></code>), <code class="docutils literal notranslate"><span class="pre">Suffix</span></code> (add date as a suffix, e.g., <code class="docutils literal notranslate"><span class="pre">video_20210315_120530.bin</span></code>), or <code class="docutils literal notranslate"><span class="pre">Folder</span></code> (create folder with the datetime as name, e.g.,  <code class="docutils literal notranslate"><span class="pre">20210315_120530/video.bin</span></code>).</li>
+<li><code class="docutils literal notranslate"><span class="pre">Add</span> <span class="pre">date/time</span> <span class="pre">folder</span> <span class="pre">method</span></code>: same but when both <code class="docutils literal notranslate"><span class="pre">Add</span> <span class="pre">date/time</span></code> and <code class="docutils literal notranslate"><span class="pre">Create</span> <span class="pre">separate</span> <span class="pre">folder</span></code> are selected.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Max</span> <span class="pre">saving</span> <span class="pre">buffer</span> <span class="pre">RAM</span> <span class="pre">(Mb)</span></code>: maximal size of the saving buffer in megabytes. Makes sense to increase if large movies are saved to slow drive, or if large pre-trigger buffer is used (the size of the saving queue must be larger than the pre-trigger buffer). Makes sense to decrease if the PC has small amount of RAM.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Popup</span> <span class="pre">on</span> <span class="pre">missing</span> <span class="pre">frames</span></code>: whether to show a pop-up message in the end of saving if the saved data contains missing frames.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Status</span> <span class="pre">line</span> <span class="pre">display</span> <span class="pre">policy</span></code>: method to deal with a status line (on PhotonFocus or PCO edge cameras) when displaying frames. Only affects the displayed image.</li>
+<li><code class="docutils literal notranslate"><span class="pre">ROI</span> <span class="pre">entry</span> <span class="pre">method</span></code>: ROI entry method in camera control. Can be <code class="docutils literal notranslate"><span class="pre">Min-Max</span></code> (enter minimal and maximal coordinates), or <code class="docutils literal notranslate"><span class="pre">Min-Size</span></code> (enter minimal coordinates and size).</li>
+</ul>
+<p>In addition, there are several camera-specific parameters:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">Camera</span> <span class="pre">name</span></code>: the name associated with the camera, which is displayed in the window title, camera status, or in the dropdown menu during camera selection. By default, autogenerated based on the camera model and serial number.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Frame</span> <span class="pre">buffer</span> <span class="pre">(frames)</span></code>: minimal camera frame buffer size defined in terms of number of frames.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Frame</span> <span class="pre">buffer</span> <span class="pre">(s)</span></code>: minimal camera frame buffer size defined in terms of acquisition time (in seconds). For example, the size of 1 second would be result in 100 frame for 100 FPS frame rate and 1000 frames for 1 kFPS frame rate.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Poll</span> <span class="pre">period</span> <span class="pre">(s)</span></code>: the period at which camera is polled for new frames. Lower period increases the image update frame rate, but might decrease the overall performance.</li>
+</ul>
+</div>
+<div class="section" id="processing-controls">
+<span id="interface-processing"></span><h2>Processing controls<a class="headerlink" href="#processing-controls" title="Permalink to this headline">¶</a></h2>
+<img alt="_images/interface_processing.png" src="_images/interface_processing.png" />
+<p>The top half of the <code class="docutils literal notranslate"><span class="pre">Processing</span></code> tab controls <a class="reference internal" href="pipeline.html#pipeline-prebinning"><span class="std std-ref">pre-binning</span></a>, <a class="reference internal" href="advanced.html#advanced-slowdown"><span class="std std-ref">slowdown</span></a>, and <a class="reference internal" href="pipeline.html#pipeline-background-subtraction"><span class="std std-ref">background subtraction</span></a>:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">Acquisition</span> <span class="pre">binning</span></code>: controls pre-binning<ul>
+<li><code class="docutils literal notranslate"><span class="pre">Spatial</span> <span class="pre">binning</span> <span class="pre">mode</span></code>: determines the mode of the spatial (i.e., within-frame) binning, which reduces the frame size</li>
+<li><code class="docutils literal notranslate"><span class="pre">X</span></code> and <code class="docutils literal notranslate"><span class="pre">Y</span></code>: binning factor along the two directions</li>
+<li><code class="docutils literal notranslate"><span class="pre">Temporal</span> <span class="pre">binning</span> <span class="pre">mode</span></code>: determines the mode of the temporal binning, which reduces the frame rate</li>
+<li><code class="docutils literal notranslate"><span class="pre">T</span></code>: temporal binning factor</li>
+<li><code class="docutils literal notranslate"><span class="pre">Convert</span> <span class="pre">frame</span> <span class="pre">to</span> <span class="pre">float</span></code>: if checked, the frames fed to later stages (including saving) are converted to float instead of staying as integer; useful when <code class="docutils literal notranslate"><span class="pre">Mean</span></code> or <code class="docutils literal notranslate"><span class="pre">Sum</span></code> binning modes are used</li>
+<li><code class="docutils literal notranslate"><span class="pre">Enable</span> <span class="pre">binning</span></code>: enables or disables the binning</li>
+</ul>
+</li>
+<li><code class="docutils literal notranslate"><span class="pre">Slowdown</span></code>: controls the display slowdown<ul>
+<li><code class="docutils literal notranslate"><span class="pre">Source</span> <span class="pre">FPS</span></code>: displays the current frame rate; normally it is equal to the camera FPS divided by the temporal binning factor</li>
+<li><code class="docutils literal notranslate"><span class="pre">Target</span> <span class="pre">FPS</span></code>: reduced frame rate; the slowdown factor is then roughly equal to the ratio of the source to the target FPS</li>
+<li><code class="docutils literal notranslate"><span class="pre">Slowdown</span> <span class="pre">buffer</span></code>: size and current status of the slowdown buffer; the status shows the number of already displayed frames from the buffer and the total number of frames acquired so far, while the edit box control the maximal size of the buffer</li>
+<li><code class="docutils literal notranslate"><span class="pre">Slowdown</span></code>: enables or disables the slowdown</li>
+</ul>
+</li>
+<li><code class="docutils literal notranslate"><span class="pre">Background</span> <span class="pre">subtraction</span></code>: controls the background subtraction options<ul>
+<li><code class="docutils literal notranslate"><span class="pre">Method</span></code>: subtraction method, which can be <code class="docutils literal notranslate"><span class="pre">Snapshot</span></code> (a single fixed frame) or <code class="docutils literal notranslate"><span class="pre">Running</span></code> (dynamically generated from some number of previous frames)</li>
+<li><code class="docutils literal notranslate"><span class="pre">Frames</span> <span class="pre">count</span></code>: number of frames to combine for the background</li>
+<li><code class="docutils literal notranslate"><span class="pre">Combination</span> <span class="pre">mode</span></code>: method of combining the frames; note that <code class="docutils literal notranslate"><span class="pre">Median</span></code> works significantly slower than all other methods, and should be avoided for large frame counts (typically, above 100-1000 frames) in the <code class="docutils literal notranslate"><span class="pre">Running</span></code> mode</li>
+<li><code class="docutils literal notranslate"><span class="pre">Grab</span> <span class="pre">background</span></code>: if <code class="docutils literal notranslate"><span class="pre">Snapshot</span></code> method is used, pressing it initializes the new snapshot background acquisition; while it is in progress, <code class="docutils literal notranslate"><span class="pre">Frames</span> <span class="pre">count</span></code> status shows the number of frames acquired so far</li>
+<li><code class="docutils literal notranslate"><span class="pre">Snap</span> <span class="pre">save</span></code>: determines whether the snapshot background is saved together with the main data; only active when <code class="docutils literal notranslate"><span class="pre">Snapshot</span></code> method is used and the subtraction is active</li>
+<li><code class="docutils literal notranslate"><span class="pre">Enable</span> <span class="pre">subtraction</span></code>: enable or disable the background subtraction</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="time-plot">
+<span id="interface-time-plot"></span><h2>Time plot<a class="headerlink" href="#time-plot" title="Permalink to this headline">¶</a></h2>
+<img alt="_images/interface_time_plot.png" src="_images/interface_time_plot.png" />
+<p>This part controls the <a class="reference internal" href="advanced.html#advanced-time-plot"><span class="std std-ref">time series plotting</span></a>:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">Enable</span></code>: enable or disable the time series plot</li>
+<li><code class="docutils literal notranslate"><span class="pre">Source</span></code>: plot source; can be either <code class="docutils literal notranslate"><span class="pre">Display</span> <span class="pre">frames</span></code> or <code class="docutils literal notranslate"><span class="pre">Raw</span> <span class="pre">frames</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">Calculate</span> <span class="pre">every</span></code>: if raw frames are used, the averaging might be computationally expensive for high frame rates; this parameter allows to average only some frames with the given periodicity</li>
+<li><code class="docutils literal notranslate"><span class="pre">Use</span> <span class="pre">ROI</span></code>: enable or disable averaging in a given region of interest (ROI); if disabled, average the whole frame</li>
+<li><code class="docutils literal notranslate"><span class="pre">Center</span></code>, <code class="docutils literal notranslate"><span class="pre">Size</span></code>: controls the averaging ROI</li>
+<li><code class="docutils literal notranslate"><span class="pre">Reset</span> <span class="pre">ROI</span></code>: reset ROI to the full frame</li>
+<li><code class="docutils literal notranslate"><span class="pre">Update</span> <span class="pre">plot</span></code>: enable or disable plot update</li>
+<li><code class="docutils literal notranslate"><span class="pre">Display</span> <span class="pre">last</span></code>: number of points to display</li>
+<li><code class="docutils literal notranslate"><span class="pre">Reset</span> <span class="pre">history</span></code>: reset the displayed points</li>
+</ul>
+</div>
+<div class="section" id="saving-trigger">
+<span id="interface-saving-trigger"></span><h2>Saving trigger<a class="headerlink" href="#saving-trigger" title="Permalink to this headline">¶</a></h2>
+<img alt="_images/interface_save_trigger.png" src="_images/interface_save_trigger.png" />
+<p>The top part of the <code class="docutils literal notranslate"><span class="pre">Plugins</span></code> tab controls the <a class="reference internal" href="advanced.html#advanced-save-trigger"><span class="std std-ref">saving trigger</span></a>:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">Save</span> <span class="pre">mode</span></code>: the kind of saving that happens on the trigger; can be <code class="docutils literal notranslate"><span class="pre">Full</span></code> (standard saving, equivalent to pressing <code class="docutils literal notranslate"><span class="pre">Saving</span></code> button) or <code class="docutils literal notranslate"><span class="pre">Snap</span></code> (snapshot saving, equivalent to pressing <code class="docutils literal notranslate"><span class="pre">Snap</span></code> button)</li>
+<li><code class="docutils literal notranslate"><span class="pre">Limit</span> <span class="pre">number</span> <span class="pre">of</span> <span class="pre">videos</span></code>: if enabled, limits the total number of saved videos</li>
+<li><code class="docutils literal notranslate"><span class="pre">Number</span> <span class="pre">of</span> <span class="pre">videos</span></code>: maximal number of saved videos; the indicator shows the number saved so far</li>
+<li><code class="docutils literal notranslate"><span class="pre">Trigger</span> <span class="pre">mode</span></code>: the source of the trigger; can be <code class="docutils literal notranslate"><span class="pre">Timer</span></code> for periodic timed acquisition or <code class="docutils literal notranslate"><span class="pre">Frame</span></code> for a frame-triggered acquisition</li>
+<li><code class="docutils literal notranslate"><span class="pre">Trigger</span> <span class="pre">frame</span> <span class="pre">source</span></code>: the source of the triggering frame, either <code class="docutils literal notranslate"><span class="pre">Standard</span></code> for the standard processing pipeline (including background subtraction) or <code class="docutils literal notranslate"><span class="pre">Filter</span></code> for the filter frame</li>
+<li><code class="docutils literal notranslate"><span class="pre">Time</span> <span class="pre">period</span> <span class="pre">(s)</span></code>: for timer acquisition, the trigger period</li>
+<li><code class="docutils literal notranslate"><span class="pre">Dead</span> <span class="pre">time</span> <span class="pre">(s)</span></code>: for frame trigger, the amount of dead time, i.e., the time after the trigger when the subsequent triggers are ignored. If the save mode is <code class="docutils literal notranslate"><span class="pre">Full</span></code>, it is recommended that the period and the dead time are longer than the length of the single movie</li>
+<li><code class="docutils literal notranslate"><span class="pre">Trigger</span> <span class="pre">threshold</span></code>: frame trigger threshold; the trigger is activated when any image pixel is above this threshold</li>
+<li><code class="docutils literal notranslate"><span class="pre">Event</span> <span class="pre">trigger</span> <span class="pre">status</span></code>: frame trigger status, either <code class="docutils literal notranslate"><span class="pre">armed</span></code> (waiting for trigger), <code class="docutils literal notranslate"><span class="pre">triggered</span></code> (triggered recently), or <code class="docutils literal notranslate"><span class="pre">dead</span></code> (dead time period)</li>
+</ul>
+</div>
+<div class="section" id="filter">
+<span id="interface-filter"></span><h2>Filter<a class="headerlink" href="#filter" title="Permalink to this headline">¶</a></h2>
+<img alt="_images/interface_filter.png" src="_images/interface_filter.png" />
+<p>The <code class="docutils literal notranslate"><span class="pre">Filter</span></code> selects the <a class="reference internal" href="advanced.html#advanced-filter"><span class="std std-ref">filter</span></a> and controls its parameters:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">Filter</span></code>: selected filter to load; currently loaded and active filter is shown above the <code class="docutils literal notranslate"><span class="pre">Enable</span></code> button</li>
+<li><code class="docutils literal notranslate"><span class="pre">Load</span></code>: load the selected filter, or reload if it is already loaded; reloading can be used to, e.g., clear the accumulated frames in the buffer</li>
+<li><code class="docutils literal notranslate"><span class="pre">Unload</span></code>: unload the filter</li>
+<li><code class="docutils literal notranslate"><span class="pre">Enable</span></code>: enable or disable the filter; note that while it stops frames from being fed to the filter, it preserves all of the accumulated data</li>
+</ul>
+<p>Below this button is the filter description and the list of filter parameters and indicators. Both depend on the exact filter.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="expanding.html" class="btn btn-neutral float-right" title="Expanding and modifying" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="advanced.html" class="btn btn-neutral float-left" title="Advanced features" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Alexey Shkarin.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

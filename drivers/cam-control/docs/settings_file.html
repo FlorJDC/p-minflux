@@ -1,0 +1,425 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html4" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Configuring &mdash; pylablib cam-control 2.2.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Use cases" href="usecases.html" />
+    <link rel="prev" title="Expanding and modifying" href="expanding.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> pylablib cam-control
+          
+
+          
+            
+            <img src="_static/logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pipeline.html">Basic data flow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="interface.html">Detailed interface description</a></li>
+<li class="toctree-l1"><a class="reference internal" href="expanding.html">Expanding and modifying</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Configuring</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#command-line-arguments">Command line arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#settings-file">Settings file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#general-parameters">General parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#camera-related-parameters">Camera-related parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#specific-system-parameters">Specific system parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="usecases.html">Use cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Release history</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">pylablib cam-control</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Configuring</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/settings_file.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="configuring">
+<span id="id1"></span><h1>Configuring<a class="headerlink" href="#configuring" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="command-line-arguments">
+<span id="command-line"></span><h2>Command line arguments<a class="headerlink" href="#command-line-arguments" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">control.exe</span></code> takes several command line arguments to customize the software launch sequence:</p>
+<blockquote>
+<div><ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">--camera</span> <span class="pre">&lt;camera</span> <span class="pre">name&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">-c</span> <span class="pre">&lt;camera</span> <span class="pre">name&gt;</span></code>: select a specific camera to control; <code class="docutils literal notranslate"><span class="pre">&lt;camera</span> <span class="pre">name&gt;</span></code> is the name of the camera used within the settings file, such as <code class="docutils literal notranslate"><span class="pre">ppimaq_0</span></code>. Normally, if several cameras are available, the software first shows the dropdown menu to choose the camera to control. However, if this argument is specified, this camera will be selected automatically. Can be used to, e.g., create separate shortcuts for controlling different cameras.</li>
+<li><code class="docutils literal notranslate"><span class="pre">--config-file</span> <span class="pre">&lt;file&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">-cf</span> <span class="pre">&lt;file&gt;</span></code>: specify a configuration file if it is different from the default <code class="docutils literal notranslate"><span class="pre">settings.cfg</span></code>. The path is always specified relative to <code class="docutils literal notranslate"><span class="pre">control.py</span></code> location.</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="settings-file">
+<span id="id2"></span><h2>Settings file<a class="headerlink" href="#settings-file" title="Permalink to this headline">¶</a></h2>
+<p>Software settings are defined in <code class="docutils literal notranslate"><span class="pre">settings.cfg</span></code> file inside the main folder. These include the camera connection parameters, as well as some additional interface and camera settings. The settings are described in a plain text format with one parameter per row. The most important settings are either defined by default, do not need explicit definition, or filled in by the camera detection. However, you can also edit them manually. Below is the list of available parameters.</p>
+</div>
+<div class="section" id="general-parameters">
+<span id="settings-file-general"></span><h2>General parameters<a class="headerlink" href="#general-parameters" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt><code class="docutils literal notranslate"><span class="pre">interface/compact</span></code></dt>
+<dd><div class="first last line-block">
+<div class="line">Switch to compact three-panel layout with a smaller controls area.</div>
+<div class="line"><em>Values</em>: <code class="docutils literal notranslate"><span class="pre">True</span></code>, <code class="docutils literal notranslate"><span class="pre">False</span></code></div>
+<div class="line"><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">False</span></code></div>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">interface/color_theme</span></code></dt>
+<dd><div class="first last line-block">
+<div class="line">Color theme (based of <a class="reference external" href="https://github.com/ColinDuquesnoy/QDarkStyleSheet">qdarkstyle</a>).</div>
+<div class="line"><em>Values</em>: <code class="docutils literal notranslate"><span class="pre">dark</span></code>, <code class="docutils literal notranslate"><span class="pre">light</span></code>, <code class="docutils literal notranslate"><span class="pre">standard</span></code> (standard Windows style)</div>
+<div class="line"><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">dark</span></code></div>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">interface/expandable_edits</span></code></dt>
+<dd><div class="first last line-block">
+<div class="line">Enable or disable expandable text boxes for paths and event logs.</div>
+<div class="line"><em>Values</em>: <code class="docutils literal notranslate"><span class="pre">True</span></code>, <code class="docutils literal notranslate"><span class="pre">False</span></code></div>
+<div class="line"><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">True</span></code></div>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">interface/plotter/binning/max_size</span></code></dt>
+<dd><div class="first last line-block">
+<div class="line">Maximal size of the image shown in the plotter window (any image larger than this size gets binned). Only affect plotting, and only useful to speed up image display.</div>
+<div class="line"><em>Values</em>: any positive integer</div>
+<div class="line"><em>Default</em>: not defined (no maximal size)</div>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">interface/plotter/binning/mode</span></code></dt>
+<dd><div class="first last line-block">
+<div class="line">Binning mode for plotting display, if the frame needs to be binned. Works in conjunction with <code class="docutils literal notranslate"><span class="pre">interface/plotter/binning/max_size</span></code>.</div>
+<div class="line"><em>Values</em>: <code class="docutils literal notranslate"><span class="pre">mean</span></code>, <code class="docutils literal notranslate"><span class="pre">min</span></code>, <code class="docutils literal notranslate"><span class="pre">max</span></code>, <code class="docutils literal notranslate"><span class="pre">skip</span></code></div>
+<div class="line"><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">mean</span></code></div>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">interface/popup_on_missing_frames</span></code></dt>
+<dd><div class="first last line-block">
+<div class="line">Show a pop-up message in the end of saving if the saved data contains missing frames.</div>
+<div class="line"><em>Values</em>: <code class="docutils literal notranslate"><span class="pre">True</span></code>, <code class="docutils literal notranslate"><span class="pre">False</span></code></div>
+<div class="line"><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">True</span></code></div>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">interface/datetime_path/file</span></code></dt>
+<dd><div class="first last line-block">
+<div class="line">Template to generate file names when <code class="docutils literal notranslate"><span class="pre">Add</span> <span class="pre">date/time</span></code> is selected but <code class="docutils literal notranslate"><span class="pre">Create</span> <span class="pre">separate</span> <span class="pre">folder</span></code> is not.</div>
+<div class="line"><em>Values</em>: <code class="docutils literal notranslate"><span class="pre">pfx</span></code> (add date as a prefix, e.g., <code class="docutils literal notranslate"><span class="pre">20210315_120530_video.bin</span></code>), <code class="docutils literal notranslate"><span class="pre">sfx</span></code> (add date as a suffix, e.g., <code class="docutils literal notranslate"><span class="pre">video_20210315_120530.bin</span></code>), or <code class="docutils literal notranslate"><span class="pre">folder</span></code> (create folder with the datetime as name, e.g.,  <code class="docutils literal notranslate"><span class="pre">20210315_120530/video.bin</span></code>)</div>
+<div class="line"><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">sfx</span></code></div>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">interface/datetime_path/folder</span></code></dt>
+<dd><div class="first last line-block">
+<div class="line">Template to generate folder names when both <code class="docutils literal notranslate"><span class="pre">Add</span> <span class="pre">date/time</span></code> and <code class="docutils literal notranslate"><span class="pre">Create</span> <span class="pre">separate</span> <span class="pre">folder</span></code> are selected.</div>
+<div class="line"><em>Values</em>: <code class="docutils literal notranslate"><span class="pre">pfx</span></code> (add date as a prefix, e.g., <code class="docutils literal notranslate"><span class="pre">20210315_120530_video/</span></code>), <code class="docutils literal notranslate"><span class="pre">sfx</span></code> (add date as a suffix, e.g., <code class="docutils literal notranslate"><span class="pre">video_20210315_120530/</span></code>), or <code class="docutils literal notranslate"><span class="pre">folder</span></code> (create folder with the datetime as name, e.g.,  <code class="docutils literal notranslate"><span class="pre">20210315_120530/video/</span></code>)</div>
+<div class="line"><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">sfx</span></code></div>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">interface/cam_control/roi_kind</span></code></dt>
+<dd><div class="first last line-block">
+<div class="line">ROI entry method in camera control.</div>
+<div class="line"><em>Values</em>: <code class="docutils literal notranslate"><span class="pre">minmax</span></code> (ROI is defined by minimal and maximal coordinates), <code class="docutils literal notranslate"><span class="pre">minsize</span></code> (ROI is defined by minimal coordinates and size), or <code class="docutils literal notranslate"><span class="pre">centersize</span></code> (ROI is defined by center coordinates and size)</div>
+<div class="line"><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">minsize</span></code> for PhotonFocus cameras, <code class="docutils literal notranslate"><span class="pre">minmax</span></code> for all other cameras</div>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">frame_processing/status_line_policy</span></code></dt>
+<dd><div class="first last line-block">
+<div class="line">Method to deal with a status line (on PhotonFocus or PCO edge cameras) for the raw image display. Only affects the displayed image.</div>
+<div class="line"><em>Values</em>: <code class="docutils literal notranslate"><span class="pre">keep</span></code> (keep as is), <code class="docutils literal notranslate"><span class="pre">cut</span></code> (cut off rows with the status line), <code class="docutils literal notranslate"><span class="pre">zero</span></code> (set status line pixels to zero), <code class="docutils literal notranslate"><span class="pre">median</span></code> (set status line pixels to the image median),or <code class="docutils literal notranslate"><span class="pre">duplicate</span></code> (replace status line with pixels from a nearby row)</div>
+<div class="line"><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">duplicate</span></code></div>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">saving/max_queue_ram</span></code></dt>
+<dd><div class="first last line-block">
+<div class="line">Maximal size of the saving buffer in bytes. Makes sense to increase if large movies are saved to slow drive, or if large pre-trigger buffer is used (the size of the saving queue must be larger than the pre-trigger buffer). Makes sense to decrease if the PC has small amount of RAM.</div>
+<div class="line"><em>Values</em>: any positive integer</div>
+<div class="line"><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">4294967296</span></code> (i.e., 4 GB)</div>
+</div>
+</dd>
+</dl>
+</div>
+<div class="section" id="camera-related-parameters">
+<span id="settings-file-camera"></span><h2>Camera-related parameters<a class="headerlink" href="#camera-related-parameters" title="Permalink to this headline">¶</a></h2>
+<p>In this section <code class="docutils literal notranslate"><span class="pre">&lt;camera</span> <span class="pre">name&gt;</span></code> stands for any camera name, e.g., <code class="docutils literal notranslate"><span class="pre">ppimaq_0</span></code>. For example, <code class="docutils literal notranslate"><span class="pre">cameras/&lt;camera</span> <span class="pre">name&gt;/params</span></code> can become <code class="docutils literal notranslate"><span class="pre">cameras/ppimaq_0/params</span></code>.</p>
+<dl class="docutils">
+<dt><code class="docutils literal notranslate"><span class="pre">css/&lt;camera</span> <span class="pre">name&gt;/&lt;key&gt;</span></code></dt>
+<dd><div class="first last line-block">
+<div class="line">Camera-specific parameter. Allows for any generic parameter (such as GUI parameters described above) to take different values for different cameras. For example, if there are two cameras named <code class="docutils literal notranslate"><span class="pre">ppimaq_0</span></code> and <code class="docutils literal notranslate"><span class="pre">uc480_0</span></code> defined in the file, then one can use <code class="docutils literal notranslate"><span class="pre">css/ppimaq_0/saving/max_queue_ram</span></code> to specify the saving buffer size for the first camera, and <code class="docutils literal notranslate"><span class="pre">css/uc480_0/saving/max_queue_ram</span></code> for the second one. Either of those can also be omitted, in which case the generic value (either specified or default) will be used instead. Note that this option is not supported for <code class="docutils literal notranslate"><span class="pre">select_camera</span></code>, <code class="docutils literal notranslate"><span class="pre">cameras</span></code>, and <code class="docutils literal notranslate"><span class="pre">dlls</span></code> parameters (<code class="docutils literal notranslate"><span class="pre">css</span></code> entries are ignored for those).</div>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">select_camera</span></code></dt>
+<dd><div class="first last line-block">
+<div class="line">Default selected camera. If this parameter is set, then this camera is automatically selected even if several cameras are present (i.e., the camera select menu doesn’t show up). In this case, the only way to start other cameras is by using <code class="docutils literal notranslate"><span class="pre">--camera</span></code> <a class="reference internal" href="#command-line"><span class="std std-ref">command line argument</span></a>.</div>
+<div class="line"><em>Values</em>: any camera name (e.g., <code class="docutils literal notranslate"><span class="pre">ppimaq_0</span></code>)</div>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">cameras/&lt;camera</span> <span class="pre">name&gt;/params</span></code></dt>
+<dd><div class="first last line-block">
+<div class="line">Parameters for camera initialization (interface name, index, etc.) Created automatically by the <code class="docutils literal notranslate"><span class="pre">detect</span></code> script, and usually does not need to be changed</div>
+<div class="line"><em>Values</em>: depends on the camera</div>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">cameras/&lt;camera</span> <span class="pre">name&gt;/display_name</span></code></dt>
+<dd><div class="first last line-block">
+<div class="line">Camera name to be shown in the camera select window (if multiple cameras are available) and in the window header</div>
+<div class="line"><em>Values</em>: any text</div>
+<div class="line"><em>Default</em>: automatically filled by the <code class="docutils literal notranslate"><span class="pre">detect</span></code> script based on the camera kind, model, serial number, etc.</div>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">cameras/&lt;camera</span> <span class="pre">name&gt;/params/misc</span></code></dt>
+<dd><div class="first last line-block">
+<div class="line">Additional minor camera parameters</div>
+<div class="line"><em>Values</em>: depends on the camera (see generic parameters below)</div>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">cameras/&lt;camera</span> <span class="pre">name&gt;/params/misc/buffer/min_size/time</span></code></dt>
+<dd><div class="first last line-block">
+<div class="line">Minimal camera frame buffer size defined in terms of acquisition time (in seconds). For example, for <code class="docutils literal notranslate"><span class="pre">time</span> <span class="pre">=</span> <span class="pre">0.5</span></code> the frame buffer size would be 50 frame for 100 FPS frame rate and 500 frames for 1 kFPS frame rate.</div>
+<div class="line"><em>Values</em>: any positive floating point number</div>
+<div class="line"><em>Default</em>: 1 second for most cameras</div>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">cameras/&lt;camera</span> <span class="pre">name&gt;/params/misc/buffer/min_size/frames</span></code></dt>
+<dd><div class="first last line-block">
+<div class="line">Minimal camera frame buffer size defined in terms of number of frames.</div>
+<div class="line"><em>Values</em>: any positive integer</div>
+<div class="line"><em>Default</em>: camera-dependent; usually, between 100 and 1000</div>
+</div>
+</dd>
+</dl>
+<p>For any given FPS the maximal of the two declared buffer sizes is used. For example, if <code class="docutils literal notranslate"><span class="pre">time</span> <span class="pre">=</span> <span class="pre">1</span></code> and <code class="docutils literal notranslate"><span class="pre">frames</span> <span class="pre">=</span> <span class="pre">100</span></code>, then at 50 FPS the frame buffer size is 100 (defined through <code class="docutils literal notranslate"><span class="pre">frames</span></code>), and at 1000 FPS the frame buffer size is 1000 (defined through <code class="docutils literal notranslate"><span class="pre">time</span></code>).</p>
+<dl class="docutils">
+<dt><code class="docutils literal notranslate"><span class="pre">cameras/&lt;camera</span> <span class="pre">name&gt;/params/misc/loop/min_poll_period</span></code></dt>
+<dd><div class="first last line-block">
+<div class="line">The period to polled the camera for new frames. The new frames are read out from this camera with this period, which means that the <em>display</em> period is limited by the poll. However, since multiple frames are read out at once, the overall readout frame rate does not depend on the poll period. Lower number results in higher image update rates but also, usually, in somewhat lower performance.</div>
+<div class="line"><em>Values</em>: any positive number</div>
+<div class="line"><em>Default</em>: 0.05 (corresponding to the maximum of 20 FPS update rate)</div>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">cameras/&lt;camera</span> <span class="pre">name&gt;/params/misc/trigger/in/src</span></code></dt>
+<dd><div class="first last line-block">
+<div class="line">Source of the input trigger for cameras supporting several trigger sources</div>
+<div class="line"><em>Values</em>: camera-dependent. For IMAQ cameras (e.g., using NI frame grabber) a tuple <code class="docutils literal notranslate"><span class="pre">(kind,</span> <span class="pre">index)</span></code>, where <code class="docutils literal notranslate"><span class="pre">kind</span></code> can be <code class="docutils literal notranslate"><span class="pre">&quot;ext&quot;</span></code> (external SMB connector), <code class="docutils literal notranslate"><span class="pre">&quot;rtsi&quot;</span></code> (RTSI connection), or <code class="docutils literal notranslate"><span class="pre">&quot;iso_in&quot;</span></code> (ISO connection), and <code class="docutils literal notranslate"><span class="pre">line</span></code> is an integer line number. For example, <code class="docutils literal notranslate"><span class="pre">(&quot;ext&quot;,0)</span></code> is the default external SMB connector, and <code class="docutils literal notranslate"><span class="pre">(&quot;rtsi&quot;,4)</span></code> is the RTSI line 4.</div>
+<div class="line"><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">(&quot;ext&quot;,0)</span></code></div>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">cameras/&lt;camera</span> <span class="pre">name&gt;/params/misc/trigger/out/src</span></code></dt>
+<dd><div class="first last line-block">
+<div class="line">Destination of the output trigger for cameras supporting several trigger destinations</div>
+<div class="line"><em>Values</em>: camera-dependent. For IMAQ cameras (e.g., using NI frame grabber) a tuple <code class="docutils literal notranslate"><span class="pre">(kind,</span> <span class="pre">index)</span></code>, where <code class="docutils literal notranslate"><span class="pre">kind</span></code> can be <code class="docutils literal notranslate"><span class="pre">&quot;ext&quot;</span></code> (external SMB connector), <code class="docutils literal notranslate"><span class="pre">&quot;rtsi&quot;</span></code> (RTSI connection), or <code class="docutils literal notranslate"><span class="pre">&quot;iso_out&quot;</span></code> (ISO connection), and <code class="docutils literal notranslate"><span class="pre">line</span></code> is an integer line number. For example, <code class="docutils literal notranslate"><span class="pre">(&quot;ext&quot;,0)</span></code> is the default external SMB connector, and <code class="docutils literal notranslate"><span class="pre">(&quot;rtsi&quot;,4)</span></code> is the RTSI line 4.</div>
+<div class="line"><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">(&quot;ext&quot;,0)</span></code></div>
+</div>
+</dd>
+</dl>
+</div>
+<div class="section" id="specific-system-parameters">
+<span id="settings-file-system"></span><h2>Specific system parameters<a class="headerlink" href="#specific-system-parameters" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><dl class="docutils">
+<dt><code class="docutils literal notranslate"><span class="pre">dlls/&lt;camera</span> <span class="pre">interface&gt;</span></code></dt>
+<dd><div class="first line-block">
+<div class="line">Paths to camera-specific DLL locations, if different from the device location. <code class="docutils literal notranslate"><span class="pre">&lt;camera</span> <span class="pre">interface&gt;</span></code> can stand for one of the following:</div>
+</div>
+<ul class="last simple">
+<li><code class="docutils literal notranslate"><span class="pre">andor_sdk2</span></code>: path to <code class="docutils literal notranslate"><span class="pre">atmcd64d.dll</span></code> for Andor SDK2. By default, search in the default location of Andor Solis.</li>
+<li><code class="docutils literal notranslate"><span class="pre">andor_sdk3</span></code>: path to <code class="docutils literal notranslate"><span class="pre">atcore.dll</span></code> and related DLLs for Andor SDK3. By default, search in the default location of Andor Solis.</li>
+<li><code class="docutils literal notranslate"><span class="pre">dcamapi</span></code>: path to <code class="docutils literal notranslate"><span class="pre">dcamapi.dll</span></code> and related DLLs for Hamamatsu/DCAM cameras. By default, search in <code class="docutils literal notranslate"><span class="pre">System32</span></code> folder, where it is placed after installing DCAM API or Hokawo software.</li>
+<li><code class="docutils literal notranslate"><span class="pre">niimaq</span></code>: path to <code class="docutils literal notranslate"><span class="pre">imaq.dll</span></code> for NI IMAQ frame grabber interface. By default, search in <code class="docutils literal notranslate"><span class="pre">System32</span></code> folder, where it is placed after installing NI Vision Acquisition Software.</li>
+<li><code class="docutils literal notranslate"><span class="pre">niimaqdx</span></code>: path to <code class="docutils literal notranslate"><span class="pre">niimaqdx.dll</span></code> for NI IMAQdx frame grabber interface. By default, search in <code class="docutils literal notranslate"><span class="pre">System32</span></code> folder, where it is placed after installing NI Vision Acquisition Software.</li>
+<li><code class="docutils literal notranslate"><span class="pre">pco_sc2</span></code>: path to <code class="docutils literal notranslate"><span class="pre">SC2_Cam.dll</span></code> for PCO cameras. By default, search in the default location of pco.camware or pco.sdk.</li>
+<li><code class="docutils literal notranslate"><span class="pre">picam</span></code>; path to <code class="docutils literal notranslate"><span class="pre">picam.dll</span></code> for Princeton Instruments cameras. By default, search in the default location of Princeton Instruments PICam Runtime.</li>
+<li><code class="docutils literal notranslate"><span class="pre">pfcam</span></code>: path to <code class="docutils literal notranslate"><span class="pre">pfcam.dll</span></code> for PhotonFocus cameras. By default, search in PFRemote folder specified in the <code class="docutils literal notranslate"><span class="pre">PATH</span></code> environment variable.</li>
+<li><code class="docutils literal notranslate"><span class="pre">pvcam</span></code>; path to <code class="docutils literal notranslate"><span class="pre">pvcam64.dll</span></code> for Photometrics cameras. By default, search in <code class="docutils literal notranslate"><span class="pre">System32</span></code> folder, where it is placed after installing PVCAM software.</li>
+<li><code class="docutils literal notranslate"><span class="pre">sisofgrab</span></code>: path to <code class="docutils literal notranslate"><span class="pre">fglib5.dll</span></code> for Silicon Software frame grabber interface. By default, search in Silicon Software Runtime Environment folder specified in the <code class="docutils literal notranslate"><span class="pre">PATH</span></code> environment variable.</li>
+<li><code class="docutils literal notranslate"><span class="pre">thorlabs_tlcam</span></code>: path to <code class="docutils literal notranslate"><span class="pre">thorlabs_tsi_camera_sdk.dll</span></code> and related DLLs for Thorlabs Scientific Cameras. By default, search in the default location of ThorCam.</li>
+<li><code class="docutils literal notranslate"><span class="pre">uc480</span></code>: path to <code class="docutils literal notranslate"><span class="pre">uc480_64.dll</span></code> and related DLLs for uc480 camera interface. By default, search in the default location of ThorCam.</li>
+<li><code class="docutils literal notranslate"><span class="pre">ueye</span></code>: path to <code class="docutils literal notranslate"><span class="pre">ueye_api_64.dll</span></code> and related DLLs for uEye camera interface. By default, search in the default location of IDS Software Suite.</li>
+</ul>
+</dd>
+</dl>
+</div></blockquote>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="usecases.html" class="btn btn-neutral float-right" title="Use cases" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="expanding.html" class="btn btn-neutral float-left" title="Expanding and modifying" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Alexey Shkarin.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

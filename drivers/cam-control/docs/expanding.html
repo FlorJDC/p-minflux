@@ -1,0 +1,663 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html4" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Expanding and modifying &mdash; pylablib cam-control 2.2.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Configuring" href="settings_file.html" />
+    <link rel="prev" title="Detailed interface description" href="interface.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> pylablib cam-control
+          
+
+          
+            
+            <img src="_static/logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pipeline.html">Basic data flow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="interface.html">Detailed interface description</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Expanding and modifying</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#accessing-and-modifying-the-distribution">Accessing and modifying the distribution</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#running-from-source">Running from source</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#custom-filters">Custom filters</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#single-frame-filter">Single-frame filter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#multi-frame-filter">Multi-frame filter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#filter-storage">Filter storage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#debugging">Debugging</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#control-server">Control server</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#setting-up-and-connection">Setting up and connection</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#general-message-format">General message format</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#requests-description">Requests description</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#gui-requests">GUI requests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#save-requests">Save requests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#camera-requests">Camera requests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#streaming-requests">Streaming requests</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="settings_file.html">Configuring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usecases.html">Use cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Release history</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">pylablib cam-control</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Expanding and modifying</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/expanding.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="expanding-and-modifying">
+<span id="expanding"></span><h1>Expanding and modifying<a class="headerlink" href="#expanding-and-modifying" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="accessing-and-modifying-the-distribution">
+<span id="expanding-modifying-distrib"></span><h2>Accessing and modifying the distribution<a class="headerlink" href="#accessing-and-modifying-the-distribution" title="Permalink to this headline">¶</a></h2>
+<p>Cam-control runs in an isolated Python interpreter (located in <code class="docutils literal notranslate"><span class="pre">python</span></code> subfolder within the main folder), which has only basic dependencies installed. Sometimes you might want to modify the installed packages, for example, to add the ones required by your custom code (such as a <a class="reference internal" href="#expanding-filter"><span class="std std-ref">custom filter</span></a>), or to replace or update some of them. To do that, you can run <code class="docutils literal notranslate"><span class="pre">local-python.bat</span></code> located in the <code class="docutils literal notranslate"><span class="pre">python</span></code> folder, which launches a command line interface referenced to the local Python interpreter. From there you can simply use <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">pip</span></code> to modify the distribution, e.g., run <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">pip</span> <span class="pre">install</span> <span class="pre">-U</span> <span class="pre">&lt;pkg&gt;</span></code> to install or update any desired package, or <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">pip</span> <span class="pre">uninstall</span> <span class="pre">&lt;pkg&gt;</span></code> to uninstall a currently present package.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Due to some specifics of path handling in Python scripts on Windows, simply running <code class="docutils literal notranslate"><span class="pre">pip</span></code> will not work. You should always use <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">pip</span></code> instead.</p>
+</div>
+<p>As an alternative for your own code (such as filters), you can request additional packages to be installed during the execution. This can be achieved by adding the following lines to your code file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pylablib.core.utils</span> <span class="kn">import</span> <span class="n">module</span> <span class="k">as</span> <span class="n">module_utils</span>
+<span class="n">module_utils</span><span class="o">.</span><span class="n">install_if_older</span><span class="p">(</span><span class="s2">&quot;some-package&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>where <code class="docutils literal notranslate"><span class="pre">&quot;some-package&quot;</span></code> is the name of the package to install (e.g., <code class="docutils literal notranslate"><span class="pre">&quot;scikit-image&quot;</span></code>). This code checks if the package is already installed, and runs <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span></code> if it is missing. Note that this code should be included before the required package is first imported.</p>
+<div class="section" id="running-from-source">
+<h3>Running from source<a class="headerlink" href="#running-from-source" title="Permalink to this headline">¶</a></h3>
+<p>It is also possible to run cam-control in your own Python environment. All of the required code is contained in <code class="docutils literal notranslate"><span class="pre">cam-control</span></code> folder and can be obtained either on <a class="reference external" href="https://github.com/AlexShkarin/pylablib-cam-control/">GitHub</a> or directly from the folder. To run it, you also need to install the necessary dependencies: <a class="reference external" href="https://docs.scipy.org/doc/numpy/">NumPy</a>, <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/">SciPy</a>, <a class="reference external" href="https://pandas.pydata.org/">pandas</a>, <a class="reference external" href="https://numba.pydata.org/">Numba</a>, <a class="reference external" href="https://rpyc.readthedocs.io/en/latest/">RPyC</a>, <a class="reference external" href="https://www.riverbankcomputing.com/software/pyqt/">PyQt5</a> (or <a class="reference external" href="https://www.pyside.org/">PySide2</a> with <a class="reference external" href="https://wiki.qt.io/Qt_for_Python/Shiboken">shiboken2</a>), <a class="reference external" href="http://www.pyqtgraph.org/">pyqtgraph</a>, and <a class="reference external" href="https://imageio.readthedocs.io/en/stable/">imageio</a>. All of the dependencies are included in <code class="docutils literal notranslate"><span class="pre">requirements.txt</span></code> file inside the <code class="docutils literal notranslate"><span class="pre">cam-control</span></code> folder (it can also be extracted by running <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">pip</span> <span class="pre">freeze</span></code> in the local python command line). In addition, the GitHub-hosted version requires <a class="reference external" href="https://pylablib.readthedocs.io/en/stable/">pylablib</a> v1.4.1 (not included in <code class="docutils literal notranslate"><span class="pre">requirements.txt</span></code>).</p>
+</div>
+</div>
+<div class="section" id="custom-filters">
+<span id="expanding-filter"></span><h2>Custom filters<a class="headerlink" href="#custom-filters" title="Permalink to this headline">¶</a></h2>
+<p>Filters give a way to add custom on-line image processing. They can be used to quickly assess the data in real time or to <a class="reference internal" href="advanced.html#advanced-save-trigger"><span class="std std-ref">automate data acquisition</span></a>.</p>
+<p>The filter is defined as a subclass of <code class="docutils literal notranslate"><span class="pre">IFrameFilter</span></code> class with methods to specify its parameters (displayed in cam-control), receive frames from the camera and generate output.</p>
+<div class="section" id="single-frame-filter">
+<h3>Single-frame filter<a class="headerlink" href="#single-frame-filter" title="Permalink to this headline">¶</a></h3>
+<p>In the simplest scenario, filters simply take a single frame and output the transformed image. In this case, the filter can inherit from a more specific <code class="docutils literal notranslate"><span class="pre">ISingleFrameFilter</span></code> class and only define a couple of new methods. For example, this is the built-in Gaussian blur filter:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">### The class inherits not from the most generic frame class,</span>
+<span class="c1">### but from ISingleFrameFilter, meaning that it transforms a single frame</span>
+<span class="k">class</span> <span class="nc">GaussianBlurFilter</span><span class="p">(</span><span class="n">ISingleFrameFilter</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Filter that applies Gaussian blur to a frame.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">_class_name</span> <span class="o">=</span> <span class="s2">&quot;blur&quot;</span>  <span class="c1"># unique filter identifier; should obey usual variable naming rules</span>
+    <span class="n">_class_caption</span> <span class="o">=</span> <span class="s2">&quot;Gaussian blur&quot;</span>  <span class="c1"># caption which shows up in the filter selection menu</span>
+    <span class="n">_class_description</span> <span class="o">=</span> <span class="s2">&quot;Standard convolution Gaussian blur filter&quot;</span>  <span class="c1"># detailed description</span>
+
+    <span class="c1">### This method sets up the filter upon loading</span>
+    <span class="c1">### Usually it defines GUI parameters and internal variables</span>
+    <span class="k">def</span> <span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">setup</span><span class="p">()</span>  <span class="c1"># call setup from the parent class</span>
+        <span class="c1"># set up the width parameter</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_parameter</span><span class="p">(</span><span class="s2">&quot;width&quot;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;Width&quot;</span><span class="p">,</span> <span class="n">limit</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="kc">None</span><span class="p">),</span> <span class="n">default</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span>
+
+    <span class="c1">### This methods processes a frame (2D numpy array) and returns the result</span>
+    <span class="k">def</span> <span class="nf">process_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frame</span><span class="p">):</span>
+        <span class="c1"># self.p is used to access previously defined parameters;</span>
+        <span class="c1"># frame is converted into float, since it can also be an integer array</span>
+        <span class="k">return</span> <span class="n">scipy</span><span class="o">.</span><span class="n">ndimage</span><span class="o">.</span><span class="n">gaussian_filter</span><span class="p">(</span><span class="n">frame</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;float&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="s2">&quot;width&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>The main method for a single-frame filter is <code class="docutils literal notranslate"><span class="pre">process_frame</span></code>, which takes a single frame as a 2D array (integer or float) and returns either a processed frame as a 2D array, or <code class="docutils literal notranslate"><span class="pre">None</span></code>, meaning that a new frame is not available. The other important method is <code class="docutils literal notranslate"><span class="pre">setup</span></code>, which is used to initialize variables and define the filter parameters. Finally, each filter class should define <code class="docutils literal notranslate"><span class="pre">_class_name</span></code>, <code class="docutils literal notranslate"><span class="pre">_class_caption</span></code> and, if appropriate, <code class="docutils literal notranslate"><span class="pre">_class_description</span></code> strings.</p>
+</div>
+<div class="section" id="multi-frame-filter">
+<h3>Multi-frame filter<a class="headerlink" href="#multi-frame-filter" title="Permalink to this headline">¶</a></h3>
+<p>In a more complicated case, a filter takes several most recent frames and combines them together to get a result. This can be handled by inheriting from <code class="docutils literal notranslate"><span class="pre">IMultiFrameFilter</span></code> class. For example, here is the built-in moving average filter, which simply calculates the averages of the last <code class="docutils literal notranslate"><span class="pre">n</span></code> frames:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">### This class still inherits from a helper IMultiFrameFilter class,</span>
+<span class="c1">### which keeps a buffer of the last several frames</span>
+<span class="k">class</span> <span class="nc">MovingAverageFilter</span><span class="p">(</span><span class="n">IMultiFrameFilter</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Filter that generates moving average (averages last ``self.p[&quot;length&quot;]`` received frames).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">_class_name</span> <span class="o">=</span> <span class="s2">&quot;moving_avg&quot;</span>
+    <span class="n">_class_caption</span> <span class="o">=</span> <span class="s2">&quot;Moving average&quot;</span>
+    <span class="n">_class_description</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;Averages a given number of consecutive frames into a single frame. &quot;</span>
+        <span class="s2">&quot;Frames are averaged within a sliding window.&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># set up the buffer filter; process_incomplete = True means</span>
+        <span class="c1">#   that it will work even with a partially filled buffer</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="n">process_incomplete</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="c1"># add the parameters</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_parameter</span><span class="p">(</span><span class="s2">&quot;length&quot;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;Number of frames&quot;</span><span class="p">,</span> <span class="n">kind</span> <span class="o">=</span> <span class="s2">&quot;int&quot;</span><span class="p">,</span>
+            <span class="n">limit</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="kc">None</span><span class="p">),</span> <span class="n">default</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_parameter</span><span class="p">(</span><span class="s2">&quot;period&quot;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;Frame step&quot;</span><span class="p">,</span> <span class="n">kind</span> <span class="o">=</span> <span class="s2">&quot;int&quot;</span><span class="p">,</span>
+            <span class="n">limit</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="kc">None</span><span class="p">),</span> <span class="n">default</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1">### This methods is called whenever a parameter is changed in GUI</span>
+    <span class="c1">### Normally it simply updates self.p dictionary,</span>
+    <span class="c1">### but in this case it also changes the buffer parameters if necessary</span>
+    <span class="k">def</span> <span class="nf">set_parameter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">set_parameter</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="c1"># update the buffer parameters</span>
+        <span class="n">buffer_size</span> <span class="o">=</span> <span class="n">value</span> <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;length&quot;</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="n">buffer_step</span> <span class="o">=</span> <span class="n">value</span> <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;period&quot;</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reshape_buffer</span><span class="p">(</span><span class="n">buffer_size</span><span class="p">,</span> <span class="n">buffer_step</span><span class="p">)</span>
+
+    <span class="c1">### This method is called when a new frame is requested</span>
+    <span class="c1">### The argument is the buffer, which is a list of 2D numpy arrays</span>
+    <span class="k">def</span> <span class="nf">process_buffer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">buffer</span><span class="p">):</span>
+        <span class="c1"># if buffer is empty, return None (no new frame to show)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">buffer</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">buffer</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The first difference from the previous example is the different calculation method, which is now called <code class="docutils literal notranslate"><span class="pre">process_buffer</span></code>, and which takes a list of 2D arrays instead of a singe array. The second is the redefined <code class="docutils literal notranslate"><span class="pre">set_parameter</span></code> method. This method is called every time a user changes a parameter value in the GUI. By default, it simply updates <code class="docutils literal notranslate"><span class="pre">self.p</span></code> attribute, which can be used when calculating the frame, like in the Gaussian filter example. However, here it also updates the buffer parameters.</p>
+</div>
+<div class="section" id="filter-storage">
+<h3>Filter storage<a class="headerlink" href="#filter-storage" title="Permalink to this headline">¶</a></h3>
+<p>To appear in the cam-control, the file defining one or more custom filter classes should simply be added to the <code class="docutils literal notranslate"><span class="pre">plugins/filter</span></code> folder inside the main <code class="docutils literal notranslate"><span class="pre">cam-control</span></code> directory. For further examples, you can examine files already in that folder: <code class="docutils literal notranslate"><span class="pre">builtin.py</span></code> for <a class="reference internal" href="advanced.html#advanced-filter"><span class="std std-ref">built-in filters</span></a>, <code class="docutils literal notranslate"><span class="pre">examples.py</span></code> for several example classes, and <code class="docutils literal notranslate"><span class="pre">template.py</span></code> for a template file containing a single filter class.</p>
+</div>
+<div class="section" id="debugging">
+<h3>Debugging<a class="headerlink" href="#debugging" title="Permalink to this headline">¶</a></h3>
+<p>Debugging a filter class by running it from the camera control might be cumbersome. Instead, it might be more convenient to test it on generated or pre-loaded frames. Here is a short snippet for doing that:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">### Simple filter testing script</span>
+<span class="c1"># Assume that it is a separate .py file located in the main</span>
+<span class="c1">#   cam-control folder (the one with control.py)</span>
+
+<span class="c1"># import the filters module</span>
+<span class="kn">from</span> <span class="nn">plugins.filters</span> <span class="kn">import</span> <span class="n">examples</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="c1"># create and setup the filter</span>
+<span class="n">flt</span> <span class="o">=</span> <span class="n">examples</span><span class="o">.</span><span class="n">MovingAverageFilter</span><span class="p">()</span>
+<span class="n">flt</span><span class="o">.</span><span class="n">setup</span><span class="p">()</span>
+
+<span class="c1"># specify filter parameters</span>
+<span class="n">flt</span><span class="o">.</span><span class="n">set_parameter</span><span class="p">(</span><span class="s2">&quot;length&quot;</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">flt</span><span class="o">.</span><span class="n">set_parameter</span><span class="p">(</span><span class="s2">&quot;step&quot;</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+
+<span class="c1"># generate input frames (here 300 random 256x256 frames);</span>
+<span class="c1">#   must be a 3D array where the first axis is frame index</span>
+<span class="n">frames</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">256</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="p">(</span><span class="mi">300</span><span class="p">,</span><span class="mi">256</span><span class="p">,</span><span class="mi">256</span><span class="p">),</span> <span class="n">dtype</span> <span class="o">=</span> <span class="s2">&quot;uint16&quot;</span><span class="p">)</span>
+<span class="c1"># feed the frames to the filter</span>
+<span class="n">flt</span><span class="o">.</span><span class="n">receive_frames</span><span class="p">(</span><span class="n">frames</span><span class="p">)</span>
+<span class="c1"># calculate the result</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">flt</span><span class="o">.</span><span class="n">generate_frame</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="control-server">
+<span id="expanding-server"></span><h2>Control server<a class="headerlink" href="#control-server" title="Permalink to this headline">¶</a></h2>
+<p>To allow platform-independent external control of the software, there is an option to run a TCP/IP server. This server can receive commands from and send data to any other software running either locally on the same PC, or within the local network. The communication is mostly done via a text JSON protocol, which is straightforward to parse in most common languages.</p>
+<div class="section" id="setting-up-and-connection">
+<h3>Setting up and connection<a class="headerlink" href="#setting-up-and-connection" title="Permalink to this headline">¶</a></h3>
+<p>By default, the server is not enabled. To activate it, you need to add the following line into the <a class="reference internal" href="settings_file.html#settings-file"><span class="std std-ref">settings file</span></a>:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>plugins/serv/class  server
+</pre></div>
+</div>
+<p>The default port on which the server runs is <code class="docutils literal notranslate"><span class="pre">18923</span></code>. If this port is occupied (e.g., by another instance of cam-control running), it tries to connect to the next 10 ports in ascending order. If that is still unsuccessful, it does not run at all. The port can also be manually set in the settings file with the following line:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>plugins/serv/parameters/port        23456
+</pre></div>
+</div>
+<p>If you use more than one camera, it might make sense to assign them different well-defined ports using the <a class="reference internal" href="settings_file.html#settings-file-camera"><span class="std std-ref">camera-specific settings</span></a>:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>css/ppimaq_0/plugins/serv/parameters/port   23456
+css/uc480_0/plugins/serv/parameters/port    23467
+</pre></div>
+</div>
+<p>Finally, if the PC has several network interfaces, you can specify the IP address in the same way as the port:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>plugins/serv/parameters/ip  127.0.0.1
+</pre></div>
+</div>
+<p>After the server is set up and software is started, the server starts automatically. If it is running, you can see its status on the bottom of the <code class="docutils literal notranslate"><span class="pre">Plugins</span></code> tab. It shows the server IP address and port, as well as the number of currently connected clients. Several clients can be operating simultaneously.</p>
+</div>
+<div class="section" id="general-message-format">
+<h3>General message format<a class="headerlink" href="#general-message-format" title="Permalink to this headline">¶</a></h3>
+<p>The protocol is based on JSON messages. Almost all of the messages sent to and from the server are simple JSON data. The only exception are the messages containing large data (e.g., frames), in which case the message consists of a JSON header and appended binary data, whose format is described within the header.</p>
+<p>The first message kind is the one establishing the protocol. It has a simple format <code class="docutils literal notranslate"><span class="pre">{&quot;protocol&quot;:</span> <span class="pre">&quot;1.0&quot;}</span></code>, where instead of <code class="docutils literal notranslate"><span class="pre">1.0</span></code> it can have any protocol version. The reply has the same format, which specifies the actual protocol used by the server. Currently only a single protocol (version <code class="docutils literal notranslate"><span class="pre">1.0</span></code>) is supported, so this message is not necessary. However, it is still recommended to start with it to make sure that the server runs the specified version and future-proof the applications.</p>
+<p>Apart from this message, other messages follow the same general structure:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>{
+    &quot;id&quot;: 0,
+    &quot;purpose&quot;: &quot;request&quot;,
+    &quot;parameters&quot;: {
+        &quot;name&quot;: &quot;cam/param/get&quot;,
+        &quot;args&quot;: {
+            &quot;name&quot;: &quot;exposure&quot;
+        }
+    }
+}
+</pre></div>
+</div>
+<p>The first field is <code class="docutils literal notranslate"><span class="pre">&quot;id&quot;</span></code>, which can contain a message ID. If it is defined, then the reply to this message will have the same value of the <code class="docutils literal notranslate"><span class="pre">&quot;id&quot;</span></code> field. If it is omitted, then <code class="docutils literal notranslate"><span class="pre">&quot;id&quot;</span></code> is omitted in the reply as well.</p>
+<p>The second field is <code class="docutils literal notranslate"><span class="pre">&quot;purpose&quot;</span></code>, which specifies the purpose of the message. The messages sent to the server have purpose <code class="docutils literal notranslate"><span class="pre">&quot;request&quot;</span></code>, which is assumed by default if this field is omitted. The other possibilities used in the server-sent messages are <code class="docutils literal notranslate"><span class="pre">&quot;reply&quot;</span></code> for a reply to the request or <code class="docutils literal notranslate"><span class="pre">&quot;error&quot;</span></code> if an error arose.</p>
+<p>The next field is <code class="docutils literal notranslate"><span class="pre">&quot;parameters&quot;</span></code>, which describe the parameters of the request, reply, or error. Request parameters have two sub-fields <code class="docutils literal notranslate"><span class="pre">&quot;name&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;args&quot;</span></code> specifying, correspondingly, request name and its arguments. Depending on the request, the arguments might also be omitted.</p>
+<p>The last possible field (not shown above) is <code class="docutils literal notranslate"><span class="pre">&quot;payload&quot;</span></code>, which signifies that the JSON message is followed by a binary payload and describes its parameters. It is encountered only in some special replies and is described in detail later.</p>
+<p>The requests and replies normally have the same format, with the reply typically having the same name but different set of arguments. The error messages have <code class="docutils literal notranslate"><span class="pre">&quot;name&quot;</span></code> parameter describing the kind of error (e.g., <code class="docutils literal notranslate"><span class="pre">&quot;wrong_request</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;wrong_argument&quot;</span></code>), <code class="docutils literal notranslate"><span class="pre">&quot;description&quot;</span></code> field with the text description and <code class="docutils literal notranslate"><span class="pre">&quot;args&quot;</span></code> field with further arguments depending on the error kind.</p>
+<p>Finally, note again that in request only <code class="docutils literal notranslate"><span class="pre">&quot;parameters&quot;</span></code> field is necessary. Hence, the command above can be shortened to <code class="docutils literal notranslate"><span class="pre">{&quot;parameters&quot;:{&quot;name&quot;:&quot;cam/param/get&quot;,&quot;args&quot;:{&quot;name&quot;:&quot;exposure&quot;}}}</span></code> and, e.g., to start camera acquisition you can simply send <code class="docutils literal notranslate"><span class="pre">{&quot;parameters&quot;:{&quot;name&quot;:&quot;cam/acq/start&quot;}}</span></code>.</p>
+</div>
+<div class="section" id="requests-description">
+<h3>Requests description<a class="headerlink" href="#requests-description" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="gui-requests">
+<h4>GUI requests<a class="headerlink" href="#gui-requests" title="Permalink to this headline">¶</a></h4>
+<p>These requests directly address the GUI. They are almost directly analogous to entering values and pressing buttons in the GUI or reading values of controls or indicators:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">&quot;gui/get/value&quot;</span></code>: get value of a GUI parameter<ul>
+<li><em>Request args</em>:<ul>
+<li><code class="docutils literal notranslate"><span class="pre">&quot;name&quot;</span></code>: parameter name; by default, return all parameters</li>
+</ul>
+</li>
+<li><em>Reply args</em>:<ul>
+<li><code class="docutils literal notranslate"><span class="pre">&quot;name&quot;</span></code>: parameter name, same as in request</li>
+<li><code class="docutils literal notranslate"><span class="pre">&quot;value&quot;</span></code>: parameter value; can be a dictionary</li>
+</ul>
+</li>
+<li><em>Examples</em>:<ul>
+<li><code class="docutils literal notranslate"><span class="pre">{&quot;name&quot;:</span> <span class="pre">&quot;gui/get/value&quot;,</span> <span class="pre">&quot;args&quot;:</span> <span class="pre">{&quot;name&quot;:</span> <span class="pre">&quot;cam/save/path&quot;}}</span></code> requests the saving path</li>
+<li><code class="docutils literal notranslate"><span class="pre">{&quot;name&quot;:</span> <span class="pre">&quot;gui/get/value&quot;}</span></code> requests all GUI values</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code class="docutils literal notranslate"><span class="pre">&quot;gui/get/indicator&quot;</span></code>: get value of a GUI indicator; not that many indicators (e.g., anything in the status tables) are still technically values, and their values should be requested using <code class="docutils literal notranslate"><span class="pre">&quot;gui/get/value&quot;</span></code><ul>
+<li><em>Request args</em>:<ul>
+<li><code class="docutils literal notranslate"><span class="pre">&quot;name&quot;</span></code>: indicator name; by default, return all indicators</li>
+</ul>
+</li>
+<li><em>Reply args</em>:<ul>
+<li><code class="docutils literal notranslate"><span class="pre">&quot;name&quot;</span></code>: indicator name, same as in request</li>
+<li><code class="docutils literal notranslate"><span class="pre">&quot;value&quot;</span></code>: indicator value; can be a dictionary</li>
+</ul>
+</li>
+<li><em>Examples</em>:<ul>
+<li><code class="docutils literal notranslate"><span class="pre">{&quot;name&quot;:</span> <span class="pre">&quot;gui/get/indicator&quot;,</span> <span class="pre">&quot;args&quot;:</span> <span class="pre">{&quot;name&quot;:</span> <span class="pre">&quot;cam/cam/frame_period&quot;}}</span></code> requests the camera frame period indicator</li>
+<li><code class="docutils literal notranslate"><span class="pre">{&quot;name&quot;:</span> <span class="pre">&quot;gui/get/indicator&quot;}</span></code> requests all GUI indicators</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code class="docutils literal notranslate"><span class="pre">&quot;gui/set/value&quot;</span></code>: set value of a GUI parameter<ul>
+<li><em>Request args</em>:<ul>
+<li><code class="docutils literal notranslate"><span class="pre">&quot;name&quot;</span></code>: parameter name</li>
+<li><code class="docutils literal notranslate"><span class="pre">&quot;value&quot;</span></code>: parameter value</li>
+</ul>
+</li>
+<li><em>Reply args</em>:<ul>
+<li><code class="docutils literal notranslate"><span class="pre">&quot;name&quot;</span></code>: parameter name, same as in request</li>
+<li><code class="docutils literal notranslate"><span class="pre">&quot;value&quot;</span></code>: set parameter value; normally the same as in request, but can differ if, e.g., the range was coerced</li>
+</ul>
+</li>
+<li><em>Examples</em>:<ul>
+<li><code class="docutils literal notranslate"><span class="pre">{&quot;name&quot;:</span> <span class="pre">&quot;gui/set/value&quot;,</span> <span class="pre">&quot;args&quot;:</span> <span class="pre">{&quot;name&quot;:</span> <span class="pre">&quot;cam/save/batch_size&quot;,</span> <span class="pre">&quot;value&quot;:</span> <span class="pre">100}}</span></code> sets the saving frames limit to 100</li>
+<li><code class="docutils literal notranslate"><span class="pre">{&quot;name&quot;:</span> <span class="pre">&quot;gui/set/value&quot;,</span> <span class="pre">&quot;args&quot;:</span> <span class="pre">{&quot;name&quot;:</span> <span class="pre">&quot;plugins/trigger_save.ts/params/period&quot;,</span> <span class="pre">&quot;value&quot;:</span> <span class="pre">2}}</span></code> sets the period of the saving trigger to 2 seconds</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>To initiate a button press, you need to set its value to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
+</div>
+<div class="section" id="save-requests">
+<h4>Save requests<a class="headerlink" href="#save-requests" title="Permalink to this headline">¶</a></h4>
+<p>These requests initiate or stop data streaming to the drive:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">&quot;save/start&quot;</span></code>: start the standard saving with the specified parameters; the parameters which are not specified are taken from the GUI<ul>
+<li><em>Request args</em>:<ul>
+<li><code class="docutils literal notranslate"><span class="pre">&quot;path&quot;</span></code>: save path</li>
+<li><code class="docutils literal notranslate"><span class="pre">&quot;batch_size&quot;</span></code>: number of frames per saved video (<code class="docutils literal notranslate"><span class="pre">None</span></code> for no limit)</li>
+<li><code class="docutils literal notranslate"><span class="pre">&quot;append&quot;</span></code>: determines whether the data is appended to the existing file</li>
+<li><code class="docutils literal notranslate"><span class="pre">&quot;format&quot;</span></code>: file format; can be <code class="docutils literal notranslate"><span class="pre">&quot;raw&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;tiff&quot;</span></code>, or <code class="docutils literal notranslate"><span class="pre">&quot;bigtiff&quot;</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">&quot;filesplit&quot;</span></code>: number of frames to save per file (<code class="docutils literal notranslate"><span class="pre">None</span></code> if no splitting is active)</li>
+<li><code class="docutils literal notranslate"><span class="pre">&quot;save_settings&quot;</span></code>: determines whether the settings are saved</li>
+</ul>
+</li>
+<li><em>Reply args</em>:<ul>
+<li><code class="docutils literal notranslate"><span class="pre">&quot;result&quot;</span></code>: should be <code class="docutils literal notranslate"><span class="pre">&quot;success&quot;</span></code> if the saving was successful</li>
+</ul>
+</li>
+<li><em>Examples</em>:<ul>
+<li><code class="docutils literal notranslate"><span class="pre">{&quot;name&quot;:</span> <span class="pre">&quot;save/start&quot;}</span></code> starts saving with all parameters as specified in the GUI</li>
+<li><code class="docutils literal notranslate"><span class="pre">{&quot;name&quot;:</span> <span class="pre">&quot;save/start&quot;,</span> <span class="pre">&quot;args&quot;:</span> <span class="pre">{&quot;batch_size&quot;:</span> <span class="pre">10}}</span></code> starts saving of 10 frames with all other parameters as specified in the GUI</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code class="docutils literal notranslate"><span class="pre">&quot;save/stop&quot;</span></code>: stop the standard saving if it is running; no parameters are specified<ul>
+<li><em>Reply args</em>:<ul>
+<li><code class="docutils literal notranslate"><span class="pre">&quot;result&quot;</span></code>: should be <code class="docutils literal notranslate"><span class="pre">&quot;success&quot;</span></code> if the saving was successful</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code class="docutils literal notranslate"><span class="pre">&quot;save/snap&quot;</span></code>: perform a snapshot saving with the specified parameters; the parameters which are not specified are taken from the GUI<ul>
+<li><em>Request args</em>:<ul>
+<li><code class="docutils literal notranslate"><span class="pre">&quot;source&quot;</span></code>: snapshot frame source; normally either <code class="docutils literal notranslate"><span class="pre">&quot;standard&quot;</span></code> (frame from the <code class="docutils literal notranslate"><span class="pre">Standard</span></code> image tab) or <code class="docutils literal notranslate"><span class="pre">&quot;filter.filt&quot;</span></code> (frame from the <code class="docutils literal notranslate"><span class="pre">Filter</span></code> image tab)</li>
+<li><code class="docutils literal notranslate"><span class="pre">&quot;path&quot;</span></code>: save path</li>
+<li><code class="docutils literal notranslate"><span class="pre">&quot;format&quot;</span></code>: file format; can be <code class="docutils literal notranslate"><span class="pre">&quot;raw&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;tiff&quot;</span></code>, or <code class="docutils literal notranslate"><span class="pre">&quot;bigtiff&quot;</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">&quot;save_settings&quot;</span></code>: determines whether the settings are saved</li>
+</ul>
+</li>
+<li><em>Reply args</em>:<ul>
+<li><code class="docutils literal notranslate"><span class="pre">&quot;result&quot;</span></code>: should be <code class="docutils literal notranslate"><span class="pre">&quot;success&quot;</span></code> if the saving was successful</li>
+</ul>
+</li>
+<li><em>Examples</em>:<ul>
+<li><code class="docutils literal notranslate"><span class="pre">{&quot;name&quot;:</span> <span class="pre">&quot;save/snap&quot;}</span></code> snaps the image with all parameters as specified in the GUI</li>
+<li><code class="docutils literal notranslate"><span class="pre">{&quot;name&quot;:</span> <span class="pre">&quot;save/start&quot;,</span> <span class="pre">&quot;args&quot;:</span> <span class="pre">{&quot;source&quot;:</span> <span class="pre">&quot;filter.filt&quot;}}</span></code> snaps an image from the filter tab with all other parameters as specified in the GUI</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>Note that if the path is explicitly specified in the request, then this exact path is used. That is, of <code class="docutils literal notranslate"><span class="pre">On</span> <span class="pre">duplicate</span> <span class="pre">name</span></code> is set to <code class="docutils literal notranslate"><span class="pre">Rename</span></code> in the interface, it will not take an effect.</p>
+</div>
+<div class="section" id="camera-requests">
+<h4>Camera requests<a class="headerlink" href="#camera-requests" title="Permalink to this headline">¶</a></h4>
+<p>These requests directly control the camera:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">&quot;acq/stop&quot;</span></code>: start the camera acquisition; no parameters are specified<ul>
+<li><em>Reply args</em>:<ul>
+<li><code class="docutils literal notranslate"><span class="pre">&quot;result&quot;</span></code>: should be <code class="docutils literal notranslate"><span class="pre">&quot;success&quot;</span></code> if the saving was successful</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code class="docutils literal notranslate"><span class="pre">&quot;acq/stop&quot;</span></code>: stop the camera acquisition if it is running; no parameters are specified<ul>
+<li><em>Reply args</em>:<ul>
+<li><code class="docutils literal notranslate"><span class="pre">&quot;result&quot;</span></code>: should be <code class="docutils literal notranslate"><span class="pre">&quot;success&quot;</span></code> if the saving was successful</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code class="docutils literal notranslate"><span class="pre">&quot;acq/param/get&quot;</span></code>: set the camera parameter<ul>
+<li><em>Request args</em>:<ul>
+<li><code class="docutils literal notranslate"><span class="pre">&quot;name&quot;</span></code>: parameter name; by default, return all parameters</li>
+</ul>
+</li>
+<li><em>Reply args</em>:<ul>
+<li><code class="docutils literal notranslate"><span class="pre">&quot;name&quot;</span></code>: parameter name, same as in request</li>
+<li><code class="docutils literal notranslate"><span class="pre">&quot;value&quot;</span></code>: parameter value; can be a dictionary</li>
+</ul>
+</li>
+<li><em>Examples</em>:<ul>
+<li><code class="docutils literal notranslate"><span class="pre">{&quot;name&quot;:</span> <span class="pre">&quot;cam/param/get&quot;,</span> <span class="pre">&quot;args&quot;:</span> <span class="pre">{&quot;name&quot;:</span> <span class="pre">&quot;exposure&quot;}}}</span></code> requests the camera exposure</li>
+<li><code class="docutils literal notranslate"><span class="pre">{&quot;name&quot;:</span> <span class="pre">&quot;cam/param/get&quot;}</span></code> requests all camera parameters</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code class="docutils literal notranslate"><span class="pre">&quot;acq/param/set&quot;</span></code>: set the camera parameter<ul>
+<li><em>Request args</em> contain camera parameters and their values (parameter names are the same as given by <code class="docutils literal notranslate"><span class="pre">acq/param/get</span></code> command)</li>
+<li><em>Reply args</em>:<ul>
+<li><code class="docutils literal notranslate"><span class="pre">&quot;result&quot;</span></code>: should be <code class="docutils literal notranslate"><span class="pre">&quot;success&quot;</span></code> if the saving was successful</li>
+</ul>
+</li>
+<li><em>Examples</em>:<ul>
+<li><code class="docutils literal notranslate"><span class="pre">{&quot;name&quot;:</span> <span class="pre">&quot;cam/param/set&quot;,</span> <span class="pre">&quot;args&quot;:</span> <span class="pre">{&quot;exposure&quot;:</span> <span class="pre">0.1,</span> <span class="pre">&quot;roi&quot;:</span> <span class="pre">[0,</span> <span class="pre">256,</span> <span class="pre">0,</span> <span class="pre">256]}}</span></code> set the camera exposure to 0.1 s and ROI to span from 0 to 256 on both axes</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="streaming-requests">
+<h4>Streaming requests<a class="headerlink" href="#streaming-requests" title="Permalink to this headline">¶</a></h4>
+<p>These requests control transfer of the camera data.</p>
+<p>Some of the replies can contain binary frame data, so their format differs from other replies. First, in addition to <code class="docutils literal notranslate"><span class="pre">&quot;purpose&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;parameters&quot;</span></code> field they also contain <code class="docutils literal notranslate"><span class="pre">&quot;payload&quot;</span></code> field with the information regarding the binary data. For example, the full JSON header can look like</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>{
+    &quot;purpose&quot;: &quot;reply&quot;,
+    &quot;parameters&quot;: {
+        &quot;args&quot;: {
+            &quot;first_index&quot;: 41849,
+            &quot;last_index&quot;: 41948
+        },
+        &quot;name&quot;: &quot;stream/buffer/read&quot;
+    },
+    &quot;payload&quot;: {
+        &quot;nbytes&quot;: 13107200,
+        &quot;dtype&quot;: &quot;&lt;u2&quot;,
+        &quot;shape&quot;: [100, 256, 256]
+    }
+}
+</pre></div>
+</div>
+<p>Payload description has 3 fields. First, <code class="docutils literal notranslate"><span class="pre">&quot;nbytes&quot;</span></code> specifies the total payload size in bytes. In the example above it states that this message is followed by <code class="docutils literal notranslate"><span class="pre">13107200</span></code> bytes of binary data. Next ,``”dtype”`` specifies the binary data format in the standard <a class="reference external" href="https://numpy.org/doc/stable/reference/arrays.dtypes.html">numpy format</a>. Here <code class="docutils literal notranslate"><span class="pre">&quot;&lt;u2&quot;</span></code> means that the data is 2-byte unsigned integer withe the little-endian byte order (the system default). Finally, <code class="docutils literal notranslate"><span class="pre">&quot;shape&quot;</span></code> specifies the shape of the result, i.e., dimensions along each axis when it is represented as a multidimensional array. In the example the shape is <code class="docutils literal notranslate"><span class="pre">[100,</span> <span class="pre">256,</span> <span class="pre">256]</span></code>, which means a 3D 100x256x256 array. In this particular reply the first axis is the frame index and the other 2 are the frame axes, i.e., the data contains 100 of 256x256 frames.</p>
+<p>The streaming is done through requests, which means that it requires an intermediate buffer to store the frames between these requests (similar to, e.g., camera frame buffer). Hence, one first need to setup this buffer using <code class="docutils literal notranslate"><span class="pre">&quot;stream/buffer/setup&quot;</span></code> command, and then request the frames with <code class="docutils literal notranslate"><span class="pre">&quot;stream/buffer/read&quot;</span></code> command:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">&quot;stream/buffer/setup&quot;</span></code>: setup the streaming buffer or clear it if it is already set up<ul>
+<li><em>Request args</em>:<ul>
+<li><code class="docutils literal notranslate"><span class="pre">&quot;size&quot;</span></code>: number of frames in the buffer; if not specified, set to <code class="docutils literal notranslate"><span class="pre">1</span></code> if the buffer is not set up or keep the current value if it is (in which case it just clears the buffer)</li>
+</ul>
+</li>
+<li><em>Reply args</em>: same as <code class="docutils literal notranslate"><span class="pre">&quot;stream/buffer/status&quot;</span></code> (see below)</li>
+<li><em>Examples</em>:<ul>
+<li><code class="docutils literal notranslate"><span class="pre">{&quot;name&quot;:</span> <span class="pre">&quot;stream/buffer/setup&quot;,</span> <span class="pre">&quot;args&quot;:</span> <span class="pre">{&quot;size&quot;:</span> <span class="pre">100}}}</span></code> sets up the buffer with 100 frames</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code class="docutils literal notranslate"><span class="pre">&quot;stream/buffer/clear&quot;</span></code>: clear the streaming buffer<ul>
+<li><em>Request args</em>: no arguments required</li>
+<li><em>Reply args</em>: same as <code class="docutils literal notranslate"><span class="pre">&quot;stream/buffer/status&quot;</span></code> (see below)</li>
+</ul>
+</li>
+<li><code class="docutils literal notranslate"><span class="pre">&quot;stream/buffer/status&quot;</span></code>: get the buffer status<ul>
+<li><em>Request args</em>: no arguments required</li>
+<li><em>Reply args</em>:<ul>
+<li><code class="docutils literal notranslate"><span class="pre">&quot;filled&quot;</span></code>: number of unread frames in the buffer</li>
+<li><code class="docutils literal notranslate"><span class="pre">&quot;size&quot;</span></code>: total size of the buffer (as specified with <code class="docutils literal notranslate"><span class="pre">&quot;stream/buffer/setup&quot;</span></code>)</li>
+<li><code class="docutils literal notranslate"><span class="pre">&quot;first_index&quot;</span></code>: index of the oldest frame in the buffer</li>
+<li><code class="docutils literal notranslate"><span class="pre">&quot;last_index&quot;</span></code>: index of the newest frame in the buffer</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code class="docutils literal notranslate"><span class="pre">&quot;stream/buffer/read&quot;</span></code>: read some frames from the buffer<ul>
+<li><em>Request args</em>:<ul>
+<li><code class="docutils literal notranslate"><span class="pre">&quot;n&quot;</span></code>: number of frames to read; if not specified, read all frames; otherwise, read <code class="docutils literal notranslate"><span class="pre">n</span></code> oldest frames</li>
+<li><code class="docutils literal notranslate"><span class="pre">&quot;peek&quot;</span></code>: if <code class="docutils literal notranslate"><span class="pre">True</span></code>, return the frames but keep them in the buffer; otherwise (default), the frames are removed from the buffer after transfer</li>
+</ul>
+</li>
+<li><em>Reply args</em>:<ul>
+<li><code class="docutils literal notranslate"><span class="pre">&quot;first_index&quot;</span></code>: index of the first transferred frame</li>
+<li><code class="docutils literal notranslate"><span class="pre">&quot;last_index&quot;</span></code>: index of the last transferred frame</li>
+<li>the frames data is contained in the payload as described above</li>
+</ul>
+</li>
+<li><em>Examples</em>:<ul>
+<li><code class="docutils literal notranslate"><span class="pre">{&quot;name&quot;:</span> <span class="pre">&quot;stream/buffer/read&quot;,</span> <span class="pre">&quot;args&quot;:</span> <span class="pre">{&quot;n&quot;:</span> <span class="pre">10}}}</span></code> requests 10 oldest frames from the buffer</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="settings_file.html" class="btn btn-neutral float-right" title="Configuring" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="interface.html" class="btn btn-neutral float-left" title="Detailed interface description" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Alexey Shkarin.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

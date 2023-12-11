@@ -1,0 +1,302 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html4" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>PyLabLib cam-control: Software for universal camera control and frames acquisition &mdash; pylablib cam-control 2.2.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Overview" href="overview.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="#" class="icon icon-home"> pylablib cam-control
+          
+
+          
+            
+            <img src="_static/logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pipeline.html">Basic data flow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="interface.html">Detailed interface description</a></li>
+<li class="toctree-l1"><a class="reference internal" href="expanding.html">Expanding and modifying</a></li>
+<li class="toctree-l1"><a class="reference internal" href="settings_file.html">Configuring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usecases.html">Use cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Release history</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">pylablib cam-control</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="#" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>PyLabLib cam-control: Software for universal camera control and frames acquisition</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="pylablib-cam-control-software-for-universal-camera-control-and-frames-acquisition">
+<h1>PyLabLib cam-control: Software for universal camera control and frames acquisition<a class="headerlink" href="#pylablib-cam-control-software-for-universal-camera-control-and-frames-acquisition" title="Permalink to this headline">¶</a></h1>
+<p>PyLabLib cam-control aims to provide a convenient interface for controlling cameras and acquiring their data in a unified way.</p>
+<img alt="_images/overview.png" src="_images/overview.png" />
+<p>Features:</p>
+<ul class="simple">
+<li>Communication with a variety of cameras: Andor, Hamamatsu, Thorlabs, IDS, PCO, Photometrics, Princeton Instruments, PhotonFocus with IMAQ and Silicon Software frame grabbers.</li>
+<li>Operating at high frame (100 kFPS) and data (1 Gb/s) rates.</li>
+<li>On-line data processing and analysis: <a class="reference internal" href="pipeline.html#pipeline-prebinning"><span class="std std-ref">binning</span></a>, <a class="reference internal" href="pipeline.html#pipeline-background-subtraction"><span class="std std-ref">background subtraction</span></a>, simple built-in <a class="reference internal" href="advanced.html#advanced-filter"><span class="std std-ref">image filters</span></a> (Gaussian blur, Fourier filtering), <a class="reference internal" href="advanced.html#advanced-slowdown"><span class="std std-ref">playback slowdown</span></a> for fast process analysis.</li>
+<li>Customization using <a class="reference internal" href="expanding.html#expanding-filter"><span class="std std-ref">user-defined filters</span></a> (simple Python code operating on numpy arrays) or control from other software via a <a class="reference internal" href="expanding.html#expanding-server"><span class="std std-ref">TCP/IP interface</span></a>.</li>
+<li>Flexible data acquisition: <a class="reference internal" href="pipeline.html#pipeline-saving-pretrigger"><span class="std std-ref">pre-trigger buffering</span></a>, initiating acquisition on <a class="reference internal" href="advanced.html#advanced-save-trigger"><span class="std std-ref">timer, specific image property</span></a>, or <a class="reference internal" href="expanding.html#expanding-server"><span class="std std-ref">external software signals</span></a>.</li>
+</ul>
+<p>To install cam-control, download the latest version from <a class="reference external" href="https://github.com/AlexShkarin/pylablib-cam-control/releases/latest/download/cam-control.zip">GitHub</a> as a self-contained Zip file and then follow further <a class="reference internal" href="overview.html#overview-install"><span class="std std-ref">instructions</span></a> for how to run it.</p>
+<div class="toctree-wrapper compound">
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#software-requirements">Software requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#general-layout">General layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#support-and-feedback">Support and feedback</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pipeline.html">Basic data flow</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pipeline.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pipeline.html#camera">Camera</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pipeline.html#pre-binning">Pre-binning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pipeline.html#saving">Saving</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pipeline.html#background-subtraction">Background subtraction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pipeline.html#filters">Filters</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced features</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="advanced.html#playback-slowdown">Playback slowdown</a></li>
+<li class="toctree-l2"><a class="reference internal" href="advanced.html#time-plot">Time plot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="advanced.html#saving-trigger">Saving trigger</a></li>
+<li class="toctree-l2"><a class="reference internal" href="advanced.html#filters">Filters</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="interface.html">Detailed interface description</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="interface.html#tutorial">Tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interface.html#camera-control">Camera control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interface.html#camera-attributes">Camera attributes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interface.html#camera-status">Camera status</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interface.html#image-display">Image display</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interface.html#saving-control">Saving control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interface.html#saving-status">Saving status</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interface.html#activity-overview">Activity overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interface.html#settings-saving-and-extras">Settings saving and extras</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interface.html#extras">Extras</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interface.html#settings-and-preferences">Settings and preferences</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interface.html#processing-controls">Processing controls</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interface.html#time-plot">Time plot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interface.html#saving-trigger">Saving trigger</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interface.html#filter">Filter</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="expanding.html">Expanding and modifying</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="expanding.html#accessing-and-modifying-the-distribution">Accessing and modifying the distribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="expanding.html#custom-filters">Custom filters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="expanding.html#control-server">Control server</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="settings_file.html">Configuring</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="settings_file.html#command-line-arguments">Command line arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="settings_file.html#settings-file">Settings file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="settings_file.html#general-parameters">General parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="settings_file.html#camera-related-parameters">Camera-related parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="settings_file.html#specific-system-parameters">Specific system parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="usecases.html">Use cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Release history</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-2-2-1">Version 2.2.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-2-2-0">Version 2.2.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-2-1-2">Version 2.1.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-2-1-1">Version 2.1.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-2-1-0">Version 2.1.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-2-0-1">Version 2.0.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-2-0-0">Version 2.0.0</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="overview.html" class="btn btn-neutral float-right" title="Overview" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Alexey Shkarin.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

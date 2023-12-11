@@ -1,0 +1,270 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html4" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Use cases &mdash; pylablib cam-control 2.2.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Troubleshooting" href="troubleshooting.html" />
+    <link rel="prev" title="Configuring" href="settings_file.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> pylablib cam-control
+          
+
+          
+            
+            <img src="_static/logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pipeline.html">Basic data flow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="interface.html">Detailed interface description</a></li>
+<li class="toctree-l1"><a class="reference internal" href="expanding.html">Expanding and modifying</a></li>
+<li class="toctree-l1"><a class="reference internal" href="settings_file.html">Configuring</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Use cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Release history</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">pylablib cam-control</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Use cases</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/usecases.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="use-cases">
+<span id="usecases"></span><h1>Use cases<a class="headerlink" href="#use-cases" title="Permalink to this headline">¶</a></h1>
+<p>Here we describe some basic use cases and applications of the cam-control software.</p>
+<ul>
+<li><p class="first"><strong>Standard acquisition</strong></p>
+<blockquote>
+<div><p>This is the standard mode which requires minimal initial configuration. Simply setup the <a class="reference internal" href="interface.html#interface-camera-settings"><span class="std std-ref">camera parameters</span></a>, configure the <a class="reference internal" href="interface.html#interface-save-control"><span class="std std-ref">saving</span></a>, start the acquisition, and press <code class="docutils literal notranslate"><span class="pre">Saving</span></code>.</p>
+</div></blockquote>
+</li>
+<li><p class="first"><strong>Recording of rare events</strong></p>
+<blockquote>
+<div><p>Manual recording of rare and fast events is often challenging. Usually you have to either record everything and sift through the data later, or hope to press <code class="docutils literal notranslate"><span class="pre">Saving</span></code> quickly enough to catch most of it. Neither option is ideal: the first method takes a lot of extra storage space, while the second requires fast reaction. <a class="reference internal" href="pipeline.html#pipeline-saving-pretrigger"><span class="std std-ref">Pretrigger buffer</span></a> takes the best of both worlds: it still allows to only record interesting parts, put lets you start saving a couple seconds before the button is pressed, so it is not necessary to press it as quickly as possible. The buffer is set up in the <a class="reference internal" href="interface.html#interface-save-control"><span class="std std-ref">saving parameters</span></a>.</p>
+</div></blockquote>
+</li>
+<li><p class="first"><strong>Periodic acquisition</strong></p>
+<blockquote>
+<div><p>To record very slow processes, you might want to just occasionally take a snapshot or a short movie. You can use <a class="reference internal" href="advanced.html#advanced-save-trigger"><span class="std std-ref">saving trigger</span></a> for that.</p>
+</div></blockquote>
+</li>
+<li><p class="first"><strong>Image-based acquisition start</strong></p>
+<blockquote>
+<div><p>Another <a class="reference internal" href="advanced.html#advanced-save-trigger"><span class="std std-ref">saving trigger</span></a> application is to automate data acquisition. It gives an option to start acquisition based on the frame values. Combined with <a class="reference internal" href="expanding.html#expanding-filter"><span class="std std-ref">custom filters</span></a>, it provides a powerful way to completely automate acquisition of interesting events.</p>
+</div></blockquote>
+</li>
+<li><p class="first"><strong>Background subtraction</strong></p>
+<blockquote>
+<div><p>Oftentimes the camera images contain undesired static or slowly changing background. It is possible to get rid of it using the built-in basic <a class="reference internal" href="pipeline.html#pipeline-background-subtraction"><span class="std std-ref">background subtraction</span></a>. Keep in mind that it only affects the displayed data (and, as such, is not applied to frames supplied to filters).</p>
+</div></blockquote>
+</li>
+<li><p class="first"><strong>On-line image processing</strong></p>
+<blockquote>
+<div><p>More complicated on-line processing is available through filters. Cam-control already comes with several basic <a class="reference internal" href="advanced.html#advanced-filter"><span class="std std-ref">built-in filters</span></a>, but the real power in custom application comes from the ability to easily write <a class="reference internal" href="expanding.html#expanding-filter"><span class="std std-ref">custom filters</span></a>.</p>
+</div></blockquote>
+</li>
+<li><p class="first"><strong>On-line analysis of fast processes</strong></p>
+<blockquote>
+<div><p>To do a quick on-line analysis of fast processes, you can use the <a class="reference internal" href="advanced.html#advanced-slowdown"><span class="std std-ref">frame slowdown</span></a> capability.</p>
+</div></blockquote>
+</li>
+<li><p class="first"><strong>Interfacing with external software</strong></p>
+<blockquote>
+<div><p>Cam-control provides a <a class="reference internal" href="expanding.html#expanding-server"><span class="std std-ref">TCP/IP server control</span></a> which allows one to control GUI, start or stop acquisition and saving, and directly acquire frames from the camera. Since this is implemented as a server, it is platform- and software-independent, so it can interface with any custom software written in, e.g., C++, Java, LabView, or Matlab. It can be used to synchronize data acquisition with other devices, implement more sophisticated automation, or provide frames for custom image-processing software.</p>
+</div></blockquote>
+</li>
+<li><p class="first"><strong>Controlling several cameras</strong></p>
+<blockquote>
+<div><p>Cam-control allows for control of several connected cameras. If more than one camera is specified in the settings file (typically these are found by running the <code class="docutils literal notranslate"><span class="pre">detect</span></code> script), then every time the software is started, it allows to select which camera to control. Several instances can run simultaneously for different cameras without interference. The default GUI parameters are stored independently for all cameras.</p>
+<p>The selection window can be avoided by creating a specific camera shortcut in the <a class="reference internal" href="interface.html#interface-extras"><span class="std std-ref">extras menu</span></a>. It creates a shortcut which uses the <code class="docutils literal notranslate"><span class="pre">--camera</span></code> <a class="reference internal" href="settings_file.html#command-line"><span class="std std-ref">argument</span></a> (e.g., run <code class="docutils literal notranslate"><span class="pre">control.exe</span> <span class="pre">--camera</span> <span class="pre">ppimaq_0</span></code>) to supply the specific camera name.</p>
+</div></blockquote>
+</li>
+</ul>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="troubleshooting.html" class="btn btn-neutral float-right" title="Troubleshooting" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="settings_file.html" class="btn btn-neutral float-left" title="Configuring" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Alexey Shkarin.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

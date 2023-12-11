@@ -1212,9 +1212,10 @@ class Backend(QtCore.QObject):
         
         pos_zero = tools.convert(0, 'XtoU')
         
-        self.adw.Set_FPar(70, pos_zero)
+        
         self.adw.Set_FPar(71, pos_zero)
         self.adw.Set_FPar(72, pos_zero)
+        self.adw.Set_FPar(70, pos_zero)
         
         # move to z = 10 µm
 

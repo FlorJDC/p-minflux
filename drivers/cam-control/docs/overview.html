@@ -1,0 +1,297 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html4" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Overview &mdash; pylablib cam-control 2.2.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Basic data flow" href="pipeline.html" />
+    <link rel="prev" title="PyLabLib cam-control: Software for universal camera control and frames acquisition" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> pylablib cam-control
+          
+
+          
+            
+            <img src="_static/logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#software-requirements">Software requirements</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#specifying-camera-files">Specifying camera files</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#general-layout">General layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#support-and-feedback">Support and feedback</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pipeline.html">Basic data flow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="interface.html">Detailed interface description</a></li>
+<li class="toctree-l1"><a class="reference internal" href="expanding.html">Expanding and modifying</a></li>
+<li class="toctree-l1"><a class="reference internal" href="settings_file.html">Configuring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usecases.html">Use cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Release history</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">pylablib cam-control</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Overview</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/overview.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="overview">
+<span id="id1"></span><h1>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="installation">
+<span id="overview-install"></span><h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p>Download the zip file with the <a class="reference external" href="https://github.com/AlexShkarin/pylablib-cam-control/releases/latest/download/cam-control.zip">latest release</a> and unpack it to the desired location. The software comes with its own isolated Python interpreter with all the basic packages installed, so no additional installations are necessary. Download links to older version are available on the <a class="reference internal" href="changelog.html#changelog"><span class="std std-ref">release history</span></a> page.</p>
+<p>To run the software, simply execute <code class="docutils literal notranslate"><span class="pre">control.exe</span></code>. On the first run it will suggest to either load settings file (<code class="docutils literal notranslate"><span class="pre">settings.cfg</span></code>) from the previous version, or to detect all connected supported cameras and store their connection parameters. Make sure that at this point all cameras are connected, turned on, and not used in any other software (e.g., Andor Solis, Hokawo, or NI MAX). If new cameras are added to the PC, they can be re-discovered by running <code class="docutils literal notranslate"><span class="pre">detect.exe</span></code>.</p>
+<p>If only one camera is found, running <code class="docutils literal notranslate"><span class="pre">control.exe</span></code> will automatically connect to it. Otherwise, a dropdown menu will show up allowing selection of specific cameras.</p>
+</div>
+<div class="section" id="software-requirements">
+<span id="overview-software-requirements"></span><h2>Software requirements<a class="headerlink" href="#software-requirements" title="Permalink to this headline">¶</a></h2>
+<p>Cam-control is built using <a class="reference external" href="https://github.com/AlexShkarin/pyLabLib/">pylablib</a> and includes all of the cameras supported there. All of these cameras need some kind of drivers and API installed:</p>
+<ul class="simple">
+<li>Andor cameras: <a class="reference external" href="https://andor.oxinst.com/products/solis-software/">Andor Solis</a> or <a class="reference external" href="https://andor.oxinst.com/products/software-development-kit/">Andor SKD</a>.</li>
+<li>Hamamatsu/DCAM cameras: Hamamatsu-supplied software such as Hokawo, or the freely available <a class="reference external" href="https://dcam-api.com/downloads/">DCAM API</a>. Keep in mind, that you also need to install the drivers for the corresponding camera type (USB, Ethernet, IEEE 1394). These drivers are in the same installer, but need to be installed separately.</li>
+<li>Thorlabs uc480 and Thorlabs scientific imaging cameras: freely available <a class="reference external" href="https://www.thorlabs.com/software_pages/ViewSoftwarePage.cfm?Code=ThorCam">ThorCam</a> software (no older than v3.5.0 for the scientific imaging cameras).</li>
+<li>IDS uEye cameras: freely available (upon registration) <a class="reference external" href="https://en.ids-imaging.com/ids-software-suite.html">IDS Software Suite</a>.</li>
+<li>PCO cameras: freely available <a class="reference external" href="https://www.pco.de/software/camera-control-software/pcocamware/">pco.camware</a> software.</li>
+<li>IMAQdx cameras: all the necessary code is contained in the freely available <a class="reference external" href="https://www.ni.com/en-us/support/downloads/drivers/download.vision-acquisition-software.html">Vision Acquisition Software</a>. However, the IMAQdx part of the software is proprietary, and needs to be purchased to use.</li>
+<li>IMAQ frame grabbers: freely available <a class="reference external" href="https://www.ni.com/en-us/support/downloads/drivers/download.vision-acquisition-software.html">Vision Acquisition Software</a>. In addition, you would also need to specify the correct camera file, which describes the camera communication protocol details.</li>
+<li>Silicon Software frame grabbers: freely available (upon registration) <a class="reference external" href="https://www.baslerweb.com/en/sales-support/downloads/software-downloads/#type=framegrabbersoftware;language=all;version=all;os=windows64bit">Silicon Software Runtime Environment</a> (the newest version for 64-bit Windows is <a class="reference external" href="https://www.baslerweb.com/en/sales-support/downloads/software-downloads/complete-installation-for-windows-64bit-ver-5-7-0/">5.7.0</a>).</li>
+<li>PhotonFocus: on top of IMAQ or Silicon Software requirements, it needs freely available (upon registration) <a class="reference external" href="https://www.photonfocus.com/support/software/">PFInstaller</a> software.</li>
+<li>PICam (Princeton Instruments) cameras: freely available <a class="reference external" href="https://www.princetoninstruments.com/products/software-family/pi-cam">PICam</a> software.</li>
+<li>PVCAM (Photometrics) cameras: freely available (upon registration) <a class="reference external" href="https://www.photometrics.com/support/download/pvcam">PVCAM software</a>.</li>
+<li>Basler cameras: freely available (upon registration) <a class="reference external" href="https://www.baslerweb.com/en/downloads/software-downloads/">Basler pylon Camera Software Suite</a> (the current latest version is <a class="reference external" href="https://www.baslerweb.com/en/downloads/software-downloads/software-pylon-7-1-0-windows/">7.1.0</a>).</li>
+<li>BitFlow Axion frame grabbers require several steps:<ul>
+<li>First, you need to install freely available <a class="reference external" href="https://www.bitflow.com/downloads/bfsdk65.zip">BitFlow SDK 6.5</a>, preferrably into its default folder or, at least, using the default folder name <code class="docutils literal notranslate"><span class="pre">BitFlow</span> <span class="pre">SDK</span> <span class="pre">6.5</span></code>.</li>
+<li>Second, you have to download manufacturer-provided <a class="reference external" href="https://www.bitflow.com/downloads/BFPython38_Release.zip">BitFlow Python 3.8 package</a>, extract <code class="docutils literal notranslate"><span class="pre">BFModule-1.0.1-cp38-cp38-win_amd64.whl</span></code> file from there to the <code class="docutils literal notranslate"><span class="pre">python</span></code> folder within <code class="docutils literal notranslate"><span class="pre">cam-control</span></code> (it should contain files like <code class="docutils literal notranslate"><span class="pre">python.exe</span></code>), and run <code class="docutils literal notranslate"><span class="pre">install-dependencies.bat</span></code> script contained in the same folder.</li>
+<li>Next, you need to specify the correct camera file for your camera using <code class="docutils literal notranslate"><span class="pre">SysReg</span></code> utility located in the <code class="docutils literal notranslate"><span class="pre">Bin64</span></code> folder of your BitFlow installation (by default, <code class="docutils literal notranslate"><span class="pre">C:\BitFlow</span> <span class="pre">SDK</span> <span class="pre">6.5\Bin64</span></code>).</li>
+<li>Afterwards, you should copy this camera file into the main <code class="docutils literal notranslate"><span class="pre">cam-control</span></code> folder (it should contain files like <code class="docutils literal notranslate"><span class="pre">settings.cfg</span></code>). The camera file is located in <code class="docutils literal notranslate"><span class="pre">Config\Axn</span></code> folder within the BitFlow installation (by default, <code class="docutils literal notranslate"><span class="pre">C:\BitFlow</span> <span class="pre">SDK</span> <span class="pre">6.5\Config\Axn</span></code>) and has <code class="docutils literal notranslate"><span class="pre">.bfml</span></code> extension, e.g., <code class="docutils literal notranslate"><span class="pre">PhotonFocus-MV1-D1024E-160-CL.bfml</span></code>.</li>
+<li>You can now search for the cameras by running either <code class="docutils literal notranslate"><span class="pre">control.exe</span></code> for the first time, or <code class="docutils literal notranslate"><span class="pre">detect.exe</span></code> at any point.</li>
+</ul>
+</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Cam-control is only available in 64-bit version, which in most cases means that you must install 64-bit versions of the software described above.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">It is strongly recommended that you install the manufacturer software (especially Andor Solis and ThorCam) into their default locations. Otherwise, cam-control might not be able to find the required DLLs and communicate with the cameras. In this case, you would need to specify the location of the necessary DLLs in the <a class="reference internal" href="settings_file.html#settings-file-system"><span class="std std-ref">settings file</span></a>.</p>
+</div>
+<p>In most cases, you already have the necessary software installed to communicate with the cameras to begin with. As a rule of thumb, if you can open the camera in the manufacturer-supplied software, you can open it in the cam-control as well.</p>
+<p>In rare cases you might also need to install Microsoft Visual C++ Redistributable Package. You can obtain it on the <a class="reference external" href="https://aka.ms/vs/16/release/vc_redist.x64.exe">Microsoft website</a>.</p>
+<div class="section" id="specifying-camera-files">
+<h3>Specifying camera files<a class="headerlink" href="#specifying-camera-files" title="Permalink to this headline">¶</a></h3>
+<p>Cameras using NI-IMAQ frame grabbers also need the correct <code class="docutils literal notranslate"><span class="pre">.icd</span></code> camera file for the connected camera, which describes the communication protocol details, sensor size, possible bit depths, etc. Some of the common camera files are already provided when you install Vision Acquisition Software, others need to be obtained from the manufacturer. To specify them, follow the following steps:</p>
+<ol class="arabic simple">
+<li>If you are using a manufacturer-provided file, copy it into the NI-IMAQ camera file storage. By default it is located at <code class="docutils literal notranslate"><span class="pre">C:\Users\Public\Documents\National</span> <span class="pre">Instruments\NI-IMAQ\Data</span></code> (the folder should already exist and have many <code class="docutils literal notranslate"><span class="pre">.icd</span></code> files).</li>
+<li>Run NI MAX, and there find the camera entry in <code class="docutils literal notranslate"><span class="pre">Devices</span> <span class="pre">and</span> <span class="pre">Interfaces</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">NI-IMAQ</span> <span class="pre">Devices</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">img&lt;n&gt;:</span> <span class="pre">&lt;Frame</span> <span class="pre">grabber</span> <span class="pre">name&gt;</span></code> (e.g., <code class="docutils literal notranslate"><span class="pre">img0:</span> <span class="pre">NI</span> <span class="pre">PCIe-1433</span></code>) -&gt; <code class="docutils literal notranslate"><span class="pre">Channel</span> <span class="pre">&lt;n&gt;</span></code> (0 for single-channel frame grabbers).</li>
+<li>Right-click on the camera entry and there select <code class="docutils literal notranslate"><span class="pre">Camera</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">&lt;Manufacturer&gt;</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">&lt;Camera</span> <span class="pre">model</span> <span class="pre">corresponding</span> <span class="pre">to</span> <span class="pre">the</span> <span class="pre">file&gt;</span></code>.</li>
+</ol>
+<p>PhotonFocus provides camera files with PFRemote, and they can be found in <code class="docutils literal notranslate"><span class="pre">&lt;Photon</span> <span class="pre">Focus</span> <span class="pre">folder&gt;\PFRemote\fg_files</span></code>. There are several files with names like <code class="docutils literal notranslate"><span class="pre">pfFg_ni_2tap_8bit.icd</span></code>, which should be selected based on the desired bit depth (usually 12 bit is preferable, if it is available for your camera) and the number of CameraLink taps (specified in the technical specification found in the camera manual; e.g., MV1-D1024E-160-CL has 2 taps). After specifying the file, you need to also specify the camera pixel depth using PFRemote. The correct setting is located at <code class="docutils literal notranslate"><span class="pre">Data</span> <span class="pre">Output</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">Output</span> <span class="pre">Mode</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">Resolution</span></code>.</p>
+</div>
+</div>
+<div class="section" id="general-layout">
+<span id="overview-layout"></span><h2>General layout<a class="headerlink" href="#general-layout" title="Permalink to this headline">¶</a></h2>
+<img alt="_images/overview.png" src="_images/overview.png" />
+<p>The window is split into two parts. The left half shows the images, possibly with several tabs to show several different kinds of images (e.g., if filters are used). The right half controls data saving, shows camera status (in the middle column), and has additional controls for camera, on-line processing, or additional plugins (rightmost column).</p>
+<p>The acquisition is started by pressing <code class="docutils literal notranslate"><span class="pre">Start</span> <span class="pre">acquisition</span></code> button. Note that you might need to adjust camera parameters (e.g., specify exposure, ROI, binning, pixel readout rate) to get reasonable image quality and performance.</p>
+<p>All of the entered values are automatically saved on exit and restored on the next restart. It is also possible to <a class="reference internal" href="interface.html#interface-footer"><span class="std std-ref">save the settings to a file</span></a> and load them later, which is helpful for working in several different regimes.</p>
+<p>You can find more information either on the <a class="reference internal" href="interface.html#interface"><span class="std std-ref">interface page</span></a>, or in the built-in <a class="reference internal" href="interface.html#interface-tutorial"><span class="std std-ref">tutorial</span></a>.</p>
+<img alt="_images/overview_compact.png" src="_images/overview_compact.png" />
+<p>In case the interface takes too much space and does not fit in the screen, you can enable the compact mode in the <a class="reference internal" href="interface.html#interface-preferences"><span class="std std-ref">preferences</span></a>.</p>
+<p>The software uses a dark color theme by default. You can change it in the <a class="reference internal" href="interface.html#interface-preferences"><span class="std std-ref">preferences</span></a>.</p>
+</div>
+<div class="section" id="support-and-feedback">
+<span id="overview-feedback"></span><h2>Support and feedback<a class="headerlink" href="#support-and-feedback" title="Permalink to this headline">¶</a></h2>
+<p>If you have any issues, suggestions, or feedback, you can either raise an issue on GitHub at <a class="reference external" href="https://github.com/SandoghdarLab/pyLabLib-cam-control/issues">https://github.com/SandoghdarLab/pyLabLib-cam-control/issues</a>, or send an e-mail to <a class="reference external" href="mailto:pylablib&#37;&#52;&#48;gmail&#46;com">pylablib<span>&#64;</span>gmail<span>&#46;</span>com</a>.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="pipeline.html" class="btn btn-neutral float-right" title="Basic data flow" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="index.html" class="btn btn-neutral float-left" title="PyLabLib cam-control: Software for universal camera control and frames acquisition" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Alexey Shkarin.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

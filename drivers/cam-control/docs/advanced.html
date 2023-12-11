@@ -1,0 +1,277 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html4" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Advanced features &mdash; pylablib cam-control 2.2.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Detailed interface description" href="interface.html" />
+    <link rel="prev" title="Basic data flow" href="pipeline.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> pylablib cam-control
+          
+
+          
+            
+            <img src="_static/logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pipeline.html">Basic data flow</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Advanced features</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#playback-slowdown">Playback slowdown</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#time-plot">Time plot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#saving-trigger">Saving trigger</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#filters">Filters</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="interface.html">Detailed interface description</a></li>
+<li class="toctree-l1"><a class="reference internal" href="expanding.html">Expanding and modifying</a></li>
+<li class="toctree-l1"><a class="reference internal" href="settings_file.html">Configuring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usecases.html">Use cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Release history</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">pylablib cam-control</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Advanced features</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/advanced.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="advanced-features">
+<span id="advanced"></span><h1>Advanced features<a class="headerlink" href="#advanced-features" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="playback-slowdown">
+<span id="advanced-slowdown"></span><h2>Playback slowdown<a class="headerlink" href="#playback-slowdown" title="Permalink to this headline">¶</a></h2>
+<p>Fast cameras are typically used to analyze fast events. However, cam-control still has to display data in real time, which means that this fast acquisition potential is lost during on-line analysis. Of course, it still saves all the frames for further examination, but it usually takes some time to load and go through them.</p>
+<p>For a quick check, there is an option to temporarily slow data display to the desired frame rate, slowing down the playback. For example, if the camera operates at 10 kFPS and the playback is set to work at 100 FPS, the process is seen 100 times slower.</p>
+<p>The way it works is by storing all incoming camera frames into a temporary buffer, and then taking these frames from the buffer at a lower rate. Since the size of this buffer is limited, the slowdown naturally can only proceed for a finite time. It is easy to calculate that, e.g., for the same 10 kFPS camera speed and 100 FPS playback speed the buffer of 1000 frames will take 0.1s of real time and stretch it into 10s of display time.</p>
+<p>Note that the slowdowns happens after the pre-binning, but before filters and background subtraction. Hence, it affects all of the displayed frames, but not the saving, which still happens at the regular rate.</p>
+<p>This feature controls are on the <a class="reference internal" href="interface.html#interface-processing"><span class="std std-ref">Processing tab</span></a>.</p>
+</div>
+<div class="section" id="time-plot">
+<span id="advanced-time-plot"></span><h2>Time plot<a class="headerlink" href="#time-plot" title="Permalink to this headline">¶</a></h2>
+<p>Sometimes it is useful to look at how the image values evolve in time. Cam-control has basic capabilities for plotting the mean value of the frame or a rectangular ROI within it as a function of time or frame number. It can be set in two slightly different ways: either plot averages of displayed frames vs. time, or averages of all camera frames vs. frame index.</p>
+<p>This feature is only intended for a quick on-line data assessment, so there is currently no provided way to save these plots. As an alternative, you can either save the whole move, or use <a class="reference internal" href="#advanced-filter"><span class="std std-ref">time map filter</span></a> and save the resulting frame.</p>
+<p>This feature controls are on the <a class="reference internal" href="interface.html#interface-time-plot"><span class="std std-ref">Processing tab</span></a>.</p>
+</div>
+<div class="section" id="saving-trigger">
+<span id="advanced-save-trigger"></span><h2>Saving trigger<a class="headerlink" href="#saving-trigger" title="Permalink to this headline">¶</a></h2>
+<p>Often we would like to automate data acquisition. There are two basic built-in ways to do that in cam-control.</p>
+<p>The first is simple timer automation, where a new data set is acquired with a given period. It is useful when monitoring relatively slow processes, when recording data continuously is excessive.</p>
+<p>The second is based on the acquired images themselves. Specifically, it is triggered when any pixel in a displayed image goes above a certain threshold value. Since multiple consecutive frames can trigger saving, this method also includes a dead time: a time after triggering during which all triggers are ignored. This way, the resulting datasets can be spaced wider in time, if required. However, even with zero dead time (or zero period for timer trigger) the recording can only start after the previous recording is finished, so that each saved dataset is complete.</p>
+<p>The image-based method strongly benefits from two other software features: <a class="reference internal" href="pipeline.html#pipeline-saving-pretrigger"><span class="std std-ref">pre-trigger buffer</span></a> and <a class="reference internal" href="#advanced-filter"><span class="std std-ref">filters</span></a>. The first one allows to effectively start saving some time before the triggering image, to make sure that the data preceding the event is also recorded. The second one adds a lot of flexibility to the exact triggering conditions. Generally, it is pretty rare that one is really interested in the brightest pixel value. Using filters, you can transform image to make the brightest pixel value more relevant (e.g., use transform to better highlight particles, or use temporal variations to catch the moment when the image starts changing a lot), or even create a “fake” filter output a single-pixel 0 or 1 image, whose sole job is to trigger the acquisition.</p>
+<p>Both timed and image trigger also support a couple common features. They both can trigger either standard save for more thorough data acquisition, or snapshot to get a quick assessment. And both can take a limit on the total number of saving events.</p>
+<p>This feature controls are on the <a class="reference internal" href="interface.html#interface-saving-trigger"><span class="std std-ref">Plugins tab</span></a>.</p>
+</div>
+<div class="section" id="filters">
+<span id="advanced-filter"></span><h2>Filters<a class="headerlink" href="#filters" title="Permalink to this headline">¶</a></h2>
+<p>Filters provide a flexible way to perform on-line image processing. They can be used to quickly assess the data in real time or even to <a class="reference internal" href="#advanced-save-trigger"><span class="std std-ref">automate data acquisition</span></a>.</p>
+<p>They are primarily designed for <a class="reference internal" href="expanding.html#expanding-filter"><span class="std std-ref">expanding by users</span></a>. Nevertheless, there are several pre-made filters covering some basic spatial and temporal image transforms:</p>
+<ul class="simple">
+<li><strong>Gaussian blur</strong>: standard image blur, i.e., spatial low-pass filter. The only parameter is the blur size.</li>
+<li><strong>FFT filter</strong>: Fourier domain filter, which is a generalization of Gaussian filter. It involves both low-pass (“minimal size”) and high-pass (“maximal size”) filtering, and can be implemented either using a hard cutoff in the Fourier space, or as a Gaussian, which is essentially equivalent to the Gaussian filter above.</li>
+<li><strong>Moving average</strong>: average several consecutive frames within a sliding window together. It is conceptually similar to <a class="reference internal" href="pipeline.html#pipeline-prebinning"><span class="std std-ref">time pre-binning</span></a>, but only affects the displayed frames and works within a sliding window. It is also possible to take only every n’th frame (given by <code class="docutils literal notranslate"><span class="pre">Period</span></code> parameter) to cover larger time span without increasing the computational load.</li>
+<li><strong>Moving accumulator</strong>: a more generic version of moving average. Works very similarly, but can apply several different combination methods in addition to averaging: taking per-pixel median, min, max, or standard deviation (i.e., plot how much each pixel’s value fluctuates in time).</li>
+<li><strong>Moving average subtraction</strong>: combination of the moving average and the time derivative. Averages frames in two consecutive sliding windows and displays their difference. Can be thought of as a combination of a moving average and a sliding <a class="reference internal" href="pipeline.html#pipeline-background-subtraction"><span class="std std-ref">background subtraction</span></a>. This approach was used to enhance sensitivity of single protein detection in interferometric scattering microscopy (iSCAT) <a class="reference internal" href="#young2018" id="id1">[Young2018]</a>, and it is described in detail in <a class="reference internal" href="#dastjerdi2021" id="id2">[Dastjerdi2021]</a>.</li>
+<li><strong>Time map</strong>: a 2D map which plots a time evolution of a line cut. The cut can be taken along either direction and possibly averaged over several rows or columns. For convenience, the <code class="docutils literal notranslate"><span class="pre">Frame</span></code> display mode shows the frames with only the averaged part visible. This filter is useful to examine some time trends in the data in more details than the simple local average plot.</li>
+<li><strong>Difference matrix</strong>: a map for pairwise frames differences. Shows a map <code class="docutils literal notranslate"><span class="pre">M[i,j]</span></code>, where each element is the RMS difference between <code class="docutils literal notranslate"><span class="pre">i</span></code>’th and <code class="docutils literal notranslate"><span class="pre">j</span></code>’th frames. This is useful for examining the overall image evolution and spot, e.g., periodic disturbances or switching behavior.</li>
+</ul>
+<p>This feature controls are on the <a class="reference internal" href="interface.html#interface-filter"><span class="std std-ref">Filter tab</span></a>.</p>
+<table class="docutils citation" frame="void" id="young2018" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[Young2018]</a></td><td>Gavin Young et al., <a class="reference external" href="https://doi.org/10.1126/science.aar5839">“Quantitative mass imaging of single biological macromolecules,”</a> <em>Science</em> <strong>360</strong>, 423-427 (2018)</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="dastjerdi2021" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id2">[Dastjerdi2021]</a></td><td>Houman Mirzaalian Dastjerdi, Mahyar Dahmardeh, André Gemeinhardt, Reza Gholami Mahmoodabadi, Harald Köstler, and Vahid Sandoghdar, <a class="reference external" href="https://doi.org/10.1101/2021.08.16.456463">“Optimized analysis for sensitive detection and analysis of single proteins via interferometric scattering microscopy,”</a> <em>bioRxiv doi</em>: <a class="reference external" href="https://www.biorxiv.org/content/10.1101/2021.08.16.456463">10.1101/2021.08.16.456463</a></td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="interface.html" class="btn btn-neutral float-right" title="Detailed interface description" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="pipeline.html" class="btn btn-neutral float-left" title="Basic data flow" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Alexey Shkarin.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

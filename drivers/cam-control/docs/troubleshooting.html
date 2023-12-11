@@ -1,0 +1,276 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html4" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Troubleshooting &mdash; pylablib cam-control 2.2.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Release history" href="changelog.html" />
+    <link rel="prev" title="Use cases" href="usecases.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> pylablib cam-control
+          
+
+          
+            
+            <img src="_static/logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pipeline.html">Basic data flow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="interface.html">Detailed interface description</a></li>
+<li class="toctree-l1"><a class="reference internal" href="expanding.html">Expanding and modifying</a></li>
+<li class="toctree-l1"><a class="reference internal" href="settings_file.html">Configuring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usecases.html">Use cases</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Release history</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">pylablib cam-control</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Troubleshooting</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/troubleshooting.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="troubleshooting">
+<span id="id1"></span><h1>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><strong>Camera is not detected by the software</strong><ul>
+<li>Camera is disconnected, turned off, its drivers are missing, or it is used by a different program: Andor Solis, Hokawo, NI MAX, PFRemote, PCO Camware, ThorCam, etc. Check if it can be opened in its native software.</li>
+<li>Software can not find the libraries. Make sure that the <a class="reference internal" href="overview.html#overview-software-requirements"><span class="std std-ref">native camera software</span></a> is installed in the default path, or <a class="reference internal" href="settings_file.html#settings-file-system"><span class="std std-ref">manually specify the DLL paths</span></a>.</li>
+<li>Frame grabber cameras and IMAQdx cameras currently have only limited support. Please, <a class="reference internal" href="overview.html#overview-feedback"><span class="std std-ref">contact the developer</span></a> to see if it is possible to add your specific camera to the software.</li>
+</ul>
+</li>
+<li><strong>Camera camera controls are disabled and camera status says “Disconnected”</strong><ul>
+<li>Camera is disconnected, turned off, its drivers are missing, or it is used by a different program. Check if it can be opened in its native software.</li>
+</ul>
+</li>
+<li><strong>The image is not updated when the camera acquisition is running</strong><ul>
+<li>Make sure that you are looking at the correct image tab, and that the <code class="docutils literal notranslate"><span class="pre">Update</span></code> button is pressed.</li>
+<li>The camera is in the external trigger mode and no triggering signal is incoming. Switch the camera to the internal trigger mode.</li>
+<li>In some cases certain camera setting combinations result in unstable behavior. Check if these exact camera settings work in the native software.</li>
+</ul>
+</li>
+<li><strong>The operation or frames update is slow or laggy</strong><ul>
+<li>Frame plotting takes up too much resources. Reduce the frame update period or, if necessary, turn off the display update.</li>
+<li>Additional plotting features take up too much resources. Turn off frame cuts plotting, color histogram, and switch to the plain grayscale color scheme.</li>
+<li>On-line processing takes up too much resources. Turn off pre-binning, background subtraction, filters (disable or unload), and mean frame plots.</li>
+<li>Slowdown is turned on, camera frame rate is low, or time frame binning is enabled with a large factor. All of these can lead to actually low generated frame rate.</li>
+<li>Selected display update period (selected under the plot parameters) is too large.</li>
+<li>By default, the camera is polled for new frames every 50ms, so the frame rate is limited by 20 FPS. To increase it, you can specify the <code class="docutils literal notranslate"><span class="pre">loop/min_poll_period</span></code> parameter the <a class="reference internal" href="settings_file.html#settings-file-camera"><span class="std std-ref">settings file</span></a>.</li>
+</ul>
+</li>
+<li><strong>Acquisition is frozen</strong>
+- Acquisition is still being set up, which can take up to several seconds in some cases. This can be confirmed by <code class="docutils literal notranslate"><span class="pre">Acquisition</span></code> camera status saying <code class="docutils literal notranslate"><span class="pre">Setting</span> <span class="pre">up...</span></code>.
+- Camera buffer overflow on Andor SDK3 cameras (e.g., Zyla) can sometimes lead to such behavior. Reduce the data transfer rate using smaller frame rate, smaller ROI or larger binning, and then restart the acquisition.
+- Some NI IMAQ frame grabbers can freeze if the camera data transfer rate is too high (~200Mb/s). In this case it will freeze the acquisition shortly after start. This can be confirmed by the disagreement between the expected frame rate from the <code class="docutils literal notranslate"><span class="pre">Frame</span> <span class="pre">period</span></code> indicator and the actual frame rate from the <code class="docutils literal notranslate"><span class="pre">FPS</span></code> camera status. If this is the case, reduce the data transfer rate using smaller frame rate, smaller ROI or larger binning, and then restart the acquisition.</li>
+<li><strong>Missing frames are reported after saving</strong><ul>
+<li>Acquisition can not deal with high data or frame rate. Check if the <a class="reference internal" href="interface.html#interface-camera-status"><span class="std std-ref">frame buffer</span></a> is full or constantly increasing. If so, reduce the frame rate or frame size.</li>
+<li>Frame info acquisition takes too much time. On some cameras (e.g., uc480 and Silicon Software frame grabbers) acquiring frame information can take a significant fraction of the frame readout, especially for small frames and high readout rates. If this is the case, you need to turn the frame info off.</li>
+<li>Frames pre-binning can not deal with high data rate. Check if the frame buffer is full or constantly increasing. If so, reduce the frame rate or frame size, or turn the pre-binning off.</li>
+<li>Software as a whole can not deal with high data or frame rate. Minimize the load from unnecessary programs running on this PC. Avoid using remote control software (e.g., TeamViewer or Windows Remote Desktop) during the saving sessions.</li>
+<li>Acquisition has been restarted during saving (e.g., due to parameters change).</li>
+<li>PhotonFocus cameras can generate frames faster than some frame grabbers (e.g., SiliconSoftware microEnable 4) can manage. This shows up as lower frame rate than expected from the frame period. If this is the case, reduce the frame rate.</li>
+<li>The data rate is higher than the drive writing rate, and the <a class="reference internal" href="pipeline.html#pipeline-saving-buffer"><span class="std std-ref">save buffer</span></a> is overflown. Reduce the size of a single saving session, switch to a faster drive (SSD), or increase the save buffer size.</li>
+<li>(especially if missing frames occur right at the beginning) Obtaining camera settings for saving takes too much time. Increase the buffer size using <code class="docutils literal notranslate"><span class="pre">misc/buffer/min_size/time</span></code> parameter in the <a class="reference internal" href="settings_file.html#settings-file-camera"><span class="std std-ref">settings file</span></a>, or turn off the settings file (not recommended).</li>
+</ul>
+</li>
+<li><strong>Saving in Tiff format ends abruptly or produces corrupted files</strong><ul>
+<li>Tiff format does not support files larger than 2 Gb. Either split data in smaller files (e.g., using the <a class="reference internal" href="interface.html#interface-save-control"><span class="std std-ref">file split</span></a> settings), or use other format such as BigTiff.</li>
+</ul>
+</li>
+<li><strong>Control window is too large and does not fit into the screen</strong><ul>
+<li>You can enable the compact mode in the <a class="reference internal" href="settings_file.html#settings-file-general"><span class="std std-ref">setting file</span></a>.</li>
+</ul>
+</li>
+<li><strong>Camera performance is lower than can be achieved in the native software</strong><ul>
+<li>Make sure that all available settings (including advanced settings such as readout speed, pixel clock, etc.) are the same in both cases.</li>
+<li>Some specific cameras might not be fully supported. Please, <a class="reference internal" href="overview.html#overview-feedback"><span class="std std-ref">contact the developer</span></a> to add necessary settings of your specific camera to the software.</li>
+</ul>
+</li>
+</ul>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="changelog.html" class="btn btn-neutral float-right" title="Release history" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="usecases.html" class="btn btn-neutral float-left" title="Use cases" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Alexey Shkarin.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

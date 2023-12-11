@@ -1,0 +1,308 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html4" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Basic data flow &mdash; pylablib cam-control 2.2.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Advanced features" href="advanced.html" />
+    <link rel="prev" title="Overview" href="overview.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> pylablib cam-control
+          
+
+          
+            
+            <img src="_static/logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Basic data flow</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#camera">Camera</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pre-binning">Pre-binning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#saving">Saving</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pre-trigger-buffer">Pre-trigger buffer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#naming-and-file-arrangement">Naming and file arrangement</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#file-formats">File formats</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#saving-buffer">Saving buffer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#snapshot-saving">Snapshot saving</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#background-subtraction">Background subtraction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#filters">Filters</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="interface.html">Detailed interface description</a></li>
+<li class="toctree-l1"><a class="reference internal" href="expanding.html">Expanding and modifying</a></li>
+<li class="toctree-l1"><a class="reference internal" href="settings_file.html">Configuring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usecases.html">Use cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Release history</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">pylablib cam-control</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Basic data flow</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/pipeline.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="basic-data-flow">
+<span id="pipeline"></span><h1>Basic data flow<a class="headerlink" href="#basic-data-flow" title="Permalink to this headline">¶</a></h1>
+<p id="pipeline-overview">Here we describe the basic stages that acquired frames go through, what they do, and how they can be controlled.</p>
+<div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<img alt="_images/schematics.png" src="_images/schematics.png" />
+<p>After camera acquisition, the frames undergo several processing stages:</p>
+<ul class="simple">
+<li>First, the raw <em>camera</em> frames go through the optional <em>pre-binning</em> step, where they are binned spatially and temporally. This step is mostly intended to reduce the load on the further processing or streaming stages which saves processing time and storage space.</li>
+<li>After that, the frames are sent directly for <em>saving</em>. All other on-line processing steps (background subtraction, filters, frames slowdown, etc.) only affect the displayed images and snapshot saving, but not the standard data saving.</li>
+<li>At the same time, the pre-binned frames are sent to <em>processing</em> stages. One possibility is the built-in background subtraction. The other is custom filters, e.g., Fourier filtering or running average. These are then displayed in corresponding image tabs.</li>
+<li>Finally, these displayed images can be saved directly using the <em>snapshot saving</em>. Unlike the standard saving, it saves the processed images exactly like they are displayed, but only one image per file.</li>
+</ul>
+<p>These stages above are described in more details below.</p>
+</div>
+<div class="section" id="camera">
+<span id="pipeline-camera"></span><h2>Camera<a class="headerlink" href="#camera" title="Permalink to this headline">¶</a></h2>
+<p>Generally, cameras continuously generate frames at a constant rate as long as the acquisition is running. In addition to the frames themselves, there is an option (enabled i the <code class="docutils literal notranslate"><span class="pre">Advanced</span></code> tab of the <a class="reference internal" href="interface.html#interface-camera-settings"><span class="std std-ref">camera settings</span></a>) to query additional frame info such as shape, index, time stamp (both low-resolution based on PC time and, for some cameras, high-resolution camera-baseed one), etc. Additional details about camera functions such as frame buffer, ROI, or external triggering are available in <a class="reference external" href="https://pylablib.readthedocs.io/en/latest/devices/cameras_basics.html#basic-concepts">pylablib documentation</a>.</p>
+</div>
+<div class="section" id="pre-binning">
+<span id="pipeline-prebinning"></span><h2>Pre-binning<a class="headerlink" href="#pre-binning" title="Permalink to this headline">¶</a></h2>
+<p>This is the first stage after camera acquisition, where the generated frame stream is reduced by binning it. The binning is either temporal, i.e., combining several frames into a single frame, or spatial, combining several pixels in to a single pixel. The available binning modes are skipping (only take the first frame or pixel), summing, taking mean, min, or max.</p>
+<p>Pre-binning is generally designed to reduce load on the further processing stages and to shrink the resulting file size. Spatial pre-binning can also partially substitute for camera binning: the effect is mostly the same, although built-in binning typically yields higher signal-to-noise ratio. Temporal sum or mean binning can somewhat increase the camera dynamic range because, unlike increasing exposure, it can avoid saturation.</p>
+<p>Note that sum and mean binning can, in principle, result in values not fitting into the standard 16-bit integer used for the frame data, either because of the rounding (for mean) or potential integer overflow (for sum). In this case, there is an option to convert frames to float for further processing and saving. However, this is not always necessary. For example, if the camera has 12-bit pixel depth, you can sum up to a factor of 16 without the fear of overflow, since the maximal image pixel values is 1/16 of the 16-bit integer span.</p>
+</div>
+<div class="section" id="saving">
+<span id="pipeline-saving"></span><h2>Saving<a class="headerlink" href="#saving" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="pre-trigger-buffer">
+<span id="pipeline-saving-pretrigger"></span><h3>Pre-trigger buffer<a class="headerlink" href="#pre-trigger-buffer" title="Permalink to this headline">¶</a></h3>
+<p>This is a fairly useful but rarely implemented feature, which essentially allows you to start saving <em>before</em> the saving button was pressed.</p>
+<p>The mechanism is similar to the standard operation of any modern digital oscilloscope. The software stores some number <code class="docutils literal notranslate"><span class="pre">n</span></code> of most recently acquired frames in a buffer, called a pre-trigger buffer. Once the save trigger arrives (e.g., when the <code class="docutils literal notranslate"><span class="pre">Saving</span></code> button is pressed), the frames from the buffer are stored first, followed by the frames acquired by the camera. This way, the stored data starts <code class="docutils literal notranslate"><span class="pre">n</span></code> frames before the trigger arrives, which looks as if the saving started in the past.</p>
+<p>The amount of the pre-recorded data is controlled by the pre-trigger buffer size <code class="docutils literal notranslate"><span class="pre">n</span></code>. For example, if the camera is acquiring at the rate 5 kFPS and the pre-trigger buffer size is 10,000 frames, the saved file starts 2 seconds before the trigger.</p>
+<p>This feature is very useful when recording rare events. First, it allows recording some amount data before the event is seen clearly, which helps studying how it arises. Second, it means that you do not have to have a fast reaction time and press the button as quickly as possible to avoid lost data.</p>
+</div>
+<div class="section" id="naming-and-file-arrangement">
+<span id="pipeline-saving-naming"></span><h3>Naming and file arrangement<a class="headerlink" href="#naming-and-file-arrangement" title="Permalink to this headline">¶</a></h3>
+<p>Saving can result in one or several data files, depending on the additional settings. By default, the main data file is named exactly like in the specified path, the settings file has suffix <code class="docutils literal notranslate"><span class="pre">_settings</span></code>, frame info has suffix <code class="docutils literal notranslate"><span class="pre">_frameinfo</span></code>, and background, correspondingly, <code class="docutils literal notranslate"><span class="pre">_background</span></code>. Furthermore, if snapshot saving is used, suffix <code class="docutils literal notranslate"><span class="pre">_snapshot</span></code> is added automatically.</p>
+<p>Alternatively, all of the files can be stored in a separate newly created folder with the specified path. In this case, the main data file i s imply named <code class="docutils literal notranslate"><span class="pre">frames</span></code>, and all auxiliary files lack prefixes.</p>
+<p>If the file with the given name already exists and can be overwritten, appended, or the new file will be renamed by adding a number to its name (e.g., <code class="docutils literal notranslate"><span class="pre">frames000.tiff</span></code>). Appending is generally not recommended, since it is not compatible with all file formats and saving modes, and in any case all auxiliary files such as settings and frame info are completely overwritten.</p>
+<p>To avoid name conflicts, it is possible to generate new unique file names based on the specified path and the current date and time. This option allows for easy saving of multiple datasets to unique destinations without changing the destination path. By default, the date and time are added as a suffix, but they can also be added as a suffix or as a new folder, based on the <a class="reference internal" href="settings_file.html#settings-file-general"><span class="std std-ref">settings file</span></a>.</p>
+</div>
+<div class="section" id="file-formats">
+<span id="pipeline-saving-format"></span><h3>File formats<a class="headerlink" href="#file-formats" title="Permalink to this headline">¶</a></h3>
+<p>Currently two basic file formats are supported: raw binary and Tiff/BigTiff.</p>
+<p>Raw binary is the simplest way to store and load the data. The frames are directly stored as their binary data, without any headers, metadata, etc. This makes it exceptionally easy to load in code, as long as the data shape (frames dimensions and number) and format (number of bytes per pixel, byte order, etc.) are known. For example, in Python one can simply use <code class="docutils literal notranslate"><span class="pre">numpy.fromfile</span></code> method. On the other hand, it means that the shape and format should be specified elsewhere, so the datafile alone might not be enough to define the content. Note that the settings file (whose usage is highly recommended) describes all the necessary information under <code class="docutils literal notranslate"><span class="pre">save/frame/dtype</span></code> and <code class="docutils literal notranslate"><span class="pre">save/frame/shape</span></code> keys.</p>
+<p>Tiff and BigTiff formats are more flexible: they store all of the necessary metadata, allow for frames of different shapes to be stored in the same file, and are widely supported. On the other hand, it is a bit slower to write, and require additional libraries to read in code.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Tiff has a limitation of 2 Gb per single file. If file exceeds this size, the saving is interrupted, and the data might be potentially corrupted (either Tiff file by itself will not load, or the frame indices stored in the settings and frame info files will be out-of-sync with the frames). To avoid that, you can either use BigTiff, which does not have this restriction, or file splitting, as described in the <a class="reference internal" href="interface.html#interface-save-control"><span class="std std-ref">saving interface</span></a>.</p>
+</div>
+<p>In the end, raw binary is more convenient when the data is processed using custom scripts, while Tiff is easier to handle for external software such as ImageJ.</p>
+</div>
+<div class="section" id="saving-buffer">
+<span id="pipeline-saving-buffer"></span><h3>Saving buffer<a class="headerlink" href="#saving-buffer" title="Permalink to this headline">¶</a></h3>
+<p>Many high-speed cameras can generate data faster than it can be saved (about 60 Mb/s for an HDD and about 500 Mb/s for an SSD). In this case, the acquired but not yet saved data is stored in the intermediate saving buffer. This buffer is being simultaneously both filled from the camera and emptied to the drive, which means that its size is only growing as the difference of the two rates. For example, if the camera generates data at 80 Mb/s and it is saved to the drive at 60 Mb/s, the buffer only grows at 20Mb/s. Similarly, if camera generates data at 40 Mb/s, which is lower than the saving rate, then the buffer stays empty, and the streaming can go indefinitely long.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">It is important to keep in mind, that the saving is marked as done when all the necessary frames have been placed into the saving buffer, but not necessarily saved. If the frames buffer has some data in it at that point, it will take additional time to save it all to the drive. If another saving is started in the meantime, those unsaved frames will be lost. The filling of the saving buffer can be seen in the <a class="reference internal" href="interface.html#interface-save-status"><span class="std std-ref">saving status</span></a>.</p>
+</div>
+</div>
+<div class="section" id="snapshot-saving">
+<span id="pipeline-saving-snapshot"></span><h3>Snapshot saving<a class="headerlink" href="#snapshot-saving" title="Permalink to this headline">¶</a></h3>
+<p>In addition to streaming complete data, there is an option to save the data which is currently displayed. This is done through a separate path, which is independent from the main saving routine; hence, it can be done during ongoing data streaming. Note that, like the standard save, the snapshot also stores all of the additional settings data, but not the frame info or the background.</p>
+</div>
+</div>
+<div class="section" id="background-subtraction">
+<span id="pipeline-background-subtraction"></span><h2>Background subtraction<a class="headerlink" href="#background-subtraction" title="Permalink to this headline">¶</a></h2>
+<p>Background subtraction can be done in two different flavors. In the “snapshot” subtraction a fixed background frame is acquired and calculated once. In the “running” subtraction a set of <code class="docutils literal notranslate"><span class="pre">n</span></code> immediately preceding frames is used to generate the background, so it is different for different frames. In either case, the background is usually generated by acquiring <code class="docutils literal notranslate"><span class="pre">n</span></code> consecutive frames and calculating their mean, median, or (per-pixel) minimal value. Combining several frames usually leads to smoother and more representative background, thus improving the quality, but taking more resources to compute.</p>
+<p>The running background subtraction can usually be fairly well reproduced from the saved data, as long as its length is much longer than the background window. However, the same can not be said about the snapshot background, which could have been acquired under different conditions. To account for that, there is also an option to store the snapshot background when saving the data. This saving can be done in two ways: either only the final background frame, or the complete set of <code class="docutils literal notranslate"><span class="pre">n</span></code> frames which went into its calculation.</p>
+</div>
+<div class="section" id="filters">
+<span id="pipeline-filters"></span><h2>Filters<a class="headerlink" href="#filters" title="Permalink to this headline">¶</a></h2>
+<p>Filters are pieces of Python code, which process the acquired frames and output new images. There are some <a class="reference internal" href="advanced.html#advanced-filter"><span class="std std-ref">built-in filters</span></a>, but they can also be <a class="reference internal" href="expanding.html#expanding-filter"><span class="std std-ref">written by a user</span></a>.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="advanced.html" class="btn btn-neutral float-right" title="Advanced features" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="overview.html" class="btn btn-neutral float-left" title="Overview" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Alexey Shkarin.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
