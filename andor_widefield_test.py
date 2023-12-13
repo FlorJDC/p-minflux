@@ -18,7 +18,9 @@ print("Success opening cam")
 cam.set_exposure(50E-3)
 print("Exposure time 50E-3")
 cam.set_roi(0, 256, 0, 256, hbin=2, vbin=2)
-print("ROI: 256px * 256px") 
+print("ROI: 256px * 256px")
+#print("Buffer size", cam.get_buffer_size()) #Buffer size 1536
+print("Info: ", cam.get_device_info)
 # # start the stepping loop
 images = []
 for image in range(5):
