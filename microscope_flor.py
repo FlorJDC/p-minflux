@@ -252,9 +252,9 @@ class Backend(QtCore.QObject):
         frontend.scanWidget.paramSignal.connect(self.psfWorker.get_scan_parameters)
         # TO DO: write this in a cleaner way, i. e. not in this section, not using frontend
         
-        self.scanWorker.focuslockpositionSignal.connect(self.zWorker.get_focuslockposition)
-        self.zWorker.focuslockpositionSignal.connect(self.scanWorker.get_focuslockposition)
-
+        self.scanWorker.focuslockpositionSignal.connect(self.zWorker.get_focuslockposition) #Signal & Slot connection Checked FC
+        self.zWorker.focuslockpositionSignal.connect(self.scanWorker.get_focuslockposition) #Signal & Slot connection Checked FC
+        #FC NOTE: Both scan & focus emit the same signal focuslockpositionSignal and both have the same function get_focuslockposition (but though they have the same name they do not do the same)
         frontend.closeSignal.connect(self.stop)
         
     def stop(self):
