@@ -28,8 +28,7 @@ from PyQt5.QtCore import Qt, pyqtSignal, pyqtSlot, QThread
 from PyQt5.QtWidgets import QGroupBox
 import qdarkstyle
 
-#from lantz.drivers.andor import ccd 
-import ccd
+from lantz.drivers.andor import ccd 
 import drivers.ADwin as ADwin
 
 DEBUG = True
@@ -553,6 +552,9 @@ class Backend(QtCore.QObject):
     def initialize_camera(self):
         
         cam = 0
+        print("Numero de camaras: ", self.andor.ncameras)
+        print("SW version: ", self.andor.software_version)
+        print("HW version: ", self.andor.hardware_version)        
         self.andor.current_camera = self.andor.camera_handle(cam)
         self.andor.lib.Initialize()
         print(datetime.now(), '[xy_tracking] idn:', self.andor.idn)

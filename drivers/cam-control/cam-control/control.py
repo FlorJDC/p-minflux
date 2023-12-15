@@ -23,13 +23,12 @@ python_folder=os.path.split(os.path.abspath(sys.executable))[0]
 pywin32_folder=os.path.join(python_folder,"Lib","site-packages","pywin32_system32")
 os.environ["PATH"]=pywin32_folder+";"+os.environ.get("PATH","")  # fix pywin32 confusion with some Anaconda installations
 
-import pylablib
 from pylablib.core.thread import controller, synchronizing, threadprop
 from pylablib.core.gui.widgets import container, param_table
 from pylablib.core.fileio import loadfile, savefile
 from pylablib.core.utils import dictionary, general as general_utils, files as file_utils
 from pylablib import widgets as pll_widgets
-
+import pylablib
 
 from pylablib.core.gui import QtWidgets, QtCore, QtGui, Signal, qtkwargs
 import pyqtgraph
