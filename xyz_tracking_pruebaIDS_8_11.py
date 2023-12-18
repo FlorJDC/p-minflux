@@ -2,7 +2,7 @@
 """
 Created on Tue Jun 26 10:51:13 2023
 
-@author: Luciano Masullo
+@author: Florencia D. Choque based on xyz_tracking for RASTMIN by Luciano Masullo
 Modified to work with new stabilization in p-MINFLUX, IDS_U3 cam and ADwin by Florencia D. Choque
 Based on xyz_tracking by Luciano Masullo
 """
@@ -1038,7 +1038,8 @@ class Backend(QtCore.QObject):
         
         # calculate z estimator
         
-        self.currentz = -np.sqrt(self.m_center[0]**2 + self.m_center[1]**2) #Chequear si aquí conviene poner signo menos
+        self.currentz = np.sqrt(self.m_center[0]**2 + self.m_center[1]**2) #Chequear si aquí conviene poner signo menos
+        #Nota: self.currentz es self.focusSignal
         
     def gaussian_fit(self,roi_coordinates): #Le estoy agregando un parámetro (roi_coordinates) para que sea como en xyz_tracking
         
@@ -1265,23 +1266,21 @@ class Backend(QtCore.QObject):
         
         if np.abs(xmean) > threshold:
             
-            dx = - (xmean)/1000 # conversion to µm
-            
             if dx < far_threshold: #TODO: double check this conditions (do they work?)
                 
                 dx = correct_factor * dx #TODO: double check this conditions (do they work?)
             
+            dx = - (xmean)/1000 # conversion to µm
               # print('TEST','dx', dx)
             
         if np.abs(ymean) > threshold:
-            
-            dy = - (ymean)/1000 # conversion to µm
             
             if dy < far_threshold:
                 
                 dy = correct_factor * dy
             
-                # print('TEST','dy', dy)
+            dy = - (ymean)/1000 # conversion to µm
+            # print('TEST','dy', dy)
     
         if np.abs(self.z) > z_threshold:
                             
@@ -1292,6 +1291,8 @@ class Backend(QtCore.QObject):
                 dz = correct_factor * dz
                 
 #                print('dz', dz)
+        else:
+            dz = - (self.z)/1000
 
         if dx > security_thr or dy > security_thr or dz > 2 * security_thr:
             
