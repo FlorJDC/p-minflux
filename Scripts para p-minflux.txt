@@ -1,0 +1,16 @@
+Estabilización:
+xyz_tracking_pruebaIDS_8_11.py (Contiene la logica para focus de focus_flor_pruebaIDS7_11.py)
+
+TCSPS:
+tcspc.py (Cambié la resolución y la frecuencia del láser)
+
+Escaneo:
+scan_flor.py (es scan.py sin la parte del backend que hace funcionar al laserdiode)
+
+Microscopio:
+microscope_flor_sinxy_tracking.py (Actualmente en funcionamiento)
+Utiliza 3 módulos:
+xyz_tracking_pruebaIDS_8_11.py
+tcspc.py
+scan_flor.py
+#Falta módulo widefield
