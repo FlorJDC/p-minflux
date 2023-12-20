@@ -2,9 +2,10 @@
 """
 Created on Fri Jun  1 14:18:19 2018
 
-@author: Luciano A. Masullo
+@author: Florencia D. Choque based on microscope from PyFlux made by Luciano Masullo
+In the widget we have 3 main parts: the module TCSPC, the focus control (xyz_tracking) and the scan module.
+Also 2 modules run in the backend: minflux and psf, these were not modified, they belong to the older minflux control made by Luciano Masullo
 """
-#%gui qt #Intentando que fUncione lo de la API
 
 import numpy as np
 import time
@@ -19,9 +20,6 @@ from pyqtgraph.Qt import QtCore, QtGui
 from pyqtgraph.dockarea import Dock, DockArea
 import qdarkstyle
 
-from instrumental.drivers.cameras import uc480
-import lantz.drivers.andor.ccd as ccd
-#import ccd
 import drivers.picoharp as picoharp
 from drivers.minilasevo import MiniLasEvo
 
@@ -30,11 +28,11 @@ from PyQt5.QtWidgets import QDockWidget
 from tkinter import Tk, filedialog
 
 import drivers.ADwin as ADwin
+import drivers.ids_cam as ids_cam
 
-import focus_flor_pruebaIDS_7_11 as focus
+import xyz_tracking_pruebaIDS_8_11 as focus
 import scan
 import tcspc
-import xy_tracking
 import measurements.minflux as minflux
 import measurements.psf as psf
 
@@ -104,18 +102,6 @@ class Frontend(QtGui.QMainWindow):
         tcspcDock.setAllowedAreas(Qt.BottomDockWidgetArea)
         self.addDockWidget(Qt.BottomDockWidgetArea, tcspcDock)
         
-        ## xy tracking dock
-        self.xyWidget = xy_tracking.Frontend()
-        
-        xyDock = QDockWidget('xy drift control', self)
-        xyDock.setWidget(self.xyWidget)
-        xyDock.setFeatures(QDockWidget.DockWidgetVerticalTitleBar | 
-                                 QDockWidget.DockWidgetFloatable |
-                                 QDockWidget.DockWidgetClosable)
-        xyDock.setAllowedAreas(Qt.RightDockWidgetArea)
-        
-        self.addDockWidget(Qt.RightDockWidgetArea, xyDock)
-        
         ## focus lock dock
         self.focusWidget = focus.Frontend()
 
@@ -129,18 +115,16 @@ class Frontend(QtGui.QMainWindow):
         self.addDockWidget(Qt.BottomDockWidgetArea, focusDock)
 
         # sizes to fit my screen properly
-        self.scanWidget.setMinimumSize(1000, 598)
-        self.xyWidget.setMinimumSize(800, 598)
-        self.tcspcWidget.setMinimumSize(850, 370)
-        self.focusWidget.setMinimumSize(850, 370)
+        self.focusWidget.setMinimumSize(1100, 370)
+        self.tcspcWidget.setMinimumSize(598, 370)
+        self.scanWidget.setMinimumSize(598, 370)
         self.move(1, 1)
         
     def make_connection(self, backend):
         
-        backend.zWorker.make_connection(self.focusWidget)
+        backend.xyzWorker.make_connection(self.focusWidget)
         backend.scanWorker.make_connection(self.scanWidget)
         backend.tcspcWorker.make_connection(self.tcspcWidget)
-        backend.xyWorker.make_connection(self.xyWidget)
         
         backend.minfluxWorker.make_connection(self.minfluxWidget)
         backend.psfWorker.make_connection(self.psfWidget)
@@ -160,7 +144,6 @@ class Frontend(QtGui.QMainWindow):
         time.sleep(1)
         
         focusThread.exit()
-        xyThread.exit()
         tcspcWorkerThread.exit()
         scanThread.exit()
         minfluxThread.exit()
@@ -177,13 +160,12 @@ class Backend(QtCore.QObject):
     xyzEndSignal = pyqtSignal(str)
     xyMoveAndLockSignal = pyqtSignal(np.ndarray)
     
-    def __init__(self, adw, ph, ccd, scmos, diodelaser, *args, **kwargs):
+    def __init__(self, adw, ph, scmos, diodelaser, *args, **kwargs):
         
         super().__init__(*args, **kwargs)
         
         self.scanWorker = scan.Backend(adw, diodelaser)
-        self.zWorker = focus.Backend(scmos, adw)
-        self.xyWorker = xy_tracking.Backend(ccd, adw)
+        self.xyzWorker = focus.Backend(scmos, adw)
         self.tcspcWorker = tcspc.Backend(ph)
         
         self.minfluxWorker = minflux.Backend(adw)
@@ -194,54 +176,53 @@ class Backend(QtCore.QObject):
         self.scanWorker.ROIcenterSignal.connect(self.minfluxWorker.get_ROI_center)
         
         self.minfluxWorker.tcspcPrepareSignal.connect(self.tcspcWorker.prepare_minflux)
-        self.minfluxWorker.tcspcStartSignal.connect(self.xyWorker.start_tracking_pattern)
+        self.minfluxWorker.tcspcStartSignal.connect(self.xyzWorker.start_tracking_pattern)
         self.minfluxWorker.tcspcStartSignal.connect(self.tcspcWorker.measure_minflux)
         
-        self.minfluxWorker.xyzStartSignal.connect(self.xyWorker.get_lock_signal)
-        self.minfluxWorker.xyzStartSignal.connect(self.zWorker.get_lock_signal)
+        self.minfluxWorker.xyzStartSignal.connect(self.xyzWorker.get_lock_signal)
+        self.minfluxWorker.xyzStartSignal.connect(self.xyzWorker.get_lock_signal)
         
         # TO DO: check if this is compatible with both psf and minflux measurement
         
-        self.minfluxWorker.moveToSignal.connect(self.xyWorker.get_move_signal)
+        self.minfluxWorker.moveToSignal.connect(self.xyzWorker.get_move_signal)
         
         self.minfluxWorker.shutterSignal.connect(self.scanWorker.shutter_handler)
-        self.minfluxWorker.shutterSignal.connect(self.xyWorker.shutter_handler)
-        self.minfluxWorker.shutterSignal.connect(self.zWorker.shutter_handler)
+        self.minfluxWorker.shutterSignal.connect(self.xyzWorker.shutter_handler)
+        self.minfluxWorker.shutterSignal.connect(self.xyzWorker.shutter_handler)
         
         self.tcspcWorker.tcspcDoneSignal.connect(self.minfluxWorker.get_tcspc_done_signal)
        
         self.minfluxWorker.saveConfigSignal.connect(self.scanWorker.saveConfigfile)
-        self.minfluxWorker.xyzEndSignal.connect(self.xyWorker.get_end_measurement_signal)
-        self.minfluxWorker.xyzEndSignal.connect(self.zWorker.get_end_measurement_signal)
-        self.minfluxWorker.xyStopSignal.connect(self.xyWorker.get_stop_signal)
+        self.minfluxWorker.xyzEndSignal.connect(self.xyzWorker.get_end_measurement_signal)
+        self.minfluxWorker.xyzEndSignal.connect(self.xyzWorker.get_end_measurement_signal)
+        self.minfluxWorker.xyStopSignal.connect(self.xyzWorker.get_stop_signal)
 
     def setup_psf_connections(self):
         
         self.psfWorker.scanSignal.connect(self.scanWorker.get_scan_signal)
-        self.psfWorker.xySignal.connect(self.xyWorker.single_xy_correction)
-        self.psfWorker.zSignal.connect(self.zWorker.single_z_correction)
-        self.psfWorker.xyStopSignal.connect(self.xyWorker.get_stop_signal)
-        self.psfWorker.zStopSignal.connect(self.zWorker.get_stop_signal)
+        self.psfWorker.xySignal.connect(self.xyzWorker.single_xy_correction)
+        self.psfWorker.zSignal.connect(self.xyzWorker.single_z_correction)
+        self.psfWorker.xyStopSignal.connect(self.xyzWorker.get_stop_signal)
+        #self.psfWorker.zStopSignal.connect(self.xyzWorker.get_stop_signal)
         self.psfWorker.moveToInitialSignal.connect(self.scanWorker.get_moveTo_initial_signal)
        
         self.psfWorker.shutterSignal.connect(self.scanWorker.shutter_handler)
-        self.psfWorker.shutterSignal.connect(self.xyWorker.shutter_handler)
-        self.psfWorker.shutterSignal.connect(self.zWorker.shutter_handler)
+        self.psfWorker.shutterSignal.connect(self.xyzWorker.shutter_handler)
+        self.psfWorker.shutterSignal.connect(self.xyzWorker.shutter_handler)
                 
-        self.psfWorker.endSignal.connect(self.xyWorker.get_end_measurement_signal)
-        self.psfWorker.endSignal.connect(self.zWorker.get_end_measurement_signal)
+        self.psfWorker.endSignal.connect(self.xyzWorker.get_end_measurement_signal)
+        self.psfWorker.endSignal.connect(self.xyzWorker.get_end_measurement_signal)
         self.psfWorker.saveConfigSignal.connect(self.scanWorker.saveConfigfile)
         
         self.scanWorker.frameIsDone.connect(self.psfWorker.get_scan_is_done)
-        self.xyWorker.xyIsDone.connect(self.psfWorker.get_xy_is_done)
-        self.zWorker.zIsDone.connect(self.psfWorker.get_z_is_done)
+        self.xyzWorker.xyIsDone.connect(self.psfWorker.get_xy_is_done)
+        self.xyzWorker.zIsDone.connect(self.psfWorker.get_z_is_done)
          
     def make_connection(self, frontend):
         
-        frontend.focusWidget.make_connection(self.zWorker)
+        frontend.focusWidget.make_connection(self.xyzWorker)
         frontend.scanWidget.make_connection(self.scanWorker)
         frontend.tcspcWidget.make_connection(self.tcspcWorker)
-        frontend.xyWidget.make_connection(self.xyWorker)
     
         frontend.minfluxWidget.make_connection(self.minfluxWorker)
         frontend.psfWidget.make_connection(self.psfWorker)
@@ -252,8 +233,8 @@ class Backend(QtCore.QObject):
         frontend.scanWidget.paramSignal.connect(self.psfWorker.get_scan_parameters)
         # TO DO: write this in a cleaner way, i. e. not in this section, not using frontend
         
-        self.scanWorker.focuslockpositionSignal.connect(self.zWorker.get_focuslockposition) #Signal & Slot connection Checked FC
-        self.zWorker.focuslockpositionSignal.connect(self.scanWorker.get_focuslockposition) #Signal & Slot connection Checked FC
+        self.scanWorker.focuslockpositionSignal.connect(self.xyzWorker.get_focuslockposition) #Signal & Slot connection Checked FC
+        self.xyzWorker.focuslockpositionSignal.connect(self.scanWorker.get_focuslockposition) #Signal & Slot connection Checked FC
         #FC NOTE: Both scan & focus emit the same signal focuslockpositionSignal and both have the same function get_focuslockposition (but though they have the same name they do not do the same)
         frontend.closeSignal.connect(self.stop)
         
@@ -261,8 +242,7 @@ class Backend(QtCore.QObject):
         
         self.scanWorker.stop()
         self.tcspcWorker.stop()
-        self.xyWorker.stop()
-        self.zWorker.stop()
+        self.xyzWorker.stop()
 
 if __name__ == '__main__':
 
@@ -284,18 +264,17 @@ if __name__ == '__main__':
     
     #if camera wasnt closed properly just keep using it without opening new one
     try:
-        cam = uc480.UC480_Camera()
+        cam = ids_cam.IDS_U3()
     except:
         pass
     
-    andor = ccd.CCD()        
     ph = picoharp.PicoHarp300()
     
     DEVICENUMBER = 0x1
     adw = ADwin.ADwin(DEVICENUMBER, 1)
     scan.setupDevice(adw)
     
-    worker = Backend(adw, ph, andor, cam, diodelaser)
+    worker = Backend(adw, ph, cam, diodelaser)
     
     gui.make_connection(worker)
     worker.make_connection(gui)
@@ -328,9 +307,9 @@ if __name__ == '__main__':
     # focus thread
 
     focusThread = QtCore.QThread()
-    worker.zWorker.moveToThread(focusThread)
-    worker.zWorker.focusTimer.moveToThread(focusThread)
-    worker.zWorker.focusTimer.timeout.connect(worker.zWorker.update)
+    worker.xyzWorker.moveToThread(focusThread)
+    worker.xyzWorker.viewtimer.moveToThread(focusThread)
+    worker.xyzWorker.viewtimer.timeout.connect(worker.xyzWorker.update)
 
     focusThread.start()
     
@@ -340,22 +319,7 @@ if __name__ == '__main__':
 #    gui.focusWidget.moveToThread(focusGUIThread)
 #    
 #    focusGUIThread.start()
-    
-#    # xy worker thread
-#    
-    xyThread = QtCore.QThread()
-    worker.xyWorker.moveToThread(xyThread)
-    worker.xyWorker.viewtimer.moveToThread(xyThread)
-#    worker.xyWorker.viewtimer.timeout.connect(worker.xyWorker.update_view)
-#    
-    xyThread.start()
-    
-    # xy GUI thread
-    
-#    xyGUIThread = QtCore.QThread()
-#    gui.xyWidget.moveToThread(xyGUIThread)
-#    
-#    xyGUIThread.start()
+       
 
     # tcspc thread
     

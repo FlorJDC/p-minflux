@@ -179,7 +179,7 @@ class Frontend(QtGui.QFrame):
         self.acqtimeLabel = QtGui.QLabel('Acquisition time [s]')
         self.acqtimeEdit = QtGui.QLineEdit('1')
         self.resolutionLabel = QtGui.QLabel('Resolution [ps]')
-        self.resolutionEdit = QtGui.QLineEdit('8')
+        self.resolutionEdit = QtGui.QLineEdit('16')
         self.offsetLabel = QtGui.QLabel('Offset [ns]')
         self.offsetEdit = QtGui.QLineEdit('3')
         
@@ -310,14 +310,15 @@ class Backend(QtCore.QObject):
         self.ph.open()
         self.ph.initialize()
         self.ph.setup_ph300()
-        self.ph.setup_phr800()
+        #self.ph.setup_phr800()
         
-        self.ph.syncDivider = 4 # this parameter must be set such that the count rate at channel 0 (sync) is equal or lower than 10MHz
+        self.ph.syncDivider = 2 # this parameter must be set such that the count rate at channel 0 (sync) is equal or lower than 10MHz
         self.ph.resolution = self.resolution # desired resolution in ps
+        print("self.ph.resolution", self.ph.resolution)
         
         self.ph.lib.PH_SetBinning(ctypes.c_int(0), 
-                                  ctypes.c_int(1)) # TO DO: fix this in a clean way (1 = 8 ps resolution)
-             
+                                  ctypes.c_int(2)) # TO DO: fix this in a clean way (1 = 8 ps resolution), Note FC Check Library driver, 0=4ps, 1=8ps, 2=16ps 
+        print("Cambio:", self.ph.resolution)
         self.ph.offset = int(self.offset * 1000) # time in ps
         self.ph.lib.PH_SetSyncOffset(ctypes.c_int(0), ctypes.c_int(3000))
 
@@ -406,7 +407,7 @@ class Backend(QtCore.QObject):
         print(datetime.now(), '[tcspc] opened {} file'.format(self.currentfname))
         
         numRecords = self.ph.numRecords # number of records
-        globRes = 2.5e-8  # in ns, corresponds to sync @40 MHz
+        globRes = 5.0e-8  # in ns, corresponds to sync @40 MHz
         timeRes = self.ph.resolution * 1e-12 # time resolution in s
 
         relTime, absTime = Read_PTU.readPT3(inputfile, numRecords)

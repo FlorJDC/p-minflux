@@ -886,7 +886,7 @@ class Backend(QtCore.QObject):
         # WARNING: check if it is necessary to fix to match camera orientation with piezo orientation
         #find command for IDS, maybe in user manual
         # WARNING: fix to match camera orientation with piezo orientation
-        self.image = np.rot90(self.image, k=3) #Added by FC
+        #self.image = np.rot90(self.image, k=3) #Added by FC
         # Send image to gui
         self.changedImage.emit(self.image) # This signal goes to get_image
         #image sent to get_image. Type:  <class 'numpy.ndarray'>
