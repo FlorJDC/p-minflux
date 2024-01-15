@@ -1212,11 +1212,10 @@ class Backend(QtCore.QObject):
         
         pos_zero = tools.convert(0, 'XtoU')
         
-        
+        self.adw.Set_FPar(70, pos_zero)
         self.adw.Set_FPar(71, pos_zero)
         self.adw.Set_FPar(72, pos_zero)
-        self.adw.Set_FPar(70, pos_zero)
-        
+                
         # move to z = 10 µm
 
         self.moveTo(3, 3, 10)
@@ -1319,7 +1318,8 @@ class Backend(QtCore.QObject):
                                          self.waitingTime)
 
 #        self.viewtimer_time = (1/1000) * self.data_t[-1]    # in ms
-        
+        #print(" Valores en data_t: " , self.data_t.size ) #Size 560, array 1D
+        print("Time: ", self.data_t[-1]-self.data_t[0])
         self.viewtimer_time = 0  # timer will timeout as soon after it has executed all functions
 
         # Create blank image
@@ -1785,6 +1785,7 @@ class Backend(QtCore.QObject):
         self.adw.Start_Process(1)
         
         line_time = (1/1000) * self.data_t[-1]  # target linetime in ms
+        print("line_time: " ,line_time)
         wait_time = line_time * 1.05 # TO DO: optimize this, it should work with 1.00, or maybe even less?
                                      # it should even work without the time.sleep()
         

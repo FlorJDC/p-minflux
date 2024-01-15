@@ -1038,7 +1038,7 @@ class Backend(QtCore.QObject):
         
         # calculate z estimator
         
-        self.currentz = np.sqrt(self.m_center[0]**2 + self.m_center[1]**2) #Chequear si aquí conviene poner signo menos
+        self.currentz = -np.sqrt(self.m_center[0]**2 + self.m_center[1]**2) #Chequear si aquí conviene poner signo menos
         #Nota: self.currentz es self.focusSignal
         
     def gaussian_fit(self,roi_coordinates): #Le estoy agregando un parámetro (roi_coordinates) para que sea como en xyz_tracking
