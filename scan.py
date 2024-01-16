@@ -1153,6 +1153,7 @@ class Backend(QtCore.QObject):
     shuttermodeSignal = pyqtSignal(int, bool)
     diodelaserEmissionSignal = pyqtSignal(bool)
     focuslockpositionSignal = pyqtSignal(float)
+    linescanSignal = pyqtSignal(int)
     
     """
     Signals
@@ -1172,6 +1173,10 @@ class Backend(QtCore.QObject):
     - ROIcenterSignal:
          To: [minflux]
          Description:
+    
+    - linescanSignal:
+         To: [focus_flor_pruebaIDS_7_11]
+         Description: This signal contains the current linescan time to change integration time in z stabilization 
         
     """
     
@@ -1319,7 +1324,7 @@ class Backend(QtCore.QObject):
 
 #        self.viewtimer_time = (1/1000) * self.data_t[-1]    # in ms
         #print(" Valores en data_t: " , self.data_t.size ) #Size 560, array 1D
-        print("Time: ", self.data_t[-1]-self.data_t[0])
+        #print("Time: ", self.data_t[-1]-self.data_t[0]) #FC
         self.viewtimer_time = 0  # timer will timeout as soon after it has executed all functions
 
         # Create blank image
@@ -1349,6 +1354,7 @@ class Backend(QtCore.QObject):
         # emit calculated parameters
 
         self.emit_param()
+        self.linescanSignal.emit(self.linetime)
         
     def emit_param(self):
         
