@@ -539,7 +539,7 @@ class Backend(QtCore.QObject):
         self.save_data_state = False
     
         self.npoints = 400
-        
+        self.linetime = 0
         
         self.pxSize = 50 #original 10nm FC  # in nm, TODO: check correspondence with GUI
         
