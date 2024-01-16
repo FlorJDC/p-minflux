@@ -1153,7 +1153,7 @@ class Backend(QtCore.QObject):
     shuttermodeSignal = pyqtSignal(int, bool)
     diodelaserEmissionSignal = pyqtSignal(bool)
     focuslockpositionSignal = pyqtSignal(float)
-    linetimeSignal = pyqtSignal(int)
+    linetimeSignal = pyqtSignal(float)
     
     """
     Signals

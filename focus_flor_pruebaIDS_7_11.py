@@ -566,6 +566,17 @@ class Backend(QtCore.QObject):
                 print("Exception", str(e))
         else:
             self.camera.destroy_all()
+    
+    @pyqtSlot(float) 
+    def get_linetime(self, linetime):
+        
+        """
+        Connection: [scan] linetime
+        
+        """
+        
+        self.linetime = linetime 
+        print("Valor de linetime en el confocal (check if it is turned ON): ", self.linetime)
         
     @pyqtSlot(dict)
     def get_frontend_param(self, params):
@@ -810,22 +821,27 @@ class Backend(QtCore.QObject):
                 print("Inside update_graph_data")
         ''' update of the data displayed in the gui graph '''
         
-        if self.ptr < self.npoints:
-            self.data[self.ptr] = self.focusSignal#* self.pxSize #- self.setPoint  #Ahora se supone que focusSiganl no es cero
-            #print("self.data[self.ptr]: ", self.data[self.ptr])
-            self.time[self.ptr] = self.currentTime
+        if self.linetime:
+            print("Empezó el confocal?? En teoria sí")
             
-            self.changedData.emit(self.time[0:self.ptr + 1], #Esta señal va a get_data
-                                  self.data[0:self.ptr + 1])
-
         else:
-            self.data[:-1] = self.data[1:]
-            self.data[-1] = self.focusSignal
-            #print("focusSignal in update_graph_data (in else): ", self.focusSignal)
-            self.time[:-1] = self.time[1:]
-            self.time[-1] = self.currentTime
-
-            self.changedData.emit(self.time, self.data)
+            print("estoy en un caso donde no empezó el confocal")
+            if self.ptr < self.npoints:
+                self.data[self.ptr] = self.focusSignal#* self.pxSize #- self.setPoint  #Ahora se supone que focusSiganl no es cero
+                #print("self.data[self.ptr]: ", self.data[self.ptr])
+                self.time[self.ptr] = self.currentTime
+                
+                self.changedData.emit(self.time[0:self.ptr + 1], #Esta señal va a get_data
+                                      self.data[0:self.ptr + 1])
+    
+            else:
+                self.data[:-1] = self.data[1:]
+                self.data[-1] = self.focusSignal
+                #print("focusSignal in update_graph_data (in else): ", self.focusSignal)
+                self.time[:-1] = self.time[1:]
+                self.time[-1] = self.currentTime
+    
+                self.changedData.emit(self.time, self.data)
             
         self.ptr += 1
             
