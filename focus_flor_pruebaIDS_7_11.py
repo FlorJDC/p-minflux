@@ -602,7 +602,7 @@ class Backend(QtCore.QObject):
         #Luego se asigna setpointz a currentz y ese valor se pasa al borne 6 de la ADwin
         #Luego ese valor currentz se asigna a fpar_72 y es el nuevo valor actual de z
         self.adw.Set_Par(30, 1)
-        actual_z = tools.convert(self.adw.Get_FPar(72), 'UtoX')
+        actual_z = tools.convert(self.adw.Get_FPar(72), 'UtoX') #Esto es para ver en qué posición está el piezo ahora
         print("actual_z: ", actual_z, "um. Espero que este valor sea: ", self.initial_z, "um")
         #Si en esta linea son iguales, listo, sino probar restando dz/1000 en self.target_z
         #En base a esto recién se puede cambiar o no el signo en dz en xyz_tracking
@@ -740,7 +740,8 @@ class Backend(QtCore.QObject):
         ''' set up on/off feedback loop'''
         #Creo que podría anular la siguiente linea si va en toggle_feedback
         
-        self.center_of_mass() #Esto se ejecuta para sacar self.focusSignal y configurar por primera vez el setpoint
+        #self.center_of_mass() #Esto se ejecuta para sacar self.focusSignal y configurar por primera vez el setpoint
+        print("center of mass coordinates in setup_feedback: ", self.focusSignal)
         #Esto es imagen
         self.setPoint = self.focusSignal * self.pxSize # define setpoint 
         # [self.focusSignal]= px que se mueve el reflejo en z
@@ -771,7 +772,7 @@ class Backend(QtCore.QObject):
         print ("Image setpoint: ", self.setPoint, "nm")
         print("New value in image", self.focusSignal*self.pxSize, "nm")
         print("dz: ", dz, "nm")
-        print("self.initial_z in piezo: ", self.initial_z, "um")
+        print("self.initial_z in piezo (piezo initial value): ", self.initial_z, "um")
         
         threshold = 7 # in nm
         far_threshold = 20 # in nm
@@ -791,9 +792,9 @@ class Backend(QtCore.QObject):
             
         else:
             #Esto es cuanto es el movimiento real de la platina
-            self.target_z = self.initial_z - dz/1000  # conversion to µm #Creo que aquí está corrigiendo bien, le puse el signo menos 
+            self.target_z = self.target_z + dz/1000  # conversion to µm #Creo que aquí está corrigiendo bien, le puse el signo menos 
             # [self.target_z] = µm + nm/1000 = µm
-            print("self.target_z in piezo: ", self.target_z, "µm.")
+            print("self.target_z in piezo (piezo current value): ", self.target_z, "µm.")
                         
             if mode == 'continous':
                 
@@ -810,7 +811,7 @@ class Backend(QtCore.QObject):
         ''' update of the data displayed in the gui graph '''
         
         if self.ptr < self.npoints:
-            self.data[self.ptr] = self.focusSignal#* self.pxSize - self.setPoint  #Ahora se supone que focusSiganl no es cero
+            self.data[self.ptr] = self.focusSignal#* self.pxSize #- self.setPoint  #Ahora se supone que focusSiganl no es cero
             #print("self.data[self.ptr]: ", self.data[self.ptr])
             self.time[self.ptr] = self.currentTime
             
@@ -884,7 +885,7 @@ class Backend(QtCore.QObject):
         #self.image = raw_image[:, :, 0] # take only R channel
 
         # WARNING: check if it is necessary to fix to match camera orientation with piezo orientation
-        #find command for IDS, maybe in user manual
+        #find command for IDS, maybe in user manual, for now this one works
         # WARNING: fix to match camera orientation with piezo orientation
         self.image = np.rot90(self.image, k=3) #Added by FC
         # Send image to gui
@@ -892,6 +893,7 @@ class Backend(QtCore.QObject):
         #image sent to get_image. Type:  <class 'numpy.ndarray'>
         self.currentTime = ptime.time() - self.startTime
         self.center_of_mass() #Esto da focusSignal
+        print("center of mass coordinates in acquire data: ", self.focusSignal)
         
     def center_of_mass(self):
         
