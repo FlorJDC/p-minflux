@@ -139,7 +139,8 @@ class Backend(QtCore.QObject):
         self.xyWorker = scan.Backend(adw, diodelaser)
 
     def setup_make_connection(self):
-        pass
+        self.xyWorker.linetimeSignal.connect(self.zWorker.get_linetime)
+        #pass
 
         #self.xyWorker.changedImage_tofocus.connect(self.zWorker.get_image)
 
