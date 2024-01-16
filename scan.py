@@ -1288,7 +1288,7 @@ class Backend(QtCore.QObject):
         self.frameTime = self.NofPixels**2 * self.pxTime / 10**6
         self.maxCounts = int(self.APDmaxCounts/(1/(self.pxTime*10**-6)))
         self.linetime = (1/1000)*self.pxTime*self.NofPixels  # in ms
-        
+        print("Tiempo por linea: ", self.linetime, " ms")
         #  aux scan parameters
 
         self.a_max = 4 * 10**-6  # in µm/µs^2
@@ -1791,7 +1791,7 @@ class Backend(QtCore.QObject):
         self.adw.Start_Process(1)
         
         line_time = (1/1000) * self.data_t[-1]  # target linetime in ms
-        print("line_time: " ,line_time)
+
         wait_time = line_time * 1.05 # TO DO: optimize this, it should work with 1.00, or maybe even less?
                                      # it should even work without the time.sleep()
         

@@ -556,6 +556,7 @@ class Backend(QtCore.QObject):
         
         self.reset()
         self.reset_data_arrays()
+        flag=0
         
         if self.camera.open_device():
             self.camera.set_roi(16, 16, 1920, 1200)
@@ -574,8 +575,9 @@ class Backend(QtCore.QObject):
         Connection: [scan] linetime
         
         """
-        
-        self.linetime = linetime 
+        self.confocal_time= ptime.time() - self.startTime #Tiempo en que se inicia el escaneo confocal
+        print("self.confocal_time: ", self.confocal_time)
+        self.linetime = linetime/(10**3) #ms to s
         print("Valor de linetime en el confocal (check if it is turned ON): ", self.linetime)
         
     @pyqtSlot(dict)
@@ -710,8 +712,7 @@ class Backend(QtCore.QObject):
         if val is True:
             if DEBUG:
                 print("Inside toggle_feedback in val is True")
-            #Aquí capaz que puedo llamar a center of mass en lugar de hacerlo en setup_feedback
-            #self.center_of_mass()
+
             self.reset()
             self.setup_feedback()
             self.update()
@@ -749,10 +750,7 @@ class Backend(QtCore.QObject):
         if DEBUG:
                 print("Inside setup_feedback")
         ''' set up on/off feedback loop'''
-        #Creo que podría anular la siguiente linea si va en toggle_feedback
-        
-        #self.center_of_mass() #Esto se ejecuta para sacar self.focusSignal y configurar por primera vez el setpoint
-        print("center of mass coordinates in setup_feedback: ", self.focusSignal)
+
         #Esto es imagen
         self.setPoint = self.focusSignal * self.pxSize # define setpoint 
         # [self.focusSignal]= px que se mueve el reflejo en z
@@ -774,8 +772,7 @@ class Backend(QtCore.QObject):
         if DEBUG:
                 print("Inside update_feedback")
             
-        #self.center_of_mass() #Esto se ejecuta para sacar self.focusSignal activamente
-        #comento la linea anterior, ver qué cambia
+        print("self.currentTime in update_feedback: ", self.currentTime)
         #Esto es imagen 
         
         dz = self.focusSignal * self.pxSize - self.setPoint #Este valor da positivo a veces y a veces negativo
@@ -821,7 +818,7 @@ class Backend(QtCore.QObject):
                 print("Inside update_graph_data")
         ''' update of the data displayed in the gui graph '''
         
-        if self.linetime:
+        if (self.linetime != 0) :
             print("Empezó el confocal?? En teoria sí")
             
         else:
@@ -880,9 +877,18 @@ class Backend(QtCore.QObject):
         #  if locked, correct position
         
         if self.feedback_active:
-            
+            if self.linetime==0:
+                self.update_feedback()
+            if self.linetime!=0 and self.currentTime == (self.confocal_time + self.linetime) :
+                print("Es un tiempo de corregir!")
+                self.update_feedback()
+                self.confocal_time=self.confocal_time + self.linetime
+
+            else:
+                self.update_feedback()
 #            self.updateStats()
-            self.update_feedback()
+        
+            
             
         if self.save_data_state:
                         
@@ -909,7 +915,7 @@ class Backend(QtCore.QObject):
         #image sent to get_image. Type:  <class 'numpy.ndarray'>
         self.currentTime = ptime.time() - self.startTime
         self.center_of_mass() #Esto da focusSignal
-        print("center of mass coordinates in acquire data: ", self.focusSignal)
+        print("current time ", self.currentTime)
         
     def center_of_mass(self):
         
@@ -927,9 +933,7 @@ class Backend(QtCore.QObject):
         #print("center of mass: ", self.masscenter)
         
         # calculate z estimator
-        
-        self.focusSignal = np.sqrt(self.masscenter[0]**2 + self.masscenter[1]**2) #OJO aquí, a veces puede ser que vaya el signo menos, pero el original es signo mas
-        #print("FocusSignal in center of mass:", self.focusSignal)       
+        self.focusSignal = np.sqrt(self.masscenter[0]**2 + self.masscenter[1]**2) #OJO aquí, a veces puede ser que vaya el signo menos, pero el original es signo mas       
         self.currentTime = ptime.time() - self.startTime
         
     @pyqtSlot(bool, bool)
