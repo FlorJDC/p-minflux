@@ -575,9 +575,7 @@ class Backend(QtCore.QObject):
         Connection: [scan] linetime
         
         """
-        self.confocal_time= ptime.time() - self.startTime #Tiempo en que se inicia el escaneo confocal
-        print("self.confocal_time: ", self.confocal_time)
-        self.linetime = linetime/(10**3) #ms to s
+        self.linetime = linetime #ms
         print("Valor de linetime en el confocal (check if it is turned ON): ", self.linetime)
         
     @pyqtSlot(dict)
@@ -637,7 +635,10 @@ class Backend(QtCore.QObject):
             self.focusTimer.stop()
             self.camON = False
         self.camON = True
-        self.focusTimer.start(self.focusTime)
+        if self.linetime==0:
+            self.focusTimer.start(self.focusTime)
+        if self.linetime!=0:
+            self.focusTimer.start(self.linetime)
         
     def liveview_stop(self):
         if DEBUG:
@@ -818,27 +819,22 @@ class Backend(QtCore.QObject):
                 print("Inside update_graph_data")
         ''' update of the data displayed in the gui graph '''
         
-        if (self.linetime != 0) :
-            print("Empezó el confocal?? En teoria sí")
-            
-        else:
-            print("estoy en un caso donde no empezó el confocal")
-            if self.ptr < self.npoints:
-                self.data[self.ptr] = self.focusSignal#* self.pxSize #- self.setPoint  #Ahora se supone que focusSiganl no es cero
-                #print("self.data[self.ptr]: ", self.data[self.ptr])
-                self.time[self.ptr] = self.currentTime
+        if self.ptr < self.npoints:
+            self.data[self.ptr] = self.focusSignal#* self.pxSize #- self.setPoint  #Ahora se supone que focusSiganl no es cero
+            #print("self.data[self.ptr]: ", self.data[self.ptr])
+            self.time[self.ptr] = self.currentTime
                 
-                self.changedData.emit(self.time[0:self.ptr + 1], #Esta señal va a get_data
-                                      self.data[0:self.ptr + 1])
+            self.changedData.emit(self.time[0:self.ptr + 1], #Esta señal va a get_data
+                                  self.data[0:self.ptr + 1])
     
-            else:
-                self.data[:-1] = self.data[1:]
-                self.data[-1] = self.focusSignal
-                #print("focusSignal in update_graph_data (in else): ", self.focusSignal)
-                self.time[:-1] = self.time[1:]
-                self.time[-1] = self.currentTime
+        else:
+            self.data[:-1] = self.data[1:]
+            self.data[-1] = self.focusSignal
+            #print("focusSignal in update_graph_data (in else): ", self.focusSignal)
+            self.time[:-1] = self.time[1:]
+            self.time[-1] = self.currentTime
     
-                self.changedData.emit(self.time, self.data)
+            self.changedData.emit(self.time, self.data)
             
         self.ptr += 1
             
@@ -877,18 +873,8 @@ class Backend(QtCore.QObject):
         #  if locked, correct position
         
         if self.feedback_active:
-            if self.linetime==0:
-                self.update_feedback()
-            if self.linetime!=0 and self.currentTime == (self.confocal_time + self.linetime) :
-                print("Es un tiempo de corregir!")
-                self.update_feedback()
-                self.confocal_time=self.confocal_time + self.linetime
-
-            else:
-                self.update_feedback()
 #            self.updateStats()
-        
-            
+            self.update_feedback()
             
         if self.save_data_state:
                         
