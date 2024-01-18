@@ -1840,6 +1840,7 @@ class Backend(QtCore.QObject):
     
                 dy = tools.convert(self.dy, 'ΔXtoU')
                 self.y_offset = int(self.y_offset + dy)
+                print("self y_offset: ", self.y_offset)
                 self.adw.Set_FPar(2, self.y_offset)
     
             if self.scantype == 'xz' or self.scantype == 'yz':

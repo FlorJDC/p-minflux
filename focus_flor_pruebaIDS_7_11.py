@@ -606,8 +606,8 @@ class Backend(QtCore.QObject):
         #Luego ese valor currentz se asigna a fpar_72 y es el nuevo valor actual de z
         self.adw.Set_Par(30, 1)
         actual_z = tools.convert(self.adw.Get_FPar(72), 'UtoX') #Esto es para ver en qué posición está el piezo ahora
-        print("actual_z: ", actual_z, "um. Espero que este valor sea: ", self.initial_z, "um")
-        print("dz in piezo: ", self.initial_z - actual_z)
+        #print("actual_z: ", actual_z, "um. Espero que este valor sea: ", self.initial_z, "um")
+        #print("dz in piezo: ", self.initial_z - actual_z)
         #Si en esta linea son iguales, listo, sino probar restando dz/1000 en self.target_z
         #En base a esto recién se puede cambiar o no el signo en dz en xyz_tracking
     @pyqtSlot(bool)
@@ -767,9 +767,9 @@ class Backend(QtCore.QObject):
         
         dz = self.focusSignal * self.pxSize - self.setPoint #Este valor da positivo a veces y a veces negativo
         #[dz] = px*(nm/px) - nm =nm
-        print ("Image setpoint: ", self.setPoint, "nm")
-        print("New value in image", self.focusSignal*self.pxSize, "nm")
-        print("dz in image: ", dz, "nm")
+        #print ("Image setpoint: ", self.setPoint, "nm")
+        #print("New value in image", self.focusSignal*self.pxSize, "nm")
+        #print("dz in image: ", dz, "nm")
         
         threshold = 7 # in nm
         far_threshold = 20 # in nm
@@ -791,7 +791,7 @@ class Backend(QtCore.QObject):
             #Esto es cuanto es el movimiento real de la platina
             self.target_z = self.target_z + dz/1000  # conversion to µm #Creo que aquí está corrigiendo bien, le puse el signo menos 
             # [self.target_z] = µm + nm/1000 = µm
-            print("self.target_z in piezo (piezo current value): ", self.target_z, "µm.")
+            #print("self.target_z in piezo (piezo current value): ", self.target_z, "µm.")
                         
             if mode == 'continous':
                 
@@ -891,7 +891,7 @@ class Backend(QtCore.QObject):
         #image sent to get_image. Type:  <class 'numpy.ndarray'>
         self.currentTime = ptime.time() - self.startTime
         self.center_of_mass() #Esto da focusSignal
-        print("center of mass coordinates in acquire data: ", self.focusSignal)
+        #print("center of mass coordinates in acquire data: ", self.focusSignal)
         
     def center_of_mass(self):
         
