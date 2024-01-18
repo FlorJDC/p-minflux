@@ -263,6 +263,8 @@ class Frontend(QtGui.QFrame):
 
         if self.liveviewButton.isChecked():
             self.liveviewSignal.emit(True, 'liveview')
+            self.linetimeSignal.emit(self.linetime)
+            print("Tiempo por linea emitido confocal liveview: ", self.linetime, " ms")
             
             if self.roi is not None:
 
@@ -285,6 +287,7 @@ class Frontend(QtGui.QFrame):
         else:
             self.liveviewSignal.emit(False, 'liveview')
             self.emit_param()
+            #self.linetimeSignal.emit(0) #0 para que sepa que el confocal se apagó
             
     def toggle_frame_acq(self):
 
@@ -1288,7 +1291,6 @@ class Backend(QtCore.QObject):
         self.frameTime = self.NofPixels**2 * self.pxTime / 10**6
         self.maxCounts = int(self.APDmaxCounts/(1/(self.pxTime*10**-6)))
         self.linetime = (1/1000)*self.pxTime*self.NofPixels  # in ms
-        print("Tiempo por linea: ", self.linetime, " ms")
         #  aux scan parameters
 
         self.a_max = 4 * 10**-6  # in µm/µs^2
@@ -1354,7 +1356,6 @@ class Backend(QtCore.QObject):
         # emit calculated parameters
 
         self.emit_param()
-        self.linetimeSignal.emit(self.linetime)
         
     def emit_param(self):
         
