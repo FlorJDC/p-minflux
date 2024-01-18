@@ -244,6 +244,7 @@ class Frontend(QtGui.QFrame):
                 zStDev = np.std(position)
                 
                 # TO DO: fix focus stats
+                self.zstd_value.setText(str(np.around(zStDev,3))) #px
                 
 #                self.focusMean.setValue(zMean)
 #                self.focusStDev0.setValue(zMean - zStDev)
@@ -350,7 +351,7 @@ class Frontend(QtGui.QFrame):
         self.saveDataBox = QtGui.QCheckBox("Save data")
         self.clearDataButton = QtGui.QPushButton('Clear data')
         
-        self.pxSizeLabel = QtGui.QLabel('Pixel size (nm)')
+        self.pxSizeLabel = QtGui.QLabel('pxSize (nm)')
         self.pxSizeEdit = QtGui.QLineEdit('50') #Original: 10nm en focus.py
         self.focusPropertiesDisplay = QtGui.QLabel(' st_dev = 0  max_dev = 0')
         
@@ -365,7 +366,7 @@ class Frontend(QtGui.QFrame):
         # self.statWidget.setFixedWidth(240)
         self.statWidget.setFixedWidth(350)
 
-        self.zstd_label = QtGui.QLabel('Z std (nm)')
+        self.zstd_label = QtGui.QLabel('Z std (px)')
         
         self.zstd_value = QtGui.QLabel('0')
         ################################
@@ -458,7 +459,9 @@ class Frontend(QtGui.QFrame):
         subgrid.addWidget(self.deleteROIbutton, 4, 0, 1, 2)
         
         subgrid.addWidget(self.shutterLabel, 11, 0)
-        subgrid.addWidget(self.shutterCheckbox, 12, 0)
+        subgrid.addWidget(self.shutterCheckbox, 11, 1)
+        subgrid.addWidget(self.zstd_label, 12, 0)
+        subgrid.addWidget(self.zstd_value, 12, 1)
         
         grid.addWidget(self.paramWidget, 0, 1)
         grid.addWidget(self.focusGraph, 1, 0)
@@ -604,6 +607,7 @@ class Backend(QtCore.QObject):
         self.adw.Set_Par(30, 1)
         actual_z = tools.convert(self.adw.Get_FPar(72), 'UtoX') #Esto es para ver en qué posición está el piezo ahora
         print("actual_z: ", actual_z, "um. Espero que este valor sea: ", self.initial_z, "um")
+        print("dz in piezo: ", self.initial_z - actual_z)
         #Si en esta linea son iguales, listo, sino probar restando dz/1000 en self.target_z
         #En base a esto recién se puede cambiar o no el signo en dz en xyz_tracking
     @pyqtSlot(bool)
@@ -738,10 +742,6 @@ class Backend(QtCore.QObject):
         if DEBUG:
                 print("Inside setup_feedback")
         ''' set up on/off feedback loop'''
-        #Creo que podría anular la siguiente linea si va en toggle_feedback
-        
-        #self.center_of_mass() #Esto se ejecuta para sacar self.focusSignal y configurar por primera vez el setpoint
-        print("center of mass coordinates in setup_feedback: ", self.focusSignal)
         #Esto es imagen
         self.setPoint = self.focusSignal * self.pxSize # define setpoint 
         # [self.focusSignal]= px que se mueve el reflejo en z
@@ -749,7 +749,7 @@ class Backend(QtCore.QObject):
         # [self.setPoint] = nm
         
         #Esto es platina
-        self.initial_z = tools.convert(self.adw.Get_FPar(72), 'UtoX') # current z position of the piezo
+        self.initial_z = tools.convert(self.adw.Get_FPar(72), 'UtoX') # current z position of the piezo #piezo initial value
         # self.adw.Get_FPar(72) toma la posicion en bits de la ADwin, luego la convierte a unidades de longitud (µm)
         self.target_z = self.initial_z # set initial_z as target_z, µm
         #print("Valor de focus signal en setup_feedback:", self.focusSignal," px. SetPoint: ", self.setPoint, "nm")
@@ -762,17 +762,14 @@ class Backend(QtCore.QObject):
     def update_feedback(self, mode='continous'):
         if DEBUG:
                 print("Inside update_feedback")
-            
-        #self.center_of_mass() #Esto se ejecuta para sacar self.focusSignal activamente
-        #comento la linea anterior, ver qué cambia
+
         #Esto es imagen 
         
         dz = self.focusSignal * self.pxSize - self.setPoint #Este valor da positivo a veces y a veces negativo
         #[dz] = px*(nm/px) - nm =nm
         print ("Image setpoint: ", self.setPoint, "nm")
         print("New value in image", self.focusSignal*self.pxSize, "nm")
-        print("dz: ", dz, "nm")
-        print("self.initial_z in piezo (piezo initial value): ", self.initial_z, "um")
+        print("dz in image: ", dz, "nm")
         
         threshold = 7 # in nm
         far_threshold = 20 # in nm
@@ -811,6 +808,7 @@ class Backend(QtCore.QObject):
         ''' update of the data displayed in the gui graph '''
         
         if self.ptr < self.npoints:
+            #FocusSignal in px
             self.data[self.ptr] = self.focusSignal#* self.pxSize #- self.setPoint  #Ahora se supone que focusSiganl no es cero
             #print("self.data[self.ptr]: ", self.data[self.ptr])
             self.time[self.ptr] = self.currentTime

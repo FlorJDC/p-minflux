@@ -899,7 +899,7 @@ class Backend(QtCore.QObject):
         if self.ptr < self.npoints:
             self.xData[self.ptr, :] = self.x + self.displacement[0]
             self.yData[self.ptr, :] = self.y + self.displacement[1]
-            self.zData[self.ptr] = self.z #Aparentemente es focusSignal
+            self.zData[self.ptr] = self.z #in nm
             self.avgIntData[self.ptr] = self.avgInt
             self.time[self.ptr] = self.currentTime
             
@@ -1038,8 +1038,8 @@ class Backend(QtCore.QObject):
         
         # calculate z estimator
         
-        self.currentz = -np.sqrt(self.m_center[0]**2 + self.m_center[1]**2) #Chequear si aquí conviene poner signo menos
-        #Nota: self.currentz es self.focusSignal
+        self.currentz = np.sqrt(self.m_center[0]**2 + self.m_center[1]**2) #Chequear si aquí conviene poner signo menos
+        #Nota: self.currentz es self.focusSignal en ox
         
     def gaussian_fit(self,roi_coordinates): #Le estoy agregando un parámetro (roi_coordinates) para que sea como en xyz_tracking
         
@@ -1245,7 +1245,7 @@ class Backend(QtCore.QObject):
                 
                 self.initial_focus = False
             
-            self.z = (self.currentz - self.initialz) * PX_Z #self.z in nm
+            self.z = (self.currentz - self.initialz) * PX_Z #self.z in nm #Entiendo que esto es focusSignal, está en px
             print("self.z in track: ", self.z, " nm")
                 
     def correct(self, mode='continous'):
@@ -1257,9 +1257,9 @@ class Backend(QtCore.QObject):
         dy = 0
         dz = 0 #comparar con update_feedback
         
-        threshold = 3 #antes era 5 con Andor
-        z_threshold = 3
-        far_threshold = 12 #ojo con estos parametros chequear focus
+        threshold = 7 #antes era 5 con Andor # in nm
+        z_threshold = 7 # in nm
+        far_threshold = 20 #ojo con estos parametros chequear focus
         correct_factor = 0.6
         
         security_thr = 0.35 # in µm
@@ -1292,7 +1292,7 @@ class Backend(QtCore.QObject):
                 
 #                print('dz', dz)
         else:
-            dz = - (self.z)/1000
+            dz = (self.z)/1000
 
         if dx > security_thr or dy > security_thr or dz > 2 * security_thr:
             

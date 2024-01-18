@@ -1153,7 +1153,6 @@ class Backend(QtCore.QObject):
     shuttermodeSignal = pyqtSignal(int, bool)
     diodelaserEmissionSignal = pyqtSignal(bool)
     focuslockpositionSignal = pyqtSignal(float)
-    linescanSignal = pyqtSignal(int)
     
     """
     Signals
@@ -1174,10 +1173,6 @@ class Backend(QtCore.QObject):
          To: [minflux]
          Description:
     
-    - linescanSignal:
-         To: [focus_flor_pruebaIDS_7_11]
-         Description: This signal contains the current linescan time to change integration time in z stabilization 
-        
     """
     
     def __init__(self, adwin, diodelaser, *args, **kwargs):
@@ -1354,7 +1349,6 @@ class Backend(QtCore.QObject):
         # emit calculated parameters
 
         self.emit_param()
-        self.linescanSignal.emit(self.linetime)
         
     def emit_param(self):
         
@@ -1791,7 +1785,6 @@ class Backend(QtCore.QObject):
         self.adw.Start_Process(1)
         
         line_time = (1/1000) * self.data_t[-1]  # target linetime in ms
-        print("line_time: " ,line_time)
         wait_time = line_time * 1.05 # TO DO: optimize this, it should work with 1.00, or maybe even less?
                                      # it should even work without the time.sleep()
         
